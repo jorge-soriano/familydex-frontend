@@ -8,5 +8,5 @@ export type RewardRequestStatus = 'Pending' | 'Approved' | 'Rejected';
 export interface AuthUser {
   userId: number;
   role: UserRole;
-  familyId: number;
+  familyId: string;
 }

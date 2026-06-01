@@ -1,11 +1,12 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import ProtectedRoute from './shared/components/ProtectedRoute';
+import LoginPage from './features/auth/components/LoginPage';
+import RegisterPage from './features/auth/components/RegisterPage';
 
 export const router = createBrowserRouter([
-  {
-    path: '/login',
-    element: <div>Login — implementado en Épica 1</div>,
-  },
+  { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
+
   {
     path: '/admin',
     element: (
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: 'rewards', element: <div>Admin Rewards — Épica 5</div> },
     ],
   },
+
   {
     path: '/child',
     element: (
@@ -37,5 +39,6 @@ export const router = createBrowserRouter([
       { path: 'rewards', element: <div>Reward Shop — Épica 5</div> },
     ],
   },
+
   { path: '/', element: <Navigate to="/login" replace /> },
 ]);

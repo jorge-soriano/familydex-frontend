@@ -6,8 +6,8 @@ interface AuthState {
   token: string | null;
   userId: number | null;
   role: UserRole | null;
-  familyId: number | null;
-  setAuth: (token: string, userId: number, role: UserRole, familyId: number) => void;
+  familyId: string | null;
+  setAuth: (token: string, userId: number, role: UserRole, familyId: string) => void;
   clearAuth: () => void;
 }
 
