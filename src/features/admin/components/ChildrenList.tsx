@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAdminChildren, useToggleChildStatus } from '../hooks/useAdmin';
 import EditChildModal from './EditChildModal';
+import CreateChildModal from './CreateChildModal';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import type { ChildSummary } from '../api';
 
@@ -9,12 +10,18 @@ export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
   const toggle = useToggleChildStatus();
   const [editing, setEditing] = useState<ChildSummary | null>(null);
+  const [creating, setCreating] = useState(false);
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.h2}>Gestión de hijos</h2>
+      <div style={styles.topbar}>
+        <h2 style={styles.h2}>Gestión de hijos</h2>
+        <button style={styles.newBtn} onClick={() => setCreating(true)}>
+          + Nuevo hijo
+        </button>
+      </div>
 
       <div style={styles.table}>
         <div style={{ ...styles.row, ...styles.header }}>
@@ -73,14 +80,17 @@ export default function ChildrenList() {
         ))}
       </div>
 
-      {editing && <EditChildModal child={editing} onClose={() => setEditing(null)} />}
+      {editing  && <EditChildModal   child={editing} onClose={() => setEditing(null)} />}
+      {creating && <CreateChildModal onClose={() => setCreating(false)} />}
     </div>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
   page: { padding: '1.5rem', maxWidth: 1000, margin: '0 auto' },
-  h2: { fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' },
+  topbar: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' },
+  h2: { fontSize: '1.5rem', fontWeight: 800, margin: 0 },
+  newBtn: { padding: '0.5rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   table: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   row: {
     display: 'grid',

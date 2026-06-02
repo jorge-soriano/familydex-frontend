@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { adminApi } from '../api';
+import { authApi, type CreateChildDto } from '../../auth/api';
 
 export const DASHBOARD_KEY      = 'admin-dashboard';
 export const NOTIFICATIONS_KEY  = 'admin-notifications';
@@ -34,6 +35,17 @@ export function useUpdateChild() {
   return useMutation({
     mutationFn: ({ id, dto }: { id: number; dto: { displayName?: string; password?: string } }) =>
       adminApi.updateChild(id, dto),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [ADMIN_CHILDREN_KEY] });
+      qc.invalidateQueries({ queryKey: [DASHBOARD_KEY] });
+    },
+  });
+}
+
+export function useCreateChild() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateChildDto) => authApi.createChild(data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [ADMIN_CHILDREN_KEY] });
       qc.invalidateQueries({ queryKey: [DASHBOARD_KEY] });
