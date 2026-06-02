@@ -9,6 +9,8 @@ import TaskPanelPage from './features/tasks/components/TaskPanelPage';
 import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
 import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
 import PokemonPage from './features/pokemon/components/PokemonPage';
+import RewardShop from './features/rewards/components/RewardShop';
+import AdminRewardsPage from './features/rewards/components/AdminRewardsPage';
 
 export const router = createBrowserRouter([
   { path: '/login',    element: <LoginPage /> },
@@ -28,7 +30,7 @@ export const router = createBrowserRouter([
       { path: 'economy',      element: <AdminEconomyPage /> },
       { path: 'children',     element: <div style={{ padding: '2rem' }}>Gestión de hijos — Épica 6</div> },
       { path: 'children/:id', element: <div style={{ padding: '2rem' }}>Detalle hijo — Épica 6</div> },
-      { path: 'rewards',      element: <div style={{ padding: '2rem' }}>Tienda — Épica 5</div> },
+      { path: 'rewards',      element: <AdminRewardsPage /> },
     ],
   },
 
@@ -44,7 +46,7 @@ export const router = createBrowserRouter([
       { path: 'tasks',     element: <TaskList /> },
       { path: 'economy',   element: <ChildEconomyPage /> },
       { path: 'pokemon',   element: <PokemonPage /> },
-      { path: 'rewards',   element: <div style={{ padding: '2rem' }}>Tienda — Épica 5</div> },
+      { path: 'rewards',   element: <RewardShop /> },
     ],
   },
 
