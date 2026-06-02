@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams } from '../api';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
+import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 
 const TASKS_KEY = 'tasks';
 
@@ -53,6 +54,7 @@ export function useApproveTask() {
       qc.invalidateQueries({ queryKey: [TASKS_KEY] });
       qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
       qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
+      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
     },
   });
 }

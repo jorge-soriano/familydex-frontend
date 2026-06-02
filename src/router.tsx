@@ -8,6 +8,7 @@ import TaskList from './features/tasks/components/TaskList';
 import TaskPanelPage from './features/tasks/components/TaskPanelPage';
 import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
 import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
+import PokemonPage from './features/pokemon/components/PokemonPage';
 
 export const router = createBrowserRouter([
   { path: '/login',    element: <LoginPage /> },
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
       { index: true,       element: <Navigate to="tasks" replace /> },
       { path: 'tasks',     element: <TaskList /> },
       { path: 'economy',   element: <ChildEconomyPage /> },
-      { path: 'pokemon',   element: <div style={{ padding: '2rem' }}>Pokémon — Épica 4</div> },
+      { path: 'pokemon',   element: <PokemonPage /> },
       { path: 'rewards',   element: <div style={{ padding: '2rem' }}>Tienda — Épica 5</div> },
     ],
   },
