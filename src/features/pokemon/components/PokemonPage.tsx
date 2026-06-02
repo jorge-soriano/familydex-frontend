@@ -65,19 +65,17 @@ export default function PokemonPage() {
         </div>
       )}
 
-      {/* ── Caja ──────────────────────────────────────────────────────────── */}
+      {/* ── Caja — solo formas actuales, sin Pokémon que ya han evolucionado */}
       {tab === 'caja' && (
         <div style={styles.grid}>
-          {collection.map((item) => {
-            const evolved   = hasEvolved(item, collection);
-            const isActive  = item.isActive;
+          {collection.filter((item) => !hasEvolved(item, collection)).map((item) => {
+            const isActive = item.isActive;
 
             return (
               <div key={item.id}
                 style={{
                   ...styles.card,
                   border: isActive ? '3px solid #3b82f6' : '3px solid transparent',
-                  opacity: evolved ? 0.6 : 1,
                 }}>
                 <PokemonSprite pokedexNumber={item.pokemon.pokedexNumber} size={72} alt={item.pokemon.name} />
                 <strong style={{ fontSize: '0.85rem' }}>{item.pokemon.name}</strong>
@@ -87,13 +85,9 @@ export default function PokemonPage() {
                 </div>
                 <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Nv. {item.level}</span>
 
-                {isActive && (
+                {isActive ? (
                   <span style={styles.activeBadge}>Activo ✓</span>
-                )}
-                {evolved && !isActive && (
-                  <span style={styles.evolvedBadge}>Evolucionado</span>
-                )}
-                {!isActive && !evolved && (
+                ) : (
                   <button
                     style={styles.activateBtn}
                     onClick={() => setActive.mutate(item.id)}

@@ -19,7 +19,6 @@ export default function PokedexTab() {
       <div style={styles.grid}>
         {catalog.map((p) => {
           const owned = ownedNumbers.has(p.pokedexNumber);
-          const caughtEntry = collection.find((c) => c.pokemon.pokedexNumber === p.pokedexNumber);
 
           return (
             <div key={p.id} style={{ ...styles.card, opacity: owned ? 1 : 0.55 }}>
@@ -48,9 +47,6 @@ export default function PokedexTab() {
                 </span>
               )}
 
-              {caughtEntry && (
-                <span style={styles.level}>Nv. {caughtEntry.level}</span>
-              )}
             </div>
           );
         })}
