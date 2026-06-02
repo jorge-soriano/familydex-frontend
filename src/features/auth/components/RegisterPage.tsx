@@ -71,6 +71,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     background: '#1a1a2e',
+    padding: '1rem',
   },
   card: {
     background: '#fff',

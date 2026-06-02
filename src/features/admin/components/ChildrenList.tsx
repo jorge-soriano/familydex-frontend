@@ -23,7 +23,9 @@ export default function ChildrenList() {
         </button>
       </div>
 
-      <div style={styles.table}>
+      {/* overflowX:auto permite scroll horizontal en pantallas estrechas */}
+      <div style={{ overflowX: 'auto', borderRadius: 8 }}>
+      <div style={{ ...styles.table, minWidth: 640 }}>
         <div style={{ ...styles.row, ...styles.header }}>
           <span>Nombre</span>
           <span>Usuario</span>
@@ -79,7 +81,7 @@ export default function ChildrenList() {
           </div>
         ))}
       </div>
-
+      </div>
       {editing  && <EditChildModal   child={editing} onClose={() => setEditing(null)} />}
       {creating && <CreateChildModal onClose={() => setCreating(false)} />}
     </div>

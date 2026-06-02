@@ -99,9 +99,10 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: '100vh',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     background: '#1a1a2e',
+    padding: '1rem',  // margen lateral en móvil
   },
   card: {
-    background: '#fff', borderRadius: 12, padding: '2.5rem',
+    background: '#fff', borderRadius: 12, padding: '2rem',
     width: '100%', maxWidth: 400,
     boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
   },

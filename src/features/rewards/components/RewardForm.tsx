@@ -81,7 +81,7 @@ export default function RewardForm({ reward, onClose }: Props) {
 
 const styles: Record<string, React.CSSProperties> = {
   overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal: { background: '#fff', borderRadius: 12, padding: '2rem', width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  modal: { background: '#fff', borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   title: { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   label: { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600 },
   input: { padding: '0.5rem', borderRadius: 6, border: '2px solid #e2e8f0', fontSize: '0.9rem' },

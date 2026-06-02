@@ -85,7 +85,7 @@ export default function CreateChildModal({ onClose }: Props) {
 
 const styles: Record<string, React.CSSProperties> = {
   overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal: { background: '#fff', borderRadius: 12, padding: '2rem', width: '100%', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.85rem' },
+  modal: { background: '#fff', borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.85rem' },
   title: { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   label: { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600, margin: 0 },
   hint: { fontWeight: 400, color: '#94a3b8', fontSize: '0.78rem' },

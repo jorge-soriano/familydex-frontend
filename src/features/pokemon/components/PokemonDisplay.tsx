@@ -1,15 +1,17 @@
 import type { ActivePokemonResult } from '../api';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
+import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 
 interface Props { data: ActivePokemonResult }
 
 export default function PokemonDisplay({ data }: Props) {
   const { pokemon: p, level, pokemonXp, xpForNextLevel, progressPercent, isFinalForm, evolveLevel } = data;
+  const isNarrow = useWindowWidth() < 480;
 
   return (
-    <div style={styles.card}>
-      <div style={styles.spriteWrap}>
+    <div style={{ ...styles.card, flexDirection: isNarrow ? 'column' : 'row', alignItems: isNarrow ? 'center' : 'center' }}>
+      <div style={{ ...styles.spriteWrap, minWidth: isNarrow ? 'auto' : 140, minHeight: isNarrow ? 'auto' : 140 }}>
         <PokemonSprite pokedexNumber={p.pokedexNumber} size={120} alt={p.name} />
       </div>
 
