@@ -23,7 +23,7 @@ export function useLogin() {
     onSuccess: ({ token }) => {
       const { userId, role, familyId } = decodeToken(token);
       setAuth(token, userId, role, familyId);
-      navigate(role === 'admin' ? '/admin/dashboard' : '/child/dashboard');
+      navigate(role === 'admin' ? '/admin/dashboard' : '/child/tasks');
     },
   });
 }
