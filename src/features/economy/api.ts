@@ -45,4 +45,7 @@ export const economyApi = {
 
   applyPenalty: (data: PenaltyDto) =>
     apiClient.post('/economy/penalty', data).then((r) => r.data),
+
+  applyDirectReward: (data: { childId: number; coins: number; xp: number; reason: string }) =>
+    apiClient.post('/economy/direct-reward', data).then((r) => r.data),
 };

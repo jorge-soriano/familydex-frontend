@@ -3,7 +3,7 @@ import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams, ty
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 
-const TASKS_KEY = 'tasks';
+export const TASKS_KEY = 'tasks';
 
 export function useTasks(params?: GetTasksParams) {
   return useQuery({

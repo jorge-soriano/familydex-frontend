@@ -37,7 +37,7 @@ export default function MissionList() {
         </div>
       )}
 
-      {SECTIONS.map(({ status, label, emoji, emptyText }) => {
+      {SECTIONS.map(({ status, label, emoji }) => {
         const group = byStatus(status);
         if (!group.length) return null;
         return (
