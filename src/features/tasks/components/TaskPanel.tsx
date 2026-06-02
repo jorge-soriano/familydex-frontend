@@ -32,21 +32,18 @@ interface BtnProps {
   label: string;
   color: string; bg: string; border: string;
   disabled?: boolean;
-  withLabel?: boolean;
 }
-function ActionBtn({ onClick, icon, label, color, bg, border, disabled, withLabel }: BtnProps) {
+function ActionBtn({ onClick, icon, label, color, bg, border, disabled }: BtnProps) {
   return (
     <button title={label} disabled={disabled} onClick={onClick} style={{
-      display: 'inline-flex', alignItems: 'center', gap: '0.2rem',
-      padding: withLabel ? '0.3rem 0.55rem' : '0.3rem',
-      minWidth: 30, height: 30,
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: 34, height: 34,
       background: bg, color, border: `1px solid ${border}`,
-      borderRadius: 5, cursor: 'pointer',
-      fontSize: '0.78rem', fontWeight: 700,
-      opacity: disabled ? 0.5 : 1,
-      whiteSpace: 'nowrap',
+      borderRadius: 6, cursor: 'pointer',
+      fontSize: '1rem', lineHeight: 1,
+      opacity: disabled ? 0.45 : 1,
     }}>
-      {icon}{withLabel && <span style={{ fontSize: '0.75rem' }}>{label}</span>}
+      {icon}
     </button>
   );
 }
@@ -60,22 +57,21 @@ interface ActionsProps {
   onEdit: () => void;
   onDelete: () => void;
   approving: boolean;
-  withLabels?: boolean;
 }
-function TaskActions({ task, onApprove, onReject, onEdit, onDelete, approving, withLabels }: ActionsProps) {
+function TaskActions({ task, onApprove, onReject, onEdit, onDelete, approving }: ActionsProps) {
   return (
-    <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
       {task.status === 'InReview' && (
         <>
-          <ActionBtn onClick={onApprove} icon="✓" label="Aprobar"
-            color="#fff" bg="#22c55e" border="#16a34a" disabled={approving} withLabel={withLabels} />
-          <ActionBtn onClick={onReject} icon="✗" label="Rechazar"
-            color="#fff" bg="#ef4444" border="#dc2626" withLabel={withLabels} />
+          <ActionBtn onClick={onApprove} icon="✔" label="Aprobar"
+            color="#fff" bg="#22c55e" border="#16a34a" disabled={approving} />
+          <ActionBtn onClick={onReject}  icon="✖" label="Rechazar"
+            color="#fff" bg="#ef4444" border="#dc2626" />
         </>
       )}
       {task.status !== 'Approved' && (
         <>
-          <ActionBtn onClick={onEdit}   icon="✏" label="Editar"   color="#475569" bg="#f1f5f9" border="#e2e8f0" />
+          <ActionBtn onClick={onEdit}   icon="✎" label="Editar"   color="#475569" bg="#f1f5f9" border="#cbd5e1" />
           <ActionBtn onClick={onDelete} icon="🗑" label="Eliminar" color="#dc2626" bg="#fef2f2" border="#fecaca" />
         </>
       )}
@@ -216,7 +212,7 @@ export default function TaskPanel({ children }: Props) {
                     </td>
                     <td style={{ padding: '0.65rem 0.75rem', verticalAlign: 'middle', textAlign: 'right' }}>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.3rem' }}>
-                        <TaskActions {...actionProps(task)} withLabels />
+                        <TaskActions {...actionProps(task)} />
                       </div>
                     </td>
                   </tr>
