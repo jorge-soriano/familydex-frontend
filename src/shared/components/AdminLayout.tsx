@@ -21,7 +21,7 @@ function NavBadge({ count }: { count: number }) {
 const LINKS = (notif?: { inReview: number; pendingRequests: number }) => [
   { to: '/admin/dashboard', label: 'Dashboard',  badge: 0 },
   { to: '/admin/tasks',     label: 'Tareas',      badge: notif?.inReview ?? 0 },
-  { to: '/admin/economy',   label: 'Economía',    badge: 0 },
+  { to: '/admin/economy',   label: 'Actividad',   badge: 0 },
   { to: '/admin/rewards',   label: 'Tienda',      badge: notif?.pendingRequests ?? 0 },
   { to: '/admin/children',  label: 'Hijos',       badge: 0 },
 ];
