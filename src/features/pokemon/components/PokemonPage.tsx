@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { usePokemonCollection, useSetActive } from '../hooks/usePokemon';
 import { useBalance } from '../../economy/hooks/useEconomy';
 import PokemonOnboarding from './PokemonOnboarding';
@@ -19,11 +20,18 @@ function hasEvolved(item: CaughtPokemonItem, collection: CaughtPokemonItem[]): b
   );
 }
 
+const VALID_TABS: Tab[] = ['activo', 'caja', 'pokedex', 'capturar'];
+
 export default function PokemonPage() {
+  const [searchParams] = useSearchParams();
   const { data, isLoading } = usePokemonCollection();
   const { data: balance } = useBalance();
   const setActive = useSetActive();
-  const [tab, setTab] = useState<Tab>('activo');
+
+  const paramTab = searchParams.get('tab') as Tab;
+  const [tab, setTab] = useState<Tab>(
+    VALID_TABS.includes(paramTab) ? paramTab : 'activo'
+  );
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 

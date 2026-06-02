@@ -9,7 +9,7 @@ export default function BalanceBar() {
       <span style={styles.stat}>🪙 <strong>{balance?.coins ?? '—'}</strong></span>
       <span style={styles.stat}>⭐ <strong>{balance?.xp ?? '—'}</strong> XP</span>
       {(balance?.pendingCaptures ?? 0) > 0 && (
-        <Link to="/child/pokemon" style={styles.capture}>
+        <Link to="/child/pokemon?tab=capturar" style={styles.capture}>
           🎯 {balance!.pendingCaptures} Pokémon por capturar
         </Link>
       )}
