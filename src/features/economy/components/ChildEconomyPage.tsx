@@ -6,7 +6,7 @@ export default function ChildEconomyPage() {
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.h2}>Mi economía</h2>
+      <h2 style={styles.h2}>Mi actividad</h2>
 
       <div style={styles.cards}>
         <div style={styles.card}>

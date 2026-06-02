@@ -28,7 +28,7 @@ export default function AdminMissionsPage() {
 
   const TABS: { key: Tab; label: string; badge?: number }[] = [
     { key: 'inbox',     label: '📥 Bandeja',     badge: inReviewCount },
-    { key: 'planner',   label: '📋 Misiones'                         },
+    { key: 'planner',   label: '📋 Tareas'                         },
     { key: 'templates', label: '📚 Plantillas'                       },
     { key: 'logro',     label: '🏆 Registrar'                        },
   ];
@@ -36,7 +36,7 @@ export default function AdminMissionsPage() {
   return (
     <div style={{ padding: '1.5rem', maxWidth: 1100, margin: '0 auto' }}>
       <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' }}>
-        Misiones
+        Tareas
       </h2>
 
       {/* Tabs */}

@@ -9,10 +9,16 @@ interface Props {
 const TYPE_LABEL: Record<TransactionType, string> = {
   TaskReward:     '✅ Tarea aprobada',
   Penalty:        '❌ Penalización',
-  RewardRedeemed: '🎁 Recompensa',
+  RewardRedeemed: '🎁 Recompensa canjeada',
+  DirectReward:   '🎁 Recompensa directa',
+  DirectRecord:   '📝 Registro directo',
 };
 const TYPE_COLOR: Record<TransactionType, string> = {
-  TaskReward: '#22c55e', Penalty: '#ef4444', RewardRedeemed: '#8b5cf6',
+  TaskReward:     '#22c55e',
+  Penalty:        '#ef4444',
+  RewardRedeemed: '#8b5cf6',
+  DirectReward:   '#3b82f6',
+  DirectRecord:   '#f59e0b',
 };
 
 export default function HistoryList({ childId }: Props) {

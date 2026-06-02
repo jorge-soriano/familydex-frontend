@@ -17,14 +17,14 @@ export default function InboxTab({ familyChildren }: Props) {
   if (!tasks.length) return (
     <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
       <p style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>🎉</p>
-      <p style={{ fontWeight: 700, margin: 0 }}>¡Todo al día! No hay misiones esperando revisión.</p>
+      <p style={{ fontWeight: 700, margin: 0 }}>¡Todo al día! No hay tareas esperando revisión.</p>
     </div>
   );
 
   return (
     <div>
       <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '1rem' }}>
-        {tasks.length} {tasks.length === 1 ? 'misión esperando' : 'misiones esperando'} tu revisión
+        {tasks.length} {tasks.length === 1 ? 'misión esperando' : 'tareas esperando'} tu revisión
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>

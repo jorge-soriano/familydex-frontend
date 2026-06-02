@@ -9,7 +9,7 @@ const LINKS = [
   { to: '/child/tasks',   label: '📋 Tareas'    },
   { to: '/child/pokemon', label: '🎮 Pokémon'   },
   { to: '/child/rewards', label: '🏪 Tienda'    },
-  { to: '/child/economy', label: '💰 Historial' },
+  { to: '/child/economy', label: '📊 Actividad' },
 ];
 
 export default function ChildLayout() {

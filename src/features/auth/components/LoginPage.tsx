@@ -29,7 +29,7 @@ export default function LoginPage() {
     <div style={styles.page}>
       <div style={styles.card}>
         <h1 style={styles.title}>FamilyDex</h1>
-        <p style={styles.subtitle}>Gamificación familiar Pokémon</p>
+        <p style={styles.subtitle}>Gestión familiar de tareas</p>
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <label style={styles.label}>
