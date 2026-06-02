@@ -1,10 +1,25 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
+import { useNotifications } from '../../features/admin/hooks/useAdmin';
+
+function NavBadge({ count }: { count: number }) {
+  if (!count) return null;
+  return (
+    <span style={{
+      background: '#ef4444', color: '#fff', fontSize: '0.65rem',
+      fontWeight: 800, padding: '1px 5px', borderRadius: 10,
+      marginLeft: '4px', verticalAlign: 'middle', lineHeight: 1.4,
+    }}>
+      {count}
+    </span>
+  );
+}
 
 export default function AdminLayout() {
   const { clearAuth } = useAuthStore();
   const navigate = useNavigate();
+  const { data: notif } = useNotifications();
 
   const handleLogout = () => {
     authApi.logout().catch(() => {});
@@ -18,10 +33,14 @@ export default function AdminLayout() {
         <span style={styles.brand}>FamilyDex Admin</span>
         <div style={styles.links}>
           <Link to="/admin/dashboard" style={styles.link}>Dashboard</Link>
-          <Link to="/admin/tasks"     style={styles.link}>Tareas</Link>
-          <Link to="/admin/economy"   style={styles.link}>Economía</Link>
-          <Link to="/admin/rewards"   style={styles.link}>Tienda</Link>
-          <Link to="/admin/children"  style={styles.link}>Hijos</Link>
+          <Link to="/admin/tasks" style={styles.link}>
+            Tareas<NavBadge count={notif?.inReview ?? 0} />
+          </Link>
+          <Link to="/admin/economy"  style={styles.link}>Economía</Link>
+          <Link to="/admin/rewards"  style={styles.link}>
+            Tienda<NavBadge count={notif?.pendingRequests ?? 0} />
+          </Link>
+          <Link to="/admin/children" style={styles.link}>Hijos</Link>
         </div>
         <button style={styles.logout} onClick={handleLogout}>Salir</button>
       </nav>

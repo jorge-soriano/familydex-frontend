@@ -2,15 +2,24 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import AdminLayout from './shared/components/AdminLayout';
 import ChildLayout from './shared/components/ChildLayout';
+
 import LoginPage from './features/auth/components/LoginPage';
 import RegisterPage from './features/auth/components/RegisterPage';
+
 import TaskList from './features/tasks/components/TaskList';
 import TaskPanelPage from './features/tasks/components/TaskPanelPage';
+
 import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
 import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
+
 import PokemonPage from './features/pokemon/components/PokemonPage';
+
 import RewardShop from './features/rewards/components/RewardShop';
 import AdminRewardsPage from './features/rewards/components/AdminRewardsPage';
+
+import Dashboard from './features/admin/components/Dashboard';
+import ChildrenList from './features/admin/components/ChildrenList';
+import ChildDetail from './features/admin/components/ChildDetail';
 
 export const router = createBrowserRouter([
   { path: '/login',    element: <LoginPage /> },
@@ -25,12 +34,12 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true,          element: <Navigate to="dashboard" replace /> },
-      { path: 'dashboard',    element: <div style={{ padding: '2rem' }}>Admin Dashboard — Épica 6</div> },
+      { path: 'dashboard',    element: <Dashboard /> },
       { path: 'tasks',        element: <TaskPanelPage /> },
       { path: 'economy',      element: <AdminEconomyPage /> },
-      { path: 'children',     element: <div style={{ padding: '2rem' }}>Gestión de hijos — Épica 6</div> },
-      { path: 'children/:id', element: <div style={{ padding: '2rem' }}>Detalle hijo — Épica 6</div> },
       { path: 'rewards',      element: <AdminRewardsPage /> },
+      { path: 'children',     element: <ChildrenList /> },
+      { path: 'children/:id', element: <ChildDetail /> },
     ],
   },
 
