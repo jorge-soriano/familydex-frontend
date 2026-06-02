@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams } from '../api';
+import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams, type QuickCompleteDto } from '../api';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 
@@ -65,5 +65,18 @@ export function useRejectTask() {
     mutationFn: ({ id, reason }: { id: number; reason?: string }) =>
       tasksApi.reject(id, reason),
     onSuccess: () => qc.invalidateQueries({ queryKey: [TASKS_KEY] }),
+  });
+}
+
+export function useQuickComplete() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: QuickCompleteDto) => tasksApi.quickComplete(data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [TASKS_KEY] });
+      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
+      qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
+      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
+    },
   });
 }

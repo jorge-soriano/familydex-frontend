@@ -44,6 +44,15 @@ export interface GetTasksParams {
   type?: TaskType;
 }
 
+export interface QuickCompleteDto {
+  childId: number;
+  title: string;
+  description?: string;
+  type: TaskType;
+  coinsReward: number;
+  xpReward: number;
+}
+
 export const tasksApi = {
   getAll: (params?: GetTasksParams) =>
     apiClient.get<Task[]>('/tasks', { params }).then((r) => r.data),
@@ -69,4 +78,7 @@ export const tasksApi = {
 
   reject: (id: number, reason?: string) =>
     apiClient.post<Task>(`/tasks/${id}/reject`, { reason }).then((r) => r.data),
+
+  quickComplete: (data: QuickCompleteDto) =>
+    apiClient.post<{ task: Task }>('/tasks/quick-complete', data).then((r) => r.data),
 };
