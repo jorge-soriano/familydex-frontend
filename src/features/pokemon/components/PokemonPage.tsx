@@ -5,9 +5,19 @@ import PokemonOnboarding from './PokemonOnboarding';
 import PokemonDisplay from './PokemonDisplay';
 import PokemonSprite from './PokemonSprite';
 import CaptureScreen from './CaptureScreen';
+import PokedexTab from './PokedexTab';
 import TypeBadge from './TypeBadge';
+import type { CaughtPokemonItem } from '../api';
 
-type Tab = 'activo' | 'coleccion' | 'capturar';
+type Tab = 'activo' | 'caja' | 'pokedex' | 'capturar';
+
+/** Returns true if this caught pokemon has evolved into another one in the collection. */
+function hasEvolved(item: CaughtPokemonItem, collection: CaughtPokemonItem[]): boolean {
+  if (!item.pokemon.evolvesToPokedexNumber) return false;
+  return collection.some(
+    (other) => other.pokemon.pokedexNumber === item.pokemon.evolvesToPokedexNumber
+  );
+}
 
 export default function PokemonPage() {
   const { data, isLoading } = usePokemonCollection();
@@ -17,51 +27,73 @@ export default function PokemonPage() {
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
-  // Onboarding: child has no pokemon yet
+  // Onboarding: no pokemon yet
   if (!data?.active && data?.collection.length === 0) {
     return <PokemonOnboarding />;
   }
 
   const pendingCaptures = balance?.pendingCaptures ?? 0;
+  const collection = data?.collection ?? [];
+
+  const TABS: { key: Tab; label: string }[] = [
+    { key: 'activo',   label: '⭐ Activo' },
+    { key: 'caja',     label: `📦 Caja (${collection.length})` },
+    { key: 'pokedex',  label: '📖 Pokédex' },
+    { key: 'capturar', label: `🎯 Capturar${pendingCaptures > 0 ? ` (${pendingCaptures})` : ''}` },
+  ];
 
   return (
     <div style={styles.page}>
       {/* Tabs */}
       <div style={styles.tabs}>
-        {(['activo', 'coleccion', 'capturar'] as Tab[]).map((t) => (
-          <button
-            key={t}
-            style={{ ...styles.tab, background: tab === t ? '#3b82f6' : '#f1f5f9', color: tab === t ? '#fff' : '#333' }}
-            onClick={() => setTab(t)}
-          >
-            {t === 'activo' ? '⭐ Activo' : t === 'coleccion' ? '📦 Colección' : `🎯 Capturar${pendingCaptures > 0 ? ` (${pendingCaptures})` : ''}`}
+        {TABS.map((t) => (
+          <button key={t.key}
+            style={{ ...styles.tab, background: tab === t.key ? '#3b82f6' : '#f1f5f9', color: tab === t.key ? '#fff' : '#333' }}
+            onClick={() => setTab(t.key)}>
+            {t.label}
           </button>
         ))}
       </div>
 
+      {/* ── Activo ─────────────────────────────────────────────────────────── */}
       {tab === 'activo' && (
-        <div style={styles.section}>
+        <div>
           {data?.active
             ? <PokemonDisplay data={data.active} />
-            : <p style={styles.empty}>Sin Pokémon activo. Activa uno desde tu colección.</p>
+            : <p style={styles.empty}>Sin Pokémon activo. Activa uno desde la Caja.</p>
           }
         </div>
       )}
 
-      {tab === 'coleccion' && (
+      {/* ── Caja ──────────────────────────────────────────────────────────── */}
+      {tab === 'caja' && (
         <div style={styles.grid}>
-          {data?.collection.map((item) => (
-            <div key={item.id} style={{ ...styles.card, border: item.isActive ? '3px solid #3b82f6' : '3px solid transparent' }}>
-              <PokemonSprite pokedexNumber={item.pokemon.pokedexNumber} size={80} alt={item.pokemon.name} />
-              <strong>{item.pokemon.name}</strong>
-              <div style={styles.types}>
-                <TypeBadge type={item.pokemon.type1} />
-                {item.pokemon.type2 && <TypeBadge type={item.pokemon.type2} />}
-              </div>
-              <span style={styles.lvl}>Nv. {item.level}</span>
-              {item.isActive
-                ? <span style={styles.activeBadge}>Activo ✓</span>
-                : (
+          {collection.map((item) => {
+            const evolved   = hasEvolved(item, collection);
+            const isActive  = item.isActive;
+
+            return (
+              <div key={item.id}
+                style={{
+                  ...styles.card,
+                  border: isActive ? '3px solid #3b82f6' : '3px solid transparent',
+                  opacity: evolved ? 0.6 : 1,
+                }}>
+                <PokemonSprite pokedexNumber={item.pokemon.pokedexNumber} size={72} alt={item.pokemon.name} />
+                <strong style={{ fontSize: '0.85rem' }}>{item.pokemon.name}</strong>
+                <div style={styles.types}>
+                  <TypeBadge type={item.pokemon.type1} />
+                  {item.pokemon.type2 && <TypeBadge type={item.pokemon.type2} />}
+                </div>
+                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Nv. {item.level}</span>
+
+                {isActive && (
+                  <span style={styles.activeBadge}>Activo ✓</span>
+                )}
+                {evolved && !isActive && (
+                  <span style={styles.evolvedBadge}>Evolucionado</span>
+                )}
+                {!isActive && !evolved && (
                   <button
                     style={styles.activateBtn}
                     onClick={() => setActive.mutate(item.id)}
@@ -69,13 +101,17 @@ export default function PokemonPage() {
                   >
                     Activar
                   </button>
-                )
-              }
-            </div>
-          ))}
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
+      {/* ── Pokédex ───────────────────────────────────────────────────────── */}
+      {tab === 'pokedex' && <PokedexTab />}
+
+      {/* ── Capturar ──────────────────────────────────────────────────────── */}
       {tab === 'capturar' && <CaptureScreen />}
     </div>
   );
@@ -83,14 +119,23 @@ export default function PokemonPage() {
 
 const styles: Record<string, React.CSSProperties> = {
   page: { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
-  tabs: { display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' },
-  tab: { padding: '0.5rem 1.25rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.9rem' },
-  section: {},
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' },
-  card: { background: '#fff', borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
-  types: { display: 'flex', gap: '0.3rem' },
-  lvl: { fontSize: '0.8rem', color: '#64748b', fontWeight: 700 },
-  activeBadge: { color: '#3b82f6', fontSize: '0.75rem', fontWeight: 700 },
-  activateBtn: { padding: '0.3rem 0.75rem', background: '#f1f5f9', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 },
+  tabs: { display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' },
+  tab: { padding: '0.45rem 1rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
+  card: {
+    background: '#fff', borderRadius: 10, padding: '1rem',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+  },
+  types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
+  activeBadge: { fontSize: '0.72rem', color: '#3b82f6', fontWeight: 700 },
+  evolvedBadge: {
+    fontSize: '0.7rem', color: '#f59e0b', fontWeight: 700,
+    background: '#fef3c7', padding: '2px 8px', borderRadius: 8,
+  },
+  activateBtn: {
+    padding: '0.3rem 0.75rem', background: '#f1f5f9',
+    border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
+  },
   empty: { color: '#94a3b8', textAlign: 'center', padding: '2rem' },
 };

@@ -38,6 +38,9 @@ export interface PokemonCollection {
 }
 
 export const pokemonApi = {
+  getCatalog: () =>
+    apiClient.get<PokemonData[]>('/pokemon/catalog').then((r) => r.data),
+
   getStarters: () =>
     apiClient.get<PokemonData[]>('/pokemon/starters').then((r) => r.data),
 

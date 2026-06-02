@@ -4,6 +4,11 @@ import { pokemonApi } from '../api';
 export const POKEMON_KEY    = 'pokemon';
 export const STARTERS_KEY   = 'starters';
 export const AVAILABLE_KEY  = 'pokemon-available';
+export const CATALOG_KEY    = 'pokemon-catalog';
+
+export function usePokemonCatalog() {
+  return useQuery({ queryKey: [CATALOG_KEY], queryFn: pokemonApi.getCatalog, staleTime: Infinity });
+}
 
 export function useStarters() {
   return useQuery({ queryKey: [STARTERS_KEY], queryFn: pokemonApi.getStarters });
