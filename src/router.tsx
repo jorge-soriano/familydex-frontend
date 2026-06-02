@@ -1,9 +1,13 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import ProtectedRoute from './shared/components/ProtectedRoute';
+import AdminLayout from './shared/components/AdminLayout';
+import ChildLayout from './shared/components/ChildLayout';
 import LoginPage from './features/auth/components/LoginPage';
 import RegisterPage from './features/auth/components/RegisterPage';
 import TaskList from './features/tasks/components/TaskList';
 import TaskPanelPage from './features/tasks/components/TaskPanelPage';
+import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
+import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
 
 export const router = createBrowserRouter([
   { path: '/login',    element: <LoginPage /> },
@@ -13,16 +17,17 @@ export const router = createBrowserRouter([
     path: '/admin',
     element: (
       <ProtectedRoute requiredRole="admin">
-        <Outlet />
+        <AdminLayout />
       </ProtectedRoute>
     ),
     children: [
-      { index: true,        element: <Navigate to="dashboard" replace /> },
-      { path: 'dashboard',  element: <div>Admin Dashboard — Épica 6</div> },
-      { path: 'tasks',      element: <TaskPanelPage /> },
-      { path: 'children',   element: <div>Admin Children — Épica 6</div> },
-      { path: 'children/:id', element: <div>Child Detail — Épica 6</div> },
-      { path: 'rewards',    element: <div>Admin Rewards — Épica 5</div> },
+      { index: true,          element: <Navigate to="dashboard" replace /> },
+      { path: 'dashboard',    element: <div style={{ padding: '2rem' }}>Admin Dashboard — Épica 6</div> },
+      { path: 'tasks',        element: <TaskPanelPage /> },
+      { path: 'economy',      element: <AdminEconomyPage /> },
+      { path: 'children',     element: <div style={{ padding: '2rem' }}>Gestión de hijos — Épica 6</div> },
+      { path: 'children/:id', element: <div style={{ padding: '2rem' }}>Detalle hijo — Épica 6</div> },
+      { path: 'rewards',      element: <div style={{ padding: '2rem' }}>Tienda — Épica 5</div> },
     ],
   },
 
@@ -30,15 +35,15 @@ export const router = createBrowserRouter([
     path: '/child',
     element: (
       <ProtectedRoute requiredRole="child">
-        <Outlet />
+        <ChildLayout />
       </ProtectedRoute>
     ),
     children: [
-      { index: true,       element: <Navigate to="dashboard" replace /> },
-      { path: 'dashboard', element: <div>Child Dashboard — Épicas 3-5</div> },
+      { index: true,       element: <Navigate to="tasks" replace /> },
       { path: 'tasks',     element: <TaskList /> },
-      { path: 'pokemon',   element: <div>Pokémon — Épica 4</div> },
-      { path: 'rewards',   element: <div>Reward Shop — Épica 5</div> },
+      { path: 'economy',   element: <ChildEconomyPage /> },
+      { path: 'pokemon',   element: <div style={{ padding: '2rem' }}>Pokémon — Épica 4</div> },
+      { path: 'rewards',   element: <div style={{ padding: '2rem' }}>Tienda — Épica 5</div> },
     ],
   },
 

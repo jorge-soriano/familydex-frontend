@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams } from '../api';
+import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
 
 const TASKS_KEY = 'tasks';
 
@@ -48,7 +49,11 @@ export function useApproveTask() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => tasksApi.approve(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: [TASKS_KEY] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [TASKS_KEY] });
+      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
+      qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
+    },
   });
 }
 
