@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useCreateTask, useEditTask } from '../hooks/useTasks';
+import { useTaskTemplates } from '../../task-templates/hooks/useTaskTemplates';
 import type { Task, CreateTaskDto, EditTaskDto } from '../api';
 
 interface Child { id: number; username: string; displayName: string }
 
 interface Props {
-  task?: Task;          // provided when editing
-  children: Child[];   // family's children list for assignedTo selector
+  task?: Task;
+  children: Child[];
   onClose: () => void;
 }
 
@@ -16,6 +17,19 @@ export default function TaskForm({ task, children, onClose }: Props) {
   const createTask = useCreateTask();
   const editTask   = useEditTask();
   const isEditing  = Boolean(task);
+
+  // Multi-select children for creation
+  const [selectedChildren, setSelectedChildren] = useState<number[]>(
+    task ? [task.assignedTo] : children.length === 1 ? [children[0].id] : []
+  );
+
+  const { data: templates = [] } = useTaskTemplates(true);
+  const taskTemplates = templates.filter((t) => !(t as any).isRecordPreset);
+
+  const toggleChild = (id: number) =>
+    setSelectedChildren((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
 
   const [form, setForm] = useState({
     assignedTo: task?.assignedTo ?? (children[0]?.id ?? 0),
@@ -51,7 +65,8 @@ export default function TaskForm({ task, children, onClose }: Props) {
       editTask.mutate({ id: task.id, data: dto }, { onSuccess: onClose });
     } else {
       const dto: CreateTaskDto = {
-        assignedTo: form.assignedTo, title: form.title,
+        assignedTo: selectedChildren.length === 1 ? selectedChildren[0] : (selectedChildren[0] ?? form.assignedTo),
+        title: form.title,
         description: form.description || undefined,
         type: form.type as any, coinsReward: form.coinsReward, xpReward: form.xpReward,
         frequency: form.frequency,
@@ -70,9 +85,45 @@ export default function TaskForm({ task, children, onClose }: Props) {
       <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
         <h2 style={styles.title}>{isEditing ? 'Editar tarea' : 'Nueva tarea'}</h2>
 
-        {!isEditing && (
+        {!isEditing && taskTemplates.length > 0 && (
           <label style={styles.label}>
-            Asignar a
+            Cargar plantilla (opcional)
+            <select style={styles.input} defaultValue=""
+              onChange={(e) => {
+                const tpl = taskTemplates.find((t) => t.id === +e.target.value);
+                if (tpl) {
+                  setForm((p) => ({ ...p, title: tpl.title, type: tpl.type, coinsReward: tpl.coinsReward, xpReward: tpl.xpReward, description: tpl.description ?? '' }));
+                }
+              }}>
+              <option value="">— Rellenar manualmente —</option>
+              {taskTemplates.map((t) => <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>)}
+            </select>
+          </label>
+        )}
+
+        {!isEditing && (
+          <div>
+            <p style={{ ...styles.label, marginBottom: '0.35rem' }}>
+              Asignar a <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>(uno o varios)</span>
+            </p>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+              {children.map((c) => {
+                const sel = selectedChildren.includes(c.id);
+                return (
+                  <button key={c.id} type="button"
+                    style={{ padding: '0.35rem 0.75rem', borderRadius: 20, border: '2px solid', borderColor: sel ? '#3b82f6' : '#e2e8f0', background: sel ? '#eff6ff' : '#fff', color: sel ? '#1d4ed8' : '#475569', fontWeight: sel ? 700 : 500, fontSize: '0.85rem', cursor: 'pointer' }}
+                    onClick={() => toggleChild(c.id)}>
+                    {c.displayName}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {!isEditing && false && ( // legacy single-select — replaced by multi above
+          <label style={styles.label}>
+            Asignar a (legacy)
             <select style={styles.input} value={form.assignedTo}
               onChange={(e) => set('assignedTo', Number(e.target.value))}>
               {children.map((c) => (
