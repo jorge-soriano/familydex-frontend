@@ -35,9 +35,13 @@ export default function PokemonPage() {
   const pendingCaptures = balance?.pendingCaptures ?? 0;
   const collection = data?.collection ?? [];
 
+  // Caja shows only current forms (not evolved-from entries)
+  const boxItems = collection.filter((item) => !hasEvolved(item, collection));
+  const boxLabel = boxItems.length > 1 ? `📦 Caja (${boxItems.length})` : '📦 Caja';
+
   const TABS: { key: Tab; label: string }[] = [
     { key: 'activo',   label: '⭐ Activo' },
-    { key: 'caja',     label: `📦 Caja (${collection.length})` },
+    { key: 'caja',     label: boxLabel },
     { key: 'pokedex',  label: '📖 Pokédex' },
     { key: 'capturar', label: `🎯 Capturar${pendingCaptures > 0 ? ` (${pendingCaptures})` : ''}` },
   ];
@@ -68,7 +72,7 @@ export default function PokemonPage() {
       {/* ── Caja — solo formas actuales, sin Pokémon que ya han evolucionado */}
       {tab === 'caja' && (
         <div style={styles.grid}>
-          {collection.filter((item) => !hasEvolved(item, collection)).map((item) => {
+          {boxItems.map((item) => {
             const isActive = item.isActive;
 
             return (
