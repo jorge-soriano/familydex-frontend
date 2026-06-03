@@ -217,25 +217,30 @@ export default function TaskForm({ task, children, onClose }: Props) {
           </label>
         )}
 
+        {/* Campo Estado — solo en edición */}
+        {isEditing && task && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Estado</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
+              onClick={() => setLocalEnabled(!localEnabled)}>
+              <div style={{ width: 40, height: 22, borderRadius: 11, background: localEnabled ? '#22c55e' : '#cbd5e1', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+                <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s' }} />
+              </div>
+              <span style={{ fontSize: '0.85rem', color: '#475569', userSelect: 'none' }}>
+                {localEnabled ? 'Activa' : 'Desactivada'}
+              </span>
+            </div>
+          </div>
+        )}
+
         {error && <p style={styles.error}>{error?.response?.data?.message ?? 'Error'}</p>}
 
-        {/* Fila de botones: toggle+eliminar IZQUIERDA | cancelar+guardar DERECHA */}
+        {/* Fila de botones: Eliminar IZQUIERDA | Cancelar+Guardar DERECHA */}
         <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
 
-          {/* Izquierda: Deshabilitar (toggle local) + Eliminar — solo en edición */}
+          {/* Izquierda: Eliminar — solo en edición */}
           {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-              {/* Switch visual rojo/verde — el API call ocurre al Guardar */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
-                onClick={() => setLocalEnabled(!localEnabled)}>
-                <div style={{ width: 40, height: 22, borderRadius: 11, background: localEnabled ? '#22c55e' : '#ef4444', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-                  <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s' }} />
-                </div>
-                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: localEnabled ? '#16a34a' : '#dc2626', userSelect: 'none' }}>
-                  {localEnabled ? 'Activa' : 'Desactivada'}
-                </span>
-              </div>
-
               {!confirmDel ? (
                 <button type="button"
                   style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
