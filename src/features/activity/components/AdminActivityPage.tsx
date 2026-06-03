@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import HistoryList from './HistoryList';
+import DirectRecordsForm from './DirectRecordsForm';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 
@@ -16,6 +17,7 @@ export default function AdminActivityPage() {
   const { data: children = [], isLoading } = useChildren();
   const [filterChild, setFilterChild] = useState<number | ''>('');
   const [filterType,  setFilterType]  = useState('');
+  const [showForm,    setShowForm]    = useState(false);
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
@@ -29,11 +31,17 @@ export default function AdminActivityPage() {
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: 800, margin: '0 auto' }}>
-      <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', fontWeight: 800 }}>
-        Actividad familiar
-      </h2>
+      {/* Header con botón */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
+        <button
+          style={{ padding: '0.5rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}
+          onClick={() => setShowForm(true)}>
+          + Nuevo registro
+        </button>
+      </div>
 
-      {/* Both filters on the same row */}
+      {/* Filtros */}
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
         <select style={sel} value={filterChild}
           onChange={(e) => setFilterChild(e.target.value ? Number(e.target.value) : '')}>
@@ -56,6 +64,22 @@ export default function AdminActivityPage() {
         filterType={filterType || undefined}
         childMap={childMap}
       />
+
+      {/* Modal Nuevo registro */}
+      {showForm && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
+          onClick={() => setShowForm(false)}>
+          <div style={{ background: '#fff', borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }}
+            onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800 }}>Nuevo registro</h2>
+              <button style={{ background: 'none', border: 'none', fontSize: '1.25rem', cursor: 'pointer', color: '#94a3b8', lineHeight: 1 }}
+                onClick={() => setShowForm(false)}>✕</button>
+            </div>
+            <DirectRecordsForm familyChildren={children} onClose={() => setShowForm(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

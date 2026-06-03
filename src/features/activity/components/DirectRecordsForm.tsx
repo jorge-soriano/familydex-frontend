@@ -7,7 +7,7 @@ import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 import type { TransactionItem } from '../api';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
-interface Props { familyChildren: Child[] }
+interface Props { familyChildren: Child[]; onClose?: () => void }
 
 function useDirectRecord() {
   const qc = useQueryClient();
@@ -37,7 +37,7 @@ function useRecentRecords() {
   });
 }
 
-export default function DirectRecordsForm({ familyChildren }: Props) {
+export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
   const [selectedChildren, setSelectedChildren] = useState<number[]>(
     familyChildren.length === 1 ? [familyChildren[0].id] : []
   );
@@ -66,7 +66,7 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
     if (!selectedChildren.length || !reason) return;
     record.mutate(
       { childIds: selectedChildren, coinsDelta: isNeg ? -coins : coins, xp, reason },
-      { onSuccess: () => { setReason(''); } }
+      { onSuccess: () => { setReason(''); onClose?.(); } }
     );
   };
 

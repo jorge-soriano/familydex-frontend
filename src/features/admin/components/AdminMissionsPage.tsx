@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import InboxTab           from './InboxTab';
 import TaskPanelPage      from '../../tasks/components/TaskPanelPage';
-import DirectRecordsForm  from '../../activity/components/DirectRecordsForm';
 import { useTasks }       from '../../tasks/hooks/useTasks';
 
 interface Child { id: number; username: string; displayName: string }
@@ -15,7 +14,7 @@ function useChildren() {
   });
 }
 
-type Tab = 'inbox' | 'tasks' | 'records';
+type Tab = 'inbox' | 'tasks';
 
 export default function AdminMissionsPage() {
   const [tab, setTab] = useState<Tab>('inbox');
@@ -26,9 +25,8 @@ export default function AdminMissionsPage() {
   if (isLoading) return <p style={{ padding: '2rem', color: '#94a3b8' }}>Cargando…</p>;
 
   const TABS: { key: Tab; label: string; badge?: number }[] = [
-    { key: 'inbox',   label: '📥 Bandeja',  badge: inReviewCount },
-    { key: 'tasks',   label: '📋 Tareas'                         },
-    { key: 'records', label: '📝 Registros'                      },
+    { key: 'inbox', label: '📥 Bandeja', badge: inReviewCount },
+    { key: 'tasks', label: '📋 Tareas'                        },
   ];
 
   return (
@@ -55,16 +53,8 @@ export default function AdminMissionsPage() {
         ))}
       </div>
 
-      {tab === 'inbox'   && <InboxTab familyChildren={children} />}
-      {tab === 'tasks'   && <TaskPanelPage />}
-      {tab === 'records' && (
-        <div>
-          <p style={{ margin: '0 0 1.25rem', fontSize: '0.875rem', color: '#64748b' }}>
-            Da o quita monedas y XP directamente — sin crear una tarea. Aparece en la Actividad del niño.
-          </p>
-          <DirectRecordsForm familyChildren={children} />
-        </div>
-      )}
+      {tab === 'inbox' && <InboxTab familyChildren={children} />}
+      {tab === 'tasks' && <TaskPanelPage />}
     </div>
   );
 }
