@@ -30,6 +30,7 @@ export interface ActivePokemonResult extends CaughtPokemonItem {
   progressPercent: number;
   isFinalForm: boolean;
   evolveLevel: number | null;
+  readyToEvolve: boolean;
 }
 
 export interface PokemonCollection {
@@ -59,6 +60,9 @@ export const pokemonApi = {
 
   setActive: (caughtPokemonId: number) =>
     apiClient.put('/pokemon/active', { caughtPokemonId }).then((r) => r.data),
+
+  evolveActive: () =>
+    apiClient.post<{ evolvedTo: PokemonData; trigger: string | null }>('/pokemon/active/evolve').then((r) => r.data),
 };
 
 export const SPRITE_URL = (pokedexNumber: number) =>

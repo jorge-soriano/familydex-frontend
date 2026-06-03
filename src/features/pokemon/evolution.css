@@ -1,0 +1,23 @@
+@keyframes evo-flash {
+  0%   { filter: brightness(1); }
+  15%  { filter: brightness(100) saturate(0); }
+  30%  { filter: brightness(1); }
+  45%  { filter: brightness(100) saturate(0); }
+  60%  { filter: brightness(1); }
+  75%  { filter: brightness(100) saturate(0); }
+  90%  { filter: brightness(1); }
+  100% { filter: brightness(100) saturate(0); }
+}
+
+@keyframes evo-fade-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.evo-flashing {
+  animation: evo-flash 2.4s ease-in-out forwards;
+}
+
+.evo-reveal {
+  animation: evo-fade-in 0.8s ease-out forwards;
+}

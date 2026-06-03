@@ -51,3 +51,13 @@ export function useSetActive() {
     onSuccess: () => qc.invalidateQueries({ queryKey: [POKEMON_KEY] }),
   });
 }
+
+export function useEvolveActive() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => pokemonApi.evolveActive(),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
+    },
+  });
+}

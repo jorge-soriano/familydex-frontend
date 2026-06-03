@@ -8,6 +8,7 @@ import PokemonSprite from './PokemonSprite';
 import CaptureScreen from './CaptureScreen';
 import PokedexTab from './PokedexTab';
 import TypeBadge from './TypeBadge';
+import EvolutionModal from './EvolutionModal';
 import type { CaughtPokemonItem } from '../api';
 
 type Tab = 'activo' | 'caja' | 'pokedex' | 'capturar';
@@ -32,6 +33,7 @@ export default function PokemonPage() {
   const [tab, setTab] = useState<Tab>(
     VALID_TABS.includes(paramTab) ? paramTab : 'activo'
   );
+  const [showEvo, setShowEvo] = useState(false);
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
@@ -66,6 +68,29 @@ export default function PokemonPage() {
           </button>
         ))}
       </div>
+
+      {/* Evolution banner */}
+      {data?.active?.readyToEvolve && (
+        <button
+          style={{
+            display: 'flex', alignItems: 'center', gap: '0.75rem',
+            width: '100%', padding: '0.85rem 1.25rem',
+            background: 'linear-gradient(135deg, #fef3c7, #fde68a)',
+            border: '2px solid #f59e0b', borderRadius: 12,
+            cursor: 'pointer', marginBottom: '1rem', textAlign: 'left',
+          }}
+          onClick={() => setShowEvo(true)}>
+          <span style={{ fontSize: '1.5rem' }}>⚡</span>
+          <div>
+            <div style={{ fontWeight: 800, color: '#92400e' }}>
+              ¡{data.active.pokemon.name} puede evolucionar!
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#b45309' }}>
+              Toca para ver la evolución
+            </div>
+          </div>
+        </button>
+      )}
 
       {/* ── Activo ─────────────────────────────────────────────────────────── */}
       {tab === 'activo' && (
@@ -119,6 +144,13 @@ export default function PokemonPage() {
 
       {/* ── Capturar ──────────────────────────────────────────────────────── */}
       {tab === 'capturar' && <CaptureScreen />}
+
+      {showEvo && data?.active && (
+        <EvolutionModal
+          active={data.active}
+          onClose={() => setShowEvo(false)}
+        />
+      )}
     </div>
   );
 }
