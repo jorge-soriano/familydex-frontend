@@ -6,8 +6,8 @@ import ChildLayout from './shared/components/ChildLayout';
 import LoginPage from './features/auth/components/LoginPage';
 import RegisterPage from './features/auth/components/RegisterPage';
 
-import MissionList   from './features/tasks/components/MissionList';   // child — Misiones
-import AdminMissionsPage from './features/admin/components/AdminMissionsPage'; // admin — 4 tabs
+import TaskList from './features/tasks/components/TaskList';
+import AdminMissionsPage from './features/admin/components/AdminMissionsPage';
 
 import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
 import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true,       element: <Navigate to="tasks" replace /> },
-      { path: 'tasks',     element: <MissionList /> },
+      { path: 'tasks',     element: <TaskList /> },
       { path: 'economy',   element: <ChildEconomyPage /> },
       { path: 'pokemon',   element: <PokemonPage /> },
       { path: 'rewards',   element: <RewardShop /> },

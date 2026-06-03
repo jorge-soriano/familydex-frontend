@@ -11,7 +11,7 @@ const SECTIONS: { status: TaskStatus; label: string; emoji: string }[] = [
   { status: 'InReview', label: 'Esperando revisión', emoji: '⏳' },
 ];
 
-export default function MissionList() {
+export default function TaskList() {
   const { data: tasks = [], isLoading } = useTasks();
 
   if (isLoading) return <p style={{ padding: '2rem', color: '#94a3b8' }}>Cargando tareas…</p>;
