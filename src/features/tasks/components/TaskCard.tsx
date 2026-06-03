@@ -124,13 +124,16 @@ const s: Record<string, React.CSSProperties> = {
   adminDesc:      { fontSize: '0.82rem', color: '#666', margin: '0.35rem 0 0' },
   adminRejection: { fontSize: '0.82rem', color: '#ef4444', background: '#fef2f2', padding: '0.3rem 0.5rem', borderRadius: 4, margin: '0.35rem 0 0' },
 
-  // child card — compact, similar height to reward cards
+  // child card — compact grid card, similar to reward cards
+  // justify-content: space-between pushes the button to the bottom when
+  // cards in the same grid row have different heights
   childCard: {
     background: '#fff', borderRadius: 8,
     borderLeft: '4px solid #3b82f6',
     padding: '0.65rem 0.85rem',
     boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
     display: 'flex', flexDirection: 'column', gap: '0.3rem',
+    justifyContent: 'space-between',
   },
   childRow:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' },
   childTitle:   { fontWeight: 700, fontSize: '0.9rem', color: '#1e293b', flex: 1, minWidth: 0 },
@@ -148,7 +151,7 @@ const s: Record<string, React.CSSProperties> = {
   completeBtn: {
     padding: '0.45rem 0.75rem', background: '#3b82f6', color: '#fff',
     border: 'none', borderRadius: 7, fontSize: '0.85rem', fontWeight: 700,
-    cursor: 'pointer', marginTop: '0.1rem', alignSelf: 'flex-start',
+    cursor: 'pointer', marginTop: 'auto',  // stick to bottom in grid
   },
 
   typePill,
