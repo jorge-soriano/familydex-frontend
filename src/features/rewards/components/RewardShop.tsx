@@ -1,5 +1,5 @@
 import { useRewards, useRequestReward, useRewardRequests } from '../hooks/useRewards';
-import { useBalance } from '../../economy/hooks/useEconomy';
+import { useBalance } from '../../activity/hooks/useActivity';
 import type { Reward } from '../api';
 
 export default function RewardShop() {

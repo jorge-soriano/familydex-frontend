@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useBalance } from '../hooks/useEconomy';
+import { useBalance } from '../hooks/useActivity';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 
 export default function BalanceBar() {

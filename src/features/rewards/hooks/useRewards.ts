@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { rewardsApi, type CreateRewardDto, type EditRewardDto, type RequestStatus } from '../api';
-import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
+import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../activity/hooks/useActivity';
 
 export const REWARDS_KEY  = 'rewards';
 export const REQUESTS_KEY = 'reward-requests';

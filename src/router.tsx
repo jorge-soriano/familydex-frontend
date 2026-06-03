@@ -9,8 +9,8 @@ import RegisterPage from './features/auth/components/RegisterPage';
 import TaskList from './features/tasks/components/TaskList';
 import AdminMissionsPage from './features/admin/components/AdminMissionsPage';
 
-import ChildEconomyPage from './features/economy/components/ChildEconomyPage';
-import AdminEconomyPage from './features/economy/components/AdminEconomyPage';
+import ChildActivityPage from './features/activity/components/ChildActivityPage';
+import AdminActivityPage from './features/activity/components/AdminActivityPage';
 
 import PokemonPage from './features/pokemon/components/PokemonPage';
 
@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
       { index: true,          element: <Navigate to="dashboard" replace /> },
       { path: 'dashboard',    element: <Dashboard /> },
       { path: 'tasks',        element: <AdminMissionsPage /> },
-      { path: 'economy',      element: <AdminEconomyPage /> },
+      { path: 'economy',      element: <AdminActivityPage /> },
       { path: 'rewards',      element: <AdminRewardsPage /> },
       { path: 'children',     element: <ChildrenList /> },
       { path: 'children/:id', element: <ChildDetail /> },
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true,       element: <Navigate to="tasks" replace /> },
       { path: 'tasks',     element: <TaskList /> },
-      { path: 'economy',   element: <ChildEconomyPage /> },
+      { path: 'economy',   element: <ChildActivityPage /> },
       { path: 'pokemon',   element: <PokemonPage /> },
       { path: 'rewards',   element: <RewardShop /> },
     ],

@@ -34,15 +34,15 @@ export interface PenaltyDto {
   reason: string;
 }
 
-export const economyApi = {
+export const activityApi = {
   getBalance: (childId?: number) =>
-    apiClient.get<Balance>('/economy/balance', { params: childId ? { childId } : {} })
+    apiClient.get<Balance>('/activity/balance', { params: childId ? { childId } : {} })
       .then((r) => r.data),
 
   getHistory: (params?: GetHistoryParams) =>
-    apiClient.get<TransactionItem[]>('/economy/transactions', { params })
+    apiClient.get<TransactionItem[]>('/activity/transactions', { params })
       .then((r) => r.data),
 
   applyDirectRecord: (data: { childIds: number[]; coinsDelta: number; xp: number; reason: string }) =>
-    apiClient.post('/economy/direct-record', data).then((r) => r.data),
+    apiClient.post('/activity/direct-record', data).then((r) => r.data),
 };

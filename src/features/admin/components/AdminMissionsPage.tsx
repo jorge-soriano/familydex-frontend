@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import InboxTab           from './InboxTab';
 import TaskPanelPage      from '../../tasks/components/TaskPanelPage';
-import DirectRecordsForm  from '../../economy/components/DirectRecordsForm';
+import DirectRecordsForm  from '../../activity/components/DirectRecordsForm';
 import { useTasks }       from '../../tasks/hooks/useTasks';
 
 interface Child { id: number; username: string; displayName: string }

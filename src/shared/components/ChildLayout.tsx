@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import BalanceBar from '../../features/economy/components/BalanceBar';
+import BalanceBar from '../../features/activity/components/BalanceBar';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useWindowWidth } from '../hooks/useWindowWidth';

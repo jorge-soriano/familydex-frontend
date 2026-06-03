@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from '../hooks/useEconomy';
+import { useHistory } from '../hooks/useActivity';
 import type { TransactionType } from '../../../shared/types';
 
 interface Props {

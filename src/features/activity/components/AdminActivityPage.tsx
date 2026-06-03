@@ -12,7 +12,7 @@ function useChildren() {
   });
 }
 
-export default function AdminEconomyPage() {
+export default function AdminActivityPage() {
   const { data: children = [], isLoading } = useChildren();
   const [filterChild, setFilterChild] = useState<number | ''>('');
 

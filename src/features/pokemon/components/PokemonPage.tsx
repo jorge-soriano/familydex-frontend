@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { usePokemonCollection, useSetActive } from '../hooks/usePokemon';
-import { useBalance } from '../../economy/hooks/useEconomy';
+import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonOnboarding from './PokemonOnboarding';
 import PokemonDisplay from './PokemonDisplay';
 import PokemonSprite from './PokemonSprite';

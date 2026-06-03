@@ -5,7 +5,7 @@ import { useTasks } from '../../tasks/hooks/useTasks';
 import { usePokemonCollection } from '../../pokemon/hooks/usePokemon';
 import { useRewardRequests } from '../../rewards/hooks/useRewards';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
-import HistoryList from '../../economy/components/HistoryList';
+import HistoryList from '../../activity/components/HistoryList';
 import TaskCard from '../../tasks/components/TaskCard';
 
 type Tab = 'resumen' | 'tareas' | 'historial' | 'pokemon' | 'solicitudes';

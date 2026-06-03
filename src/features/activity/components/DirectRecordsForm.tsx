@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
-import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useEconomy';
+import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useActivity';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 import type { TransactionItem } from '../api';
 
@@ -12,7 +12,7 @@ function useDirectRecord() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: { childIds: number[]; coinsDelta: number; xp: number; reason: string }) =>
-      apiClient.post('/economy/direct-record', data).then((r) => r.data),
+      apiClient.post('/activity/direct-record', data).then((r) => r.data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
       qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
@@ -25,7 +25,7 @@ function useDirectRecord() {
 function useRecentRecords() {
   return useQuery({
     queryKey: ['recent-records'],
-    queryFn: () => apiClient.get<TransactionItem[]>('/economy/transactions').then((r) => r.data),
+    queryFn: () => apiClient.get<TransactionItem[]>('/activity/transactions').then((r) => r.data),
     select: (txs) => {
       const seen = new Set<string>();
       return txs

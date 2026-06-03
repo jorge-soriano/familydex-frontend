@@ -1,5 +1,5 @@
 import { useAvailableToCapture, useCapture } from '../hooks/usePokemon';
-import { useBalance } from '../../economy/hooks/useEconomy';
+import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 

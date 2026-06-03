@@ -1,7 +1,7 @@
-import { useBalance } from '../hooks/useEconomy';
+import { useBalance } from '../hooks/useActivity';
 import HistoryList from './HistoryList';
 
-export default function ChildEconomyPage() {
+export default function ChildActivityPage() {
   const { data: balance } = useBalance();
 
   return (

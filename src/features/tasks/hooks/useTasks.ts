@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams } from '../api';
-import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
+import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../activity/hooks/useActivity';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 
 export const TASKS_KEY = 'tasks';
