@@ -118,7 +118,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
         {/* Multi-select hijos */}
         {!isEditing && (
           <div>
-            <p style={{ ...styles.label, marginBottom: '0.35rem' }}>
+            <p style={{ ...styles.label, display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem' }}>
               Asignar a <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>(uno o varios)</span>
             </p>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -211,53 +211,51 @@ export default function TaskForm({ task, children, onClose }: Props) {
 
         {error && <p style={styles.error}>{error?.response?.data?.message ?? 'Error'}</p>}
 
-        <div style={styles.actions}>
-          <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
-          <button type="submit" style={styles.submit} disabled={isPending}>
-            {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
-          </button>
-        </div>
-
-        {/* Habilitar/Deshabilitar + Eliminar — solo en edición */}
-        {isEditing && task && (
-          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {/* Outlined toggle — same style as ChildrenList toggleBtn */}
-            <button type="button"
-              style={{
-                padding: '0.4rem 0.9rem', borderRadius: 6, cursor: 'pointer',
-                fontSize: '0.82rem', fontWeight: 600, background: 'transparent',
-                border: '1px solid currentColor',
-                color: task.isEnabled === false ? '#22c55e' : '#64748b',
-              }}
-              disabled={toggleEnable.isPending}
-              onClick={() => toggleEnable.mutate(task.id, { onSuccess: onClose })}>
-              {task.isEnabled === false ? '▶ Habilitar tarea' : '⏸ Deshabilitar tarea'}
+        {/* Una sola fila de botones: Cancelar+Guardar a la izquierda | Deshabilitar+Eliminar a la derecha */}
+        <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Izquierda: Cancelar + Guardar */}
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
+            <button type="submit" style={styles.submit} disabled={isPending}>
+              {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
             </button>
-
-            {!confirmDel ? (
-              <button type="button"
-                style={{ padding: '0.4rem 0.9rem', borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
-                onClick={() => setConfirmDel(true)}>
-                🗑 Eliminar tarea
-              </button>
-            ) : (
-              <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: '#dc2626', fontWeight: 600 }}>¿Seguro?</span>
-                <button type="button"
-                  style={{ padding: '0.35rem 0.75rem', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
-                  disabled={del.isPending}
-                  onClick={() => del.mutate({ id: task.id }, { onSuccess: onClose })}>
-                  Sí, eliminar
-                </button>
-                <button type="button"
-                  style={{ padding: '0.35rem 0.65rem', background: '#f1f5f9', border: 'none', borderRadius: 5, cursor: 'pointer', fontSize: '0.8rem' }}
-                  onClick={() => setConfirmDel(false)}>
-                  Cancelar
-                </button>
-              </div>
-            )}
           </div>
-        )}
+
+          {/* Derecha: Deshabilitar + Eliminar (solo en edición) */}
+          {isEditing && task && (
+            <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+              <button type="button"
+                style={{ padding: '0.4rem 0.75rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, background: 'transparent', border: '1px solid currentColor', color: task.isEnabled === false ? '#22c55e' : '#64748b' }}
+                disabled={toggleEnable.isPending}
+                onClick={() => toggleEnable.mutate(task.id, { onSuccess: onClose })}>
+                {task.isEnabled === false ? '▶ Habilitar' : '⏸ Deshabilitar'}
+              </button>
+
+              {!confirmDel ? (
+                <button type="button"
+                  style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+                  onClick={() => setConfirmDel(true)}>
+                  🗑 Eliminar
+                </button>
+              ) : (
+                <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.78rem', color: '#dc2626', fontWeight: 600 }}>¿Seguro?</span>
+                  <button type="button"
+                    style={{ padding: '0.3rem 0.65rem', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
+                    disabled={del.isPending}
+                    onClick={() => del.mutate({ id: task.id }, { onSuccess: onClose })}>
+                    Sí
+                  </button>
+                  <button type="button"
+                    style={{ padding: '0.3rem 0.6rem', background: '#f1f5f9', border: 'none', borderRadius: 5, cursor: 'pointer', fontSize: '0.78rem' }}
+                    onClick={() => setConfirmDel(false)}>
+                    No
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </form>
     </div>
   );

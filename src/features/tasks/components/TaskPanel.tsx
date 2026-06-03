@@ -133,8 +133,10 @@ export default function TaskPanel({ children }: Props) {
                           <div style={{ fontSize: '0.75rem', color: '#dc2626', marginTop: '0.1rem' }}>↩ {task.rejectionReason}</div>
                         )}
                       </td>
-                      <td style={{ padding: '0.65rem 0.75rem', textAlign: 'center', fontWeight: 600, fontSize: '0.85rem' }}>
-                        {childById[task.assignedTo] ? <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={28} /> : '—'}
+                      <td style={{ padding: '0.65rem 0.75rem', verticalAlign: 'middle' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          {childById[task.assignedTo] ? <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={28} /> : <span style={{ color: '#94a3b8' }}>—</span>}
+                        </div>
                       </td>
                       <td style={{ padding: '0.65rem 0.75rem', textAlign: 'center', fontSize: '0.82rem', color: '#475569' }}>
                         {freqLabel(task)}

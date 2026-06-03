@@ -39,8 +39,9 @@ export default function InboxTab({ familyChildren }: Props) {
           }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, color: '#1e293b' }}>{task.title}</div>
-              <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.1rem' }}>
-                {childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={28} />} · 🪙 {task.coinsReward} · ⭐ {task.xpReward} XP
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#64748b', marginTop: '0.2rem' }}>
+                {childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}
+                <span>🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>

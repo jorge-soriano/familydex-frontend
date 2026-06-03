@@ -66,19 +66,17 @@ export default function AdminRewardsPage() {
           {requests.length === 0 && <p style={styles.empty}>No hay solicitudes.</p>}
           {requests.map((rr) => (
             <div key={rr.id} style={styles.reqRow}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                {childById[rr.childId] && (
-                  <ChildAvatar
-                    displayName={childById[rr.childId].displayName}
-                    avatarColor={childById[rr.childId].avatarColor}
-                    size={28}
-                  />
-                )}
-                <div>
-                  <strong>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</strong>
-                  <span style={{ marginLeft: '0.75rem', color: '#64748b', fontSize: '0.85rem' }}>
-                    🪙 {rr.coinsReserved} reservadas
-                  </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <strong style={{ fontSize: '0.9rem' }}>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</strong>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', color: '#64748b' }}>
+                  {childById[rr.childId] && (
+                    <ChildAvatar
+                      displayName={childById[rr.childId].displayName}
+                      avatarColor={childById[rr.childId].avatarColor}
+                      size={20}
+                    />
+                  )}
+                  <span>🪙 {rr.coinsReserved} monedas</span>
                 </div>
               </div>
               <div style={styles.reqActions}>
