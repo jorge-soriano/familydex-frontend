@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useCreateTask, useEditTask, TASKS_KEY } from '../hooks/useTasks';
+import { useCreateTask, useEditTask, useDeleteTask, useToggleEnabled, TASKS_KEY } from '../hooks/useTasks';
 import { tasksApi } from '../api';
-import type { Task, CreateTaskDto, EditTaskDto } from '../api';
+import type { CreateTaskDto, EditTaskDto, TaskWithSeries } from '../api';
 
 interface Child { id: number; username: string; displayName: string }
 
 interface Props {
-  task?: Task;
+  task?: TaskWithSeries;
   children: Child[];
   onClose: () => void;
 }
@@ -15,9 +15,12 @@ interface Props {
 const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
 export default function TaskForm({ task, children, onClose }: Props) {
-  const createTask = useCreateTask();
-  const editTask   = useEditTask();
-  const isEditing  = Boolean(task);
+  const createTask   = useCreateTask();
+  const editTask     = useEditTask();
+  const del          = useDeleteTask();
+  const toggleEnable = useToggleEnabled();
+  const isEditing    = Boolean(task);
+  const [confirmDel, setConfirmDel] = useState(false);
 
   // Multi-select children for creation
   const [selectedChildren, setSelectedChildren] = useState<number[]>(
@@ -213,6 +216,41 @@ export default function TaskForm({ task, children, onClose }: Props) {
             {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
           </button>
         </div>
+
+        {/* Habilitar/Deshabilitar + Eliminar — solo en edición */}
+        {isEditing && task && (
+          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <button type="button"
+              style={{ padding: '0.4rem 0.9rem', borderRadius: 6, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+              disabled={toggleEnable.isPending}
+              onClick={() => toggleEnable.mutate(task.id, { onSuccess: onClose })}>
+              {task.isEnabled === false ? '▶ Habilitar tarea' : '⏸ Deshabilitar tarea'}
+            </button>
+
+            {!confirmDel ? (
+              <button type="button"
+                style={{ padding: '0.4rem 0.9rem', borderRadius: 6, border: '1px solid #fecaca', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+                onClick={() => setConfirmDel(true)}>
+                🗑 Eliminar tarea
+              </button>
+            ) : (
+              <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.8rem', color: '#dc2626', fontWeight: 600 }}>¿Seguro?</span>
+                <button type="button"
+                  style={{ padding: '0.35rem 0.75rem', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+                  disabled={del.isPending}
+                  onClick={() => del.mutate({ id: task.id }, { onSuccess: onClose })}>
+                  Sí, eliminar
+                </button>
+                <button type="button"
+                  style={{ padding: '0.35rem 0.65rem', background: '#f1f5f9', border: 'none', borderRadius: 5, cursor: 'pointer', fontSize: '0.8rem' }}
+                  onClick={() => setConfirmDel(false)}>
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </form>
     </div>
   );
