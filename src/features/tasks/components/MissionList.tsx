@@ -1,5 +1,5 @@
 import { useTasks } from '../hooks/useTasks';
-import MissionCard from './MissionCard';
+import TaskCard from './TaskCard';
 import type { Task } from '../api';
 import type { TaskStatus } from '../../../shared/types';
 
@@ -53,7 +53,7 @@ export default function MissionList() {
               {emoji} {label} ({group.length})
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {group.map((t) => <MissionCard key={t.id} task={t} />)}
+              {group.map((t) => <TaskCard key={t.id} task={t} variant="child" />)}
             </div>
           </section>
         );
