@@ -22,6 +22,8 @@ export default function TaskForm({ task, children, onClose }: Props) {
   const toggleEnable = useToggleEnabled();
   const isEditing    = Boolean(task);
   const [confirmDel, setConfirmDel] = useState(false);
+  // Toggle local — el cambio real se aplica al guardar
+  const [localEnabled, setLocalEnabled] = useState(task?.isEnabled !== false);
 
   // Multi-select children for creation
   const [selectedChildren, setSelectedChildren] = useState<number[]>(
@@ -75,7 +77,13 @@ export default function TaskForm({ task, children, onClose }: Props) {
         type: form.type as any, coinsReward: form.coinsReward,
         xpReward: form.xpReward, dueDate: form.dueDate || null,
       };
-      editTask.mutate({ id: task.id, data: dto }, { onSuccess: onClose });
+      editTask.mutate({ id: task.id, data: dto }, {
+        onSuccess: async () => {
+          const originalEnabled = task?.isEnabled !== false;
+          if (localEnabled !== originalEnabled) await toggleEnable.mutateAsync(task.id);
+          onClose();
+        },
+      });
     } else {
       const dto: CreateTaskDto = {
         assignedTo: selectedChildren.length === 1 ? selectedChildren[0] : (selectedChildren[0] ?? form.assignedTo),
@@ -115,11 +123,11 @@ export default function TaskForm({ task, children, onClose }: Props) {
           </label>
         )}
 
-        {/* Multi-select hijos */}
+        {/* Multi-select hijos — mismo estilo que DirectRecordsForm */}
         {!isEditing && (
           <div>
-            <p style={{ ...styles.label, display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem' }}>
-              Asignar a <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>(uno o varios)</span>
+            <p style={{ ...styles.label, marginBottom: '0.35rem' }}>
+              Hijos <span style={{ color: '#94a3b8', fontWeight: 400 }}>(uno o varios)</span>
             </p>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {children.map((c) => {
@@ -211,24 +219,17 @@ export default function TaskForm({ task, children, onClose }: Props) {
 
         {error && <p style={styles.error}>{error?.response?.data?.message ?? 'Error'}</p>}
 
-        {/* Una sola fila de botones: Cancelar+Guardar a la izquierda | Deshabilitar+Eliminar a la derecha */}
+        {/* Fila de botones: toggle+eliminar IZQUIERDA | cancelar+guardar DERECHA */}
         <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {/* Izquierda: Cancelar + Guardar */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
-            <button type="submit" style={styles.submit} disabled={isPending}>
-              {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
-            </button>
-          </div>
 
-          {/* Derecha: Deshabilitar + Eliminar (solo en edición) */}
-          {isEditing && task && (
+          {/* Izquierda: Deshabilitar (toggle local) + Eliminar — solo en edición */}
+          {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+              {/* Toggle — cambia estado local; el API call ocurre al Guardar */}
               <button type="button"
-                style={{ padding: '0.4rem 0.75rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, background: 'transparent', border: '1px solid currentColor', color: task.isEnabled === false ? '#22c55e' : '#64748b' }}
-                disabled={toggleEnable.isPending}
-                onClick={() => toggleEnable.mutate(task.id, { onSuccess: onClose })}>
-                {task.isEnabled === false ? '▶ Habilitar' : '⏸ Deshabilitar'}
+                style={{ padding: '0.4rem 0.75rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, background: 'transparent', border: '1px solid currentColor', color: localEnabled ? '#64748b' : '#22c55e' }}
+                onClick={() => setLocalEnabled(!localEnabled)}>
+                {localEnabled ? '⏸ Deshabilitar' : '▶ Habilitar'}
               </button>
 
               {!confirmDel ? (
@@ -254,7 +255,15 @@ export default function TaskForm({ task, children, onClose }: Props) {
                 </div>
               )}
             </div>
-          )}
+          ) : <span />}
+
+          {/* Derecha: Cancelar + Guardar */}
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
+            <button type="submit" style={styles.submit} disabled={isPending}>
+              {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
+            </button>
+          </div>
         </div>
       </form>
     </div>
