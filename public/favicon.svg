@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Pokéball -->
+  <circle cx="32" cy="32" r="30" fill="#fff" stroke="#1a1a2e" stroke-width="3"/>
+  <!-- Top half (red) -->
+  <path d="M2 32 A30 30 0 0 1 62 32 Z" fill="#ef4444"/>
+  <!-- Dividing band -->
+  <rect x="2" y="29" width="60" height="6" fill="#1a1a2e"/>
+  <!-- Center button outer -->
+  <circle cx="32" cy="32" r="10" fill="#1a1a2e"/>
+  <!-- Center button inner -->
+  <circle cx="32" cy="32" r="6" fill="#fff"/>
+  <!-- Shine -->
+  <circle cx="22" cy="20" r="4" fill="#fff" opacity="0.35"/>
+</svg>
