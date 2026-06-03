@@ -1,7 +1,19 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useRewards, useToggleReward, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
 import RewardForm from './RewardForm';
+import ChildAvatar from '../../../shared/components/ChildAvatar';
+import apiClient from '../../../shared/api/apiClient';
 import type { Reward } from '../api';
+
+interface ChildInfo { id: number; displayName: string; avatarColor?: string | null }
+
+function useChildren() {
+  return useQuery<ChildInfo[]>({
+    queryKey: ['children'],
+    queryFn: () => apiClient.get<ChildInfo[]>('/auth/children').then((r) => r.data),
+  });
+}
 
 type Tab = 'rewards' | 'requests';
 
@@ -14,6 +26,8 @@ export default function AdminRewardsPage() {
 
   const { data: rewards = [] } = useRewards();
   const { data: requests = [] } = useRewardRequests();
+  const { data: children = [] } = useChildren();
+  const childById = Object.fromEntries(children.map((c) => [c.id, c]));
   const toggle  = useToggleReward();
   const approve = useApproveRequest();
   const reject  = useRejectRequest();
@@ -52,11 +66,20 @@ export default function AdminRewardsPage() {
           {requests.length === 0 && <p style={styles.empty}>No hay solicitudes.</p>}
           {requests.map((rr) => (
             <div key={rr.id} style={styles.reqRow}>
-              <div>
-                <strong>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</strong>
-                <span style={{ marginLeft: '0.75rem', color: '#64748b', fontSize: '0.85rem' }}>
-                  🪙 {rr.coinsReserved} reservadas
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                {childById[rr.childId] && (
+                  <ChildAvatar
+                    displayName={childById[rr.childId].displayName}
+                    avatarColor={childById[rr.childId].avatarColor}
+                    size={28}
+                  />
+                )}
+                <div>
+                  <strong>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</strong>
+                  <span style={{ marginLeft: '0.75rem', color: '#64748b', fontSize: '0.85rem' }}>
+                    🪙 {rr.coinsReserved} reservadas
+                  </span>
+                </div>
               </div>
               <div style={styles.reqActions}>
                 {rr.status === 'Pending' ? (

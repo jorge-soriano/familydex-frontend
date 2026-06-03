@@ -1,10 +1,11 @@
+import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useCreateTask, useEditTask, useDeleteTask, useToggleEnabled, TASKS_KEY } from '../hooks/useTasks';
 import { tasksApi } from '../api';
 import type { CreateTaskDto, EditTaskDto, TaskWithSeries } from '../api';
 
-interface Child { id: number; username: string; displayName: string }
+interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 
 interface Props {
   task?: TaskWithSeries;
@@ -124,10 +125,10 @@ export default function TaskForm({ task, children, onClose }: Props) {
               {children.map((c) => {
                 const sel = selectedChildren.includes(c.id);
                 return (
-                  <button key={c.id} type="button"
-                    style={{ padding: '0.35rem 0.75rem', borderRadius: 20, border: '2px solid', borderColor: sel ? '#3b82f6' : '#e2e8f0', background: sel ? '#eff6ff' : '#fff', color: sel ? '#1d4ed8' : '#475569', fontWeight: sel ? 700 : 500, fontSize: '0.85rem', cursor: 'pointer' }}
+                  <button key={c.id} type="button" title={c.displayName}
+                    style={{ padding: '0.25rem', borderRadius: '50%', border: `3px solid ${sel ? '#3b82f6' : 'transparent'}`, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: sel ? '2px solid #bfdbfe' : 'none', outlineOffset: '1px' }}
                     onClick={() => toggleChild(c.id)}>
-                    {c.displayName}
+                    <ChildAvatar displayName={c.displayName} avatarColor={c.avatarColor} size={34} />
                   </button>
                 );
               })}

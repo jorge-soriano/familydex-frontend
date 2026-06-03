@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import HistoryList from './HistoryList';
 
-interface Child { id: number; username: string; displayName: string }
+interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 
 function useChildren() {
   return useQuery<Child[]>({
@@ -19,7 +19,7 @@ export default function AdminActivityPage() {
 
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
-  const childMap = Object.fromEntries(children.map((c) => [c.id, c.displayName]));
+  const childMap = Object.fromEntries(children.map((c) => [c.id, { displayName: c.displayName, avatarColor: c.avatarColor ?? null }]));
 
   const sel: React.CSSProperties = {
     padding: '0.4rem 0.6rem', borderRadius: 6,

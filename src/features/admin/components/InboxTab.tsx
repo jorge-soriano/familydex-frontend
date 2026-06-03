@@ -1,7 +1,8 @@
+import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
 
-interface Props { familyChildren: { id: number; username: string; displayName: string }[] }
+interface Props { familyChildren: { id: number; username: string; displayName: string; avatarColor?: string | null }[] }
 
 export default function InboxTab({ familyChildren }: Props) {
   const { data: tasks = [], isLoading } = useTasks({ status: 'InReview' });
@@ -10,7 +11,7 @@ export default function InboxTab({ familyChildren }: Props) {
   const [rejectId, setRejectId]       = useState<number | null>(null);
   const [rejectReason, setRejectReason] = useState('');
 
-  const childMap = Object.fromEntries(familyChildren.map((c) => [c.id, c.displayName]));
+  const childById = Object.fromEntries(familyChildren.map((c) => [c.id, c]));
 
   if (isLoading) return <p style={{ color: '#94a3b8' }}>Cargando…</p>;
 
@@ -39,7 +40,7 @@ export default function InboxTab({ familyChildren }: Props) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, color: '#1e293b' }}>{task.title}</div>
               <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.1rem' }}>
-                {childMap[task.assignedTo] ?? '—'} · 🪙 {task.coinsReward} · ⭐ {task.xpReward} XP
+                {childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={28} />} · 🪙 {task.coinsReward} · ⭐ {task.xpReward} XP
               </div>
             </div>
             <div style={{ display: 'flex', gap: '0.4rem', flexShrink: 0 }}>

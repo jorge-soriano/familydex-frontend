@@ -1,3 +1,4 @@
+import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
@@ -5,7 +6,7 @@ import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useActivity';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 import type { TransactionItem } from '../api';
 
-interface Child { id: number; username: string; displayName: string }
+interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props { familyChildren: Child[] }
 
 function useDirectRecord() {
@@ -100,12 +101,10 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
             {familyChildren.map((c) => {
               const sel = selectedChildren.includes(c.id);
               return (
-                <button key={c.id} type="button"
-                  style={{ padding: '0.4rem 0.85rem', borderRadius: 20, border: '2px solid',
-                    borderColor: sel ? '#3b82f6' : '#e2e8f0', background: sel ? '#eff6ff' : '#fff',
-                    color: sel ? '#1d4ed8' : '#475569', fontWeight: sel ? 700 : 500, fontSize: '0.875rem', cursor: 'pointer' }}
+                <button key={c.id} type="button" title={c.displayName}
+                  style={{ padding: '0.25rem', borderRadius: '50%', border: `3px solid ${sel ? '#3b82f6' : 'transparent'}`, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: sel ? '2px solid #bfdbfe' : 'none', outlineOffset: '1px' }}
                   onClick={() => toggleChild(c.id)}>
-                  {c.displayName}
+                  <ChildAvatar displayName={c.displayName} avatarColor={c.avatarColor} size={34} />
                 </button>
               );
             })}

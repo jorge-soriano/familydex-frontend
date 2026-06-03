@@ -1,11 +1,12 @@
+import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useHistory } from '../hooks/useActivity';
 import type { TransactionType } from '../../../shared/types';
 
 interface Props {
   childId?: number;
   filterType?: string;
-  /** Admin view: maps childId (users.id) → displayName to show per-row */
-  childMap?: Record<number, string>;
+  /** Admin view: maps childId → child info for avatar display */
+  childMap?: Record<number, { displayName: string; avatarColor: string | null }>;
 }
 
 const TYPE_LABEL: Record<TransactionType, string> = {
@@ -48,9 +49,9 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
               <span style={{ ...styles.typeBadge, background: TYPE_COLOR[tx.type] }}>
                 {TYPE_LABEL[tx.type]}
               </span>
-              {/* Child name — only in admin view when childMap provided */}
+              {/* Child avatar — only in admin view when childMap provided */}
               {childMap && tx.childId && childMap[tx.childId] && (
-                <span style={styles.childName}>{childMap[tx.childId]}</span>
+                <ChildAvatar displayName={childMap[tx.childId].displayName} avatarColor={childMap[tx.childId].avatarColor} size={24} />
               )}
             </div>
             <span style={styles.desc}>{tx.description}</span>
@@ -83,7 +84,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   left:       { display: 'flex', flexDirection: 'column', gap: '0.2rem', flex: 1, minWidth: 0 },
   typeBadge:  { color: '#fff', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, flexShrink: 0 },
-  childName:  { fontSize: '0.75rem', fontWeight: 600, color: '#475569', background: '#f1f5f9', padding: '1px 7px', borderRadius: 4 },
+
   desc:       { fontSize: '0.83rem', color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const },
   right:      { display: 'flex', gap: '0.65rem', alignItems: 'center', fontSize: '0.83rem', flexShrink: 0 },
   date:       { color: '#94a3b8', fontSize: '0.75rem' },

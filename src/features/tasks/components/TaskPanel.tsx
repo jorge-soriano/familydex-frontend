@@ -1,3 +1,4 @@
+import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
 import { useTasks, useDirectApprove, useRejectTask } from '../hooks/useTasks';
 import TaskForm from './TaskForm';
@@ -5,7 +6,7 @@ import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import type { TaskWithSeries } from '../api';
 import type { TaskType } from '../../../shared/types';
 
-interface Child { id: number; username: string; displayName: string }
+interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props  { children: Child[] }
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -55,7 +56,7 @@ export default function TaskPanel({ children }: Props) {
   const directApprove = useDirectApprove();
   const reject        = useRejectTask();
 
-  const childMap = Object.fromEntries(children.map((c) => [c.id, c.displayName]));
+  const childById = Object.fromEntries(children.map((c) => [c.id, c]));
 
   const TH = (label: string, align: 'left' | 'center' | 'right' = 'left', w?: string) => (
     <th style={{ padding: '0.6rem 0.75rem', textAlign: align, width: w, fontSize: '0.72rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #e2e8f0', background: '#f8fafc', whiteSpace: 'nowrap' }}>
@@ -133,7 +134,7 @@ export default function TaskPanel({ children }: Props) {
                         )}
                       </td>
                       <td style={{ padding: '0.65rem 0.75rem', textAlign: 'center', fontWeight: 600, fontSize: '0.85rem' }}>
-                        {childMap[task.assignedTo] ?? '—'}
+                        {childById[task.assignedTo] ? <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={28} /> : '—'}
                       </td>
                       <td style={{ padding: '0.65rem 0.75rem', textAlign: 'center', fontSize: '0.82rem', color: '#475569' }}>
                         {freqLabel(task)}
@@ -184,7 +185,7 @@ export default function TaskPanel({ children }: Props) {
                 <div key={task.id} style={{ background: isDisabled ? '#f8f8f8' : '#fff', borderRadius: 8, padding: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', opacity: isDisabled ? 0.5 : 1 }}>
                   <div style={{ fontWeight: 700, marginBottom: '0.25rem' }}>{TYPE_LABEL[task.type]} {task.title}</div>
                   <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.5rem' }}>
-                    {childMap[task.assignedTo]} · {freqLabel(task)} · 🪙{task.coinsReward} ⭐{task.xpReward}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>{childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}{freqLabel(task)} · 🪙{task.coinsReward} ⭐{task.xpReward}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.3rem' }}>
                     {task.status !== 'Approved' && <Btn onClick={() => directApprove.mutate(task.id)} icon="✔" label="Aprobar" bg="#22c55e" color="#fff" border="#16a34a" />}
