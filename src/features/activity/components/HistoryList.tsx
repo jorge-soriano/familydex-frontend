@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import { useHistory } from '../hooks/useActivity';
 import type { TransactionType } from '../../../shared/types';
 
 interface Props {
-  childId?: number; // if provided, admin view for specific child
+  childId?: number;
+  filterType?: string;
+  /** Admin view: maps childId (users.id) → displayName to show per-row */
+  childMap?: Record<number, string>;
 }
 
 const TYPE_LABEL: Record<TransactionType, string> = {
@@ -21,44 +23,40 @@ const TYPE_COLOR: Record<TransactionType, string> = {
   DirectRecord:   '#f59e0b',
 };
 
-export default function HistoryList({ childId }: Props) {
-  const [filterType, setFilterType] = useState<TransactionType | ''>('');
-
+export default function HistoryList({ childId, filterType, childMap }: Props) {
   const { data: transactions = [], isLoading } = useHistory({
-    type: filterType || undefined,
+    type: (filterType || undefined) as TransactionType | undefined,
     childId,
   });
 
+  if (isLoading) return <p style={{ color: '#94a3b8', padding: '1rem' }}>Cargando…</p>;
+
+  if (!transactions.length) return (
+    <p style={{ color: '#94a3b8', textAlign: 'center', padding: '2rem' }}>
+      No hay actividad registrada.
+    </p>
+  );
+
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h3 style={styles.title}>Historial de transacciones</h3>
-        <select
-          style={styles.filter}
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value as TransactionType | '')}
-        >
-          <option value="">Todos los tipos</option>
-          <option value="TaskReward">Tareas</option>
-          <option value="Penalty">Penalizaciones</option>
-          <option value="RewardRedeemed">Recompensas</option>
-        </select>
-      </div>
-
-      {isLoading && <p style={styles.empty}>Cargando…</p>}
-
-      {!isLoading && transactions.length === 0 && (
-        <p style={styles.empty}>No hay transacciones.</p>
-      )}
-
+    <div style={{ background: '#fff', borderRadius: 10, padding: '0.5rem 1rem' }}>
       {transactions.map((tx) => (
         <div key={tx.id} style={styles.row}>
+
+          {/* Left: badge + description + child name */}
           <div style={styles.left}>
-            <span style={{ ...styles.typeBadge, background: TYPE_COLOR[tx.type] }}>
-              {TYPE_LABEL[tx.type]}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <span style={{ ...styles.typeBadge, background: TYPE_COLOR[tx.type] }}>
+                {TYPE_LABEL[tx.type]}
+              </span>
+              {/* Child name — only in admin view when childMap provided */}
+              {childMap && tx.childId && childMap[tx.childId] && (
+                <span style={styles.childName}>{childMap[tx.childId]}</span>
+              )}
+            </div>
             <span style={styles.desc}>{tx.description}</span>
           </div>
+
+          {/* Right: amounts + date */}
           <div style={styles.right}>
             {tx.coinsDelta !== 0 && (
               <span style={{ color: tx.coinsDelta > 0 ? '#22c55e' : '#ef4444', fontWeight: 700 }}>
@@ -66,9 +64,7 @@ export default function HistoryList({ childId }: Props) {
               </span>
             )}
             {tx.xpDelta !== 0 && (
-              <span style={{ color: '#f59e0b', fontWeight: 700 }}>
-                +{tx.xpDelta} XP
-              </span>
+              <span style={{ color: '#f59e0b', fontWeight: 700 }}>+{tx.xpDelta} ⭐</span>
             )}
             <span style={styles.date}>
               {new Date(tx.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
@@ -81,18 +77,14 @@ export default function HistoryList({ childId }: Props) {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: { background: '#fff', borderRadius: 10, padding: '1.25rem', marginTop: '1rem' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' },
-  title: { margin: 0, fontSize: '1rem', fontWeight: 700 },
-  filter: { padding: '0.3rem 0.5rem', borderRadius: 6, border: '1px solid #e2e8f0', fontSize: '0.85rem' },
   row: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '0.6rem 0', borderBottom: '1px solid #f1f5f9',
+    padding: '0.65rem 0', borderBottom: '1px solid #f1f5f9', gap: '0.75rem',
   },
-  left: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
-  typeBadge: { color: '#fff', fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, width: 'fit-content' },
-  desc: { fontSize: '0.85rem', color: '#475569' },
-  right: { display: 'flex', gap: '0.75rem', alignItems: 'center', fontSize: '0.85rem', flexShrink: 0 },
-  date: { color: '#94a3b8', fontSize: '0.78rem' },
-  empty: { color: '#94a3b8', textAlign: 'center', padding: '1rem' },
+  left:       { display: 'flex', flexDirection: 'column', gap: '0.2rem', flex: 1, minWidth: 0 },
+  typeBadge:  { color: '#fff', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10, flexShrink: 0 },
+  childName:  { fontSize: '0.75rem', fontWeight: 600, color: '#475569', background: '#f1f5f9', padding: '1px 7px', borderRadius: 4 },
+  desc:       { fontSize: '0.83rem', color: '#475569', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const },
+  right:      { display: 'flex', gap: '0.65rem', alignItems: 'center', fontSize: '0.83rem', flexShrink: 0 },
+  date:       { color: '#94a3b8', fontSize: '0.75rem' },
 };

@@ -11,8 +11,8 @@ const TYPE_LABEL: Record<string, string> = {
 interface Props {
   task: Task;
   /**
-   * 'child'  — vista del niño: tarjeta grande, botón "¡He terminado!", mensajes de estado
-   * 'admin'  — vista compacta para el panel del administrador (ChildDetail)
+   * 'child'  — compact interactive card for child view
+   * 'admin'  — compact read-only card used in admin ChildDetail
    */
   variant?: 'child' | 'admin';
 }
@@ -34,95 +34,122 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
     };
 
     return (
-      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: '1rem', marginBottom: '0.75rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-          <span style={{ fontWeight: 700, fontSize: '1rem' }}>{task.title}</span>
-          <span style={{ color: '#fff', fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: 12, background: STATUS_COLOR[task.status] }}>
+      <div style={s.adminCard}>
+        <div style={s.adminHeader}>
+          <span style={s.adminTitle}>{task.title}</span>
+          <span style={{ ...s.adminBadge, background: STATUS_COLOR[task.status] }}>
             {STATUS_LABEL[task.status]}
           </span>
         </div>
-        <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: '#555', flexWrap: 'wrap' }}>
-          <span style={{ background: '#f1f5f9', padding: '2px 8px', borderRadius: 4 }}>{TYPE_LABEL[task.type] ?? task.type}</span>
+        <div style={s.adminMeta}>
+          <span style={s.typePill}>{TYPE_LABEL[task.type] ?? task.type}</span>
           <span>🪙 {task.coinsReward}</span>
           <span>⭐ {task.xpReward} XP</span>
           {task.dueDate && <span style={{ color: '#94a3b8' }}>📅 {task.dueDate}</span>}
         </div>
-        {task.description && <p style={{ fontSize: '0.85rem', color: '#666', margin: '0.5rem 0 0' }}>{task.description}</p>}
+        {task.description && <p style={s.adminDesc}>{task.description}</p>}
         {isRejected && task.rejectionReason && (
-          <p style={{ fontSize: '0.85rem', color: '#ef4444', background: '#fef2f2', padding: '0.4rem', borderRadius: 4, margin: '0.5rem 0 0' }}>
-            ❌ {task.rejectionReason}
-          </p>
+          <p style={s.adminRejection}>❌ {task.rejectionReason}</p>
         )}
       </div>
     );
   }
 
-  // ── Child interactive variant ──────────────────────────────────────────────
+  // ── Child compact interactive variant ────────────────────────────────────
   const borderColor = isPending ? '#3b82f6' : isReview ? '#f59e0b' : isApproved ? '#22c55e' : '#ef4444';
 
   return (
-    <div style={{ background: '#fff', borderRadius: 14, borderLeft: `5px solid ${borderColor}`, padding: '1.1rem 1.25rem', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+    <div style={{ ...s.childCard, borderLeftColor: borderColor }}>
 
-      <div style={{ fontWeight: 800, fontSize: '1rem', color: '#1e293b' }}>{task.title}</div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.75rem', background: '#f1f5f9', color: '#64748b', padding: '2px 8px', borderRadius: 5 }}>
-          {TYPE_LABEL[task.type] ?? task.type}
-        </span>
-        {task.description && (
-          <span style={{ fontSize: '0.8rem', color: '#64748b' }}>{task.description}</span>
-        )}
+      {/* Row 1: title + rewards */}
+      <div style={s.childRow}>
+        <span style={s.childTitle}>{task.title}</span>
+        <span style={s.childRewards}>🪙 {task.coinsReward} · ⭐ {task.xpReward}</span>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', fontSize: '0.85rem', color: '#475569' }}>
-        <span>🪙 <strong>{task.coinsReward}</strong> monedas</span>
-        <span>⭐ <strong>{task.xpReward}</strong> XP</span>
+      {/* Row 2: type + optional description */}
+      <div style={s.childMeta}>
+        <span style={s.typePill}>{TYPE_LABEL[task.type] ?? task.type}</span>
+        {task.description && <span style={s.childDesc}>{task.description}</span>}
       </div>
 
-      {(isPending || isRejected) && task.xpReward > 0 && (
-        <p style={{ margin: 0, fontSize: '0.75rem', color: '#8b5cf6', fontWeight: 600 }}>
-          🎮 Tu Pokémon ganará {task.xpReward} XP al completarse
-        </p>
-      )}
-
+      {/* State messages */}
       {isReview && (
-        <p style={{ margin: 0, fontSize: '0.82rem', color: '#d97706', fontWeight: 600 }}>
-          ⏳ Esperando que tu padre/madre lo revise…
-        </p>
+        <p style={s.stateReview}>⏳ Esperando revisión…</p>
       )}
 
       {isApproved && (
-        <p style={{ margin: 0, fontSize: '0.82rem', color: '#16a34a', fontWeight: 700 }}>
-          ✅ ¡Tarea completada!
-        </p>
+        <p style={s.stateApproved}>✅ ¡Completada!</p>
       )}
 
       {isRejected && task.rejectionReason && (
-        <div style={{ background: '#fef3c7', borderRadius: 8, padding: '0.5rem 0.75rem' }}>
-          <p style={{ margin: 0, fontSize: '0.82rem', color: '#92400e', fontWeight: 600 }}>💪 Casi, falta esto:</p>
-          <p style={{ margin: '0.15rem 0 0', fontSize: '0.82rem', color: '#78350f' }}>{task.rejectionReason}</p>
+        <div style={s.rejectionBox}>
+          <p style={s.rejectionTitle}>💪 Casi, falta esto:</p>
+          <p style={s.rejectionText}>{task.rejectionReason}</p>
         </div>
       )}
 
+      {/* Action button */}
       {isPending && (
-        <button
-          style={{ padding: '0.65rem 1rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 10, fontSize: '1rem', fontWeight: 800, cursor: 'pointer', marginTop: '0.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
-          disabled={complete.isPending}
-          onClick={() => complete.mutate(task.id)}
-        >
+        <button style={s.completeBtn} disabled={complete.isPending}
+          onClick={() => complete.mutate(task.id)}>
           {complete.isPending ? 'Enviando…' : '🙋 ¡He terminado!'}
         </button>
       )}
 
       {isRejected && !task.rejectionReason && (
-        <button
-          style={{ padding: '0.55rem 1rem', background: '#f59e0b', color: '#fff', border: 'none', borderRadius: 10, fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer' }}
+        <button style={{ ...s.completeBtn, background: '#f59e0b' }}
           disabled={complete.isPending}
-          onClick={() => complete.mutate(task.id)}
-        >
+          onClick={() => complete.mutate(task.id)}>
           🔄 Intentarlo de nuevo
         </button>
       )}
     </div>
   );
 }
+
+// ── Shared ────────────────────────────────────────────────────────────────────
+const typePill: React.CSSProperties = {
+  fontSize: '0.7rem', background: '#f1f5f9', color: '#64748b',
+  padding: '1px 7px', borderRadius: 4, whiteSpace: 'nowrap' as const,
+};
+
+// ── Admin styles ──────────────────────────────────────────────────────────────
+const s: Record<string, React.CSSProperties> = {
+  adminCard:      { background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '0.6rem' },
+  adminHeader:    { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' },
+  adminTitle:     { fontWeight: 700, fontSize: '0.9rem' },
+  adminBadge:     { color: '#fff', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10 },
+  adminMeta:      { display: 'flex', gap: '0.75rem', fontSize: '0.78rem', color: '#555', flexWrap: 'wrap' },
+  adminDesc:      { fontSize: '0.82rem', color: '#666', margin: '0.35rem 0 0' },
+  adminRejection: { fontSize: '0.82rem', color: '#ef4444', background: '#fef2f2', padding: '0.3rem 0.5rem', borderRadius: 4, margin: '0.35rem 0 0' },
+
+  // child card — compact, similar height to reward cards
+  childCard: {
+    background: '#fff', borderRadius: 8,
+    borderLeft: '4px solid #3b82f6',
+    padding: '0.65rem 0.85rem',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+    display: 'flex', flexDirection: 'column', gap: '0.3rem',
+  },
+  childRow:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' },
+  childTitle:   { fontWeight: 700, fontSize: '0.9rem', color: '#1e293b', flex: 1, minWidth: 0 },
+  childRewards: { fontSize: '0.78rem', color: '#64748b', whiteSpace: 'nowrap' as const, flexShrink: 0 },
+  childMeta:    { display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' },
+  childDesc:    { fontSize: '0.75rem', color: '#94a3b8' },
+
+  stateReview:   { margin: 0, fontSize: '0.75rem', color: '#d97706', fontWeight: 600 },
+  stateApproved: { margin: 0, fontSize: '0.75rem', color: '#16a34a', fontWeight: 700 },
+
+  rejectionBox:  { background: '#fef9c3', borderRadius: 6, padding: '0.35rem 0.6rem' },
+  rejectionTitle:{ margin: 0, fontSize: '0.75rem', color: '#92400e', fontWeight: 600 },
+  rejectionText: { margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#78350f' },
+
+  completeBtn: {
+    padding: '0.45rem 0.75rem', background: '#3b82f6', color: '#fff',
+    border: 'none', borderRadius: 7, fontSize: '0.85rem', fontWeight: 700,
+    cursor: 'pointer', marginTop: '0.1rem', alignSelf: 'flex-start',
+  },
+
+  typePill,
+};

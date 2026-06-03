@@ -36,10 +36,15 @@ export default function TaskPanel({ children }: Props) {
     type:       filterType  || undefined,
   });
 
-  // Enabled tasks first, disabled at the bottom
+  // Active planner view: hide one-time Approved tasks (done, no need to manage them).
+  // Keep recurring Approved tasks (they'll repeat — useful to have in the planner).
+  // Disabled tasks appear at the bottom.
+  const visible = (rawTasks as TaskWithSeries[]).filter(
+    (t) => t.status !== 'Approved' || t.seriesId !== null
+  );
   const tasks = [
-    ...(rawTasks as TaskWithSeries[]).filter((t) => t.isEnabled !== false),
-    ...(rawTasks as TaskWithSeries[]).filter((t) => t.isEnabled === false),
+    ...visible.filter((t) => t.isEnabled !== false),
+    ...visible.filter((t) => t.isEnabled === false),
   ];
 
   const directApprove = useDirectApprove();
@@ -142,7 +147,7 @@ export default function TaskPanel({ children }: Props) {
                           {task.status === 'InReview' && (
                             <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon="✖" label="Rechazar" bg="#ef4444" color="#fff" border="#dc2626" />
                           )}
-                          <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg="#f1f5f9" color="#475569" border="#cbd5e1" />
+                          <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg="#f1f5f9" color="#475569" border="#f1f5f9" />
                         </div>
                       </td>
                     </tr>
@@ -179,7 +184,7 @@ export default function TaskPanel({ children }: Props) {
                   <div style={{ display: 'flex', gap: '0.3rem' }}>
                     {task.status !== 'Approved' && <Btn onClick={() => directApprove.mutate(task.id)} icon="✔" label="Aprobar" bg="#22c55e" color="#fff" border="#16a34a" />}
                     {task.status === 'InReview' && <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon="✖" label="Rechazar" bg="#ef4444" color="#fff" border="#dc2626" />}
-                    <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg="#f1f5f9" color="#475569" border="#cbd5e1" />
+                    <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg="#f1f5f9" color="#475569" border="#f1f5f9" />
                   </div>
                 </div>
               </>

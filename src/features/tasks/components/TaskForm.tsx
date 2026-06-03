@@ -220,8 +220,14 @@ export default function TaskForm({ task, children, onClose }: Props) {
         {/* Habilitar/Deshabilitar + Eliminar — solo en edición */}
         {isEditing && task && (
           <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {/* Outlined toggle — same style as ChildrenList toggleBtn */}
             <button type="button"
-              style={{ padding: '0.4rem 0.9rem', borderRadius: 6, border: '1px solid #e2e8f0', background: '#f8fafc', color: '#475569', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+              style={{
+                padding: '0.4rem 0.9rem', borderRadius: 6, cursor: 'pointer',
+                fontSize: '0.82rem', fontWeight: 600, background: 'transparent',
+                border: '1px solid currentColor',
+                color: task.isEnabled === false ? '#22c55e' : '#64748b',
+              }}
               disabled={toggleEnable.isPending}
               onClick={() => toggleEnable.mutate(task.id, { onSuccess: onClose })}>
               {task.isEnabled === false ? '▶ Habilitar tarea' : '⏸ Deshabilitar tarea'}
