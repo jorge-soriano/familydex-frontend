@@ -39,8 +39,13 @@ export default function TaskPanel({ children }: Props) {
   // Active planner view: hide one-time Approved tasks (done, no need to manage them).
   // Keep recurring Approved tasks (they'll repeat — useful to have in the planner).
   // Disabled tasks appear at the bottom.
+  // Active planner view:
+  //   Pending + InReview (need action) + Approved recurring (will repeat)
+  //   Rejected excluded: rejectTask() always sets status back to 'Pending' in
+  //   the normal flow, so 'Rejected' here means stale/inconsistent data.
   const visible = (rawTasks as TaskWithSeries[]).filter(
-    (t) => t.status !== 'Approved' || t.seriesId !== null
+    (t) => t.status === 'Pending' || t.status === 'InReview' ||
+           (t.status === 'Approved' && t.seriesId !== null)
   );
   const tasks = [
     ...visible.filter((t) => t.isEnabled !== false),
