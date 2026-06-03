@@ -44,14 +44,6 @@ export interface GetTasksParams {
   type?: TaskType;
 }
 
-export interface QuickCompleteDto {
-  childId: number;
-  title: string;
-  description?: string;
-  type: TaskType;
-  coinsReward: number;
-  xpReward: number;
-}
 
 export const tasksApi = {
   getAll: (params?: GetTasksParams) =>
@@ -85,8 +77,6 @@ export const tasksApi = {
   toggleEnabled: (id: number) =>
     apiClient.patch<{ isEnabled: boolean }>(`/tasks/${id}/enabled`).then((r) => r.data),
 
-  quickComplete: (data: QuickCompleteDto) =>
-    apiClient.post<{ task: Task }>('/tasks/quick-complete', data).then((r) => r.data),
 };
 
 export interface TaskSeriesInfo {

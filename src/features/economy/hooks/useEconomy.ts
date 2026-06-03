@@ -21,7 +21,7 @@ export function useHistory(params?: GetHistoryParams) {
 export function useApplyPenalty() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: PenaltyDto) => economyApi.applyPenalty(data),
+    mutationFn: (data: PenaltyDto) => economyApi.applyDirectRecord({ childIds: [data.childId], coinsDelta: -(data.amount), xp: 0, reason: data.reason }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
       qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });

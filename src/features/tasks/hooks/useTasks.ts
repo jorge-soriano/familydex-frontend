@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams, type QuickCompleteDto } from '../api';
+import { tasksApi, type CreateTaskDto, type EditTaskDto, type GetTasksParams } from '../api';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../../economy/hooks/useEconomy';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 
@@ -68,18 +68,6 @@ export function useRejectTask() {
   });
 }
 
-export function useQuickComplete() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (data: QuickCompleteDto) => tasksApi.quickComplete(data),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: [TASKS_KEY] });
-      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
-      qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
-      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
-    },
-  });
-}
 
 export function useDirectApprove() {
   const qc = useQueryClient();

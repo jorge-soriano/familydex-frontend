@@ -43,9 +43,6 @@ export const economyApi = {
     apiClient.get<TransactionItem[]>('/economy/transactions', { params })
       .then((r) => r.data),
 
-  applyPenalty: (data: PenaltyDto) =>
-    apiClient.post('/economy/penalty', data).then((r) => r.data),
-
-  applyDirectReward: (data: { childId: number; coins: number; xp: number; reason: string }) =>
-    apiClient.post('/economy/direct-reward', data).then((r) => r.data),
+  applyDirectRecord: (data: { childIds: number[]; coinsDelta: number; xp: number; reason: string }) =>
+    apiClient.post('/economy/direct-record', data).then((r) => r.data),
 };
