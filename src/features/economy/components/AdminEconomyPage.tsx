@@ -19,12 +19,12 @@ export default function AdminEconomyPage() {
   if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
 
   return (
-    <div style={styles.page}>
-      <h2 style={styles.h2}>Actividad familiar</h2>
-
-      <div style={styles.historyHeader}>
-        <h3 style={styles.h3}>Registro de transacciones</h3>
-        <select style={styles.select} value={filterChild}
+    <div style={{ padding: '1.5rem', maxWidth: 800, margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
+        <select
+          style={{ padding: '0.35rem 0.6rem', borderRadius: 6, border: '2px solid #e2e8f0', fontSize: '0.85rem', background: '#fff' }}
+          value={filterChild}
           onChange={(e) => setFilterChild(e.target.value ? Number(e.target.value) : '')}>
           <option value="">Todos los hijos</option>
           {children.map((c) => (
@@ -37,11 +37,3 @@ export default function AdminEconomyPage() {
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: { padding: '1.5rem', maxWidth: 800, margin: '0 auto' },
-  h2: { fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.5rem' },
-  h3: { margin: 0, fontSize: '1rem', fontWeight: 700 },
-  historyHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0' },
-  select: { padding: '0.35rem 0.6rem', borderRadius: 6, border: '2px solid #e2e8f0', fontSize: '0.85rem' },
-};
