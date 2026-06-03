@@ -126,7 +126,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
         {/* Multi-select hijos — mismo estilo que DirectRecordsForm */}
         {!isEditing && (
           <div>
-            <p style={{ ...styles.label, marginBottom: '0.35rem' }}>
+            <p style={{ margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 600 }}>
               Hijos <span style={{ color: '#94a3b8', fontWeight: 400 }}>(uno o varios)</span>
             </p>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -225,12 +225,16 @@ export default function TaskForm({ task, children, onClose }: Props) {
           {/* Izquierda: Deshabilitar (toggle local) + Eliminar — solo en edición */}
           {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-              {/* Toggle — cambia estado local; el API call ocurre al Guardar */}
-              <button type="button"
-                style={{ padding: '0.4rem 0.75rem', borderRadius: 6, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, background: 'transparent', border: '1px solid currentColor', color: localEnabled ? '#64748b' : '#22c55e' }}
+              {/* Switch visual rojo/verde — el API call ocurre al Guardar */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
                 onClick={() => setLocalEnabled(!localEnabled)}>
-                {localEnabled ? '⏸ Deshabilitar' : '▶ Habilitar'}
-              </button>
+                <div style={{ width: 40, height: 22, borderRadius: 11, background: localEnabled ? '#22c55e' : '#ef4444', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+                  <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s' }} />
+                </div>
+                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: localEnabled ? '#16a34a' : '#dc2626', userSelect: 'none' }}>
+                  {localEnabled ? 'Activa' : 'Desactivada'}
+                </span>
+              </div>
 
               {!confirmDel ? (
                 <button type="button"
