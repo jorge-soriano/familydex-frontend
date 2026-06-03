@@ -18,10 +18,15 @@ export default function EvolutionModal({ active, onClose }: Props) {
   const [trigger, setTrigger] = useState<string | null>(null);
   const evolve = useEvolveActive();
 
+  // Congelar el Pokémon original al montar — cuando mutateAsync() complete,
+  // React Query invalida la caché y el prop 'active' cambia al evolucionado.
+  // Sin esto, 'p' pasa a ser Charmeleon antes de que termine la animación.
+  const [originalPokemon] = useState<PokemonData>(active.pokemon);
+  const p = originalPokemon;
+
   const handleEvolve = async () => {
     setPhase('flashing');
 
-    // Run animation and API call in parallel; wait at least 2.4s for the animation
     const [result] = await Promise.all([
       evolve.mutateAsync(),
       new Promise<void>((resolve) => setTimeout(resolve, 2400)),
@@ -33,8 +38,6 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
     setTimeout(() => setPhase('done'), 900);
   };
-
-  const p = active.pokemon;
 
   return (
     <div style={overlay} onClick={phase === 'done' ? onClose : undefined}>
