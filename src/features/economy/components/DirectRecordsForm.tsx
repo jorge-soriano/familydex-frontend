@@ -3,9 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useEconomy';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
-import { taskTemplatesApi } from '../../task-templates/api';
-import { useCreateTemplate } from '../../task-templates/hooks/useTaskTemplates';
-import { TEMPLATES_KEY } from '../../task-templates/hooks/useTaskTemplates';
+import type { TransactionItem } from '../api';
 
 interface Child { id: number; username: string; displayName: string }
 interface Props { familyChildren: Child[] }
@@ -23,11 +21,18 @@ function useDirectRecord() {
   });
 }
 
-function useRecordPresets() {
+/** Recent DirectRecord + Penalty transactions deduplicated by description */
+function useRecentRecords() {
   return useQuery({
-    queryKey: [TEMPLATES_KEY, 'presets'],
-    queryFn: () => taskTemplatesApi.getAll(false), // will filter below
-    select: (tpls) => tpls.filter((t) => (t as any).isRecordPreset),
+    queryKey: ['recent-records'],
+    queryFn: () => apiClient.get<TransactionItem[]>('/economy/transactions').then((r) => r.data),
+    select: (txs) => {
+      const seen = new Set<string>();
+      return txs
+        .filter((t) => t.type === 'DirectRecord' || t.type === 'Penalty')
+        .filter((t) => { if (seen.has(t.description)) return false; seen.add(t.description); return true; })
+        .slice(0, 10);
+    },
   });
 }
 
@@ -35,97 +40,70 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
   const [selectedChildren, setSelectedChildren] = useState<number[]>(
     familyChildren.length === 1 ? [familyChildren[0].id] : []
   );
-  const [coins,     setCoins]     = useState(10);
-  const [isNeg,     setIsNeg]     = useState(false); // negative = penalty
-  const [xp,        setXp]        = useState(50);
-  const [reason,    setReason]    = useState('');
-  const [savePreset, setSavePreset] = useState(false);
-  const [presetTitle, setPresetTitle] = useState('');
+  const [coins,  setCoins]  = useState(10);
+  const [isNeg,  setIsNeg]  = useState(false);
+  const [xp,     setXp]     = useState(50);
+  const [reason, setReason] = useState('');
 
-  const record      = useDirectRecord();
-  const { data: presets = [] } = useRecordPresets();
-  const createPreset = useCreateTemplate();
+  const record       = useDirectRecord();
+  const { data: recentRecords = [] } = useRecentRecords();
 
   const toggleChild = (id: number) =>
     setSelectedChildren((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
 
-  const applyPreset = (preset: any) => {
-    setReason(preset.title);
-    setCoins(preset.coinsReward);
-    setXp(preset.xpReward);
-    setIsNeg(false); // presets default to positive
+  const applyRecord = (tx: TransactionItem) => {
+    setReason(tx.description);
+    setCoins(Math.abs(tx.coinsDelta));
+    setXp(tx.xpDelta);
+    setIsNeg(tx.coinsDelta < 0);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedChildren.length || !reason) return;
-
-    const coinsDelta = isNeg ? -coins : coins;
-
     record.mutate(
-      { childIds: selectedChildren, coinsDelta, xp, reason },
-      {
-        onSuccess: async () => {
-          if (savePreset && presetTitle) {
-            await createPreset.mutateAsync({
-              title: presetTitle || reason,
-              type: 'comportamiento', // default type for record presets
-              coinsReward: coins,
-              xpReward: xp,
-            });
-            // mark as record preset via separate call
-            // (simplified: the toggle works, category marks it as preset)
-          }
-          // Reset form
-          setReason('');
-          setSavePreset(false);
-          setPresetTitle('');
-        },
-      }
+      { childIds: selectedChildren, coinsDelta: isNeg ? -coins : coins, xp, reason },
+      { onSuccess: () => { setReason(''); } }
     );
   };
 
-  const error   = (record.error as any)?.response?.data?.message;
-  const success = record.isSuccess;
-
   return (
     <div style={{ maxWidth: 560 }}>
-      {/* Presets */}
-      {presets.length > 0 && (
-        <div style={{ marginBottom: '1.25rem' }}>
-          <p style={{ margin: '0 0 0.5rem', fontSize: '0.8rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Presets guardados
-          </p>
-          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-            {presets.map((p: any) => (
-              <button key={p.id} type="button"
-                style={{ padding: '0.35rem 0.75rem', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 20, fontSize: '0.78rem', cursor: 'pointer', fontWeight: 600 }}
-                onClick={() => applyPreset(p)}>
-                {p.title} · 🪙{p.coinsReward} ⭐{p.xpReward}
-              </button>
+      {/* Selector de registros recientes */}
+      {recentRecords.length > 0 && (
+        <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '1rem' }}>
+          Usar registro anterior (opcional)
+          <select style={inp} defaultValue=""
+            onChange={(e) => {
+              const tx = recentRecords.find((r) => r.id === +e.target.value);
+              if (tx) applyRecord(tx);
+            }}>
+            <option value="">— Rellenar manualmente —</option>
+            {recentRecords.map((tx) => (
+              <option key={tx.id} value={tx.id}>
+                {tx.description} · {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta}🪙 +{tx.xpDelta}⭐
+              </option>
             ))}
-          </div>
-        </div>
+          </select>
+        </label>
       )}
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {/* Multi-select hijos */}
         <div>
-          <p style={lbl}>Hijos <span style={{ color: '#94a3b8', fontWeight: 400 }}>(selecciona uno o varios)</span></p>
-          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginTop: '0.35rem' }}>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>
+            Hijos <span style={{ color: '#94a3b8', fontWeight: 400 }}>(uno o varios)</span>
+          </p>
+          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
             {familyChildren.map((c) => {
               const sel = selectedChildren.includes(c.id);
               return (
                 <button key={c.id} type="button"
-                  style={{
-                    padding: '0.4rem 0.85rem', borderRadius: 20, border: '2px solid',
-                    borderColor: sel ? '#3b82f6' : '#e2e8f0',
-                    background: sel ? '#eff6ff' : '#fff',
-                    color: sel ? '#1d4ed8' : '#475569',
-                    fontWeight: sel ? 700 : 500, fontSize: '0.875rem', cursor: 'pointer',
-                  }}
+                  style={{ padding: '0.4rem 0.85rem', borderRadius: 20, border: '2px solid',
+                    borderColor: sel ? '#3b82f6' : '#e2e8f0', background: sel ? '#eff6ff' : '#fff',
+                    color: sel ? '#1d4ed8' : '#475569', fontWeight: sel ? 700 : 500, fontSize: '0.875rem', cursor: 'pointer' }}
                   onClick={() => toggleChild(c.id)}>
                   {c.displayName}
                 </button>
@@ -136,20 +114,16 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
 
         {/* Coins */}
         <div>
-          <p style={lbl}>Monedas</p>
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.35rem' }}>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>Monedas</p>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
                 borderColor: !isNeg ? '#22c55e' : '#e2e8f0', background: !isNeg ? '#f0fdf4' : '#fff', color: !isNeg ? '#16a34a' : '#64748b' }}
-              onClick={() => setIsNeg(false)}>
-              + Dar
-            </button>
+              onClick={() => setIsNeg(false)}>+ Dar</button>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
                 borderColor: isNeg ? '#ef4444' : '#e2e8f0', background: isNeg ? '#fef2f2' : '#fff', color: isNeg ? '#dc2626' : '#64748b' }}
-              onClick={() => setIsNeg(true)}>
-              − Quitar
-            </button>
+              onClick={() => setIsNeg(true)}>− Quitar</button>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={coins}
               onChange={(e) => setCoins(Math.max(0, +e.target.value))} />
             <span style={{ fontSize: '0.85rem', color: '#64748b' }}>monedas</span>
@@ -157,14 +131,14 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
         </div>
 
         {/* XP */}
-        <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-          XP <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span>
+        <div>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={xp}
               onChange={(e) => setXp(Math.max(0, +e.target.value))} />
             <span style={{ fontSize: '0.85rem', color: '#64748b' }}>XP</span>
           </div>
-        </label>
+        </div>
 
         {/* Motivo */}
         <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
@@ -174,27 +148,21 @@ export default function DirectRecordsForm({ familyChildren }: Props) {
             onChange={(e) => setReason(e.target.value)} />
         </label>
 
-        {/* Guardar como preset */}
-        <div style={{ background: '#f8fafc', borderRadius: 8, padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', cursor: 'pointer' }}>
-            <input type="checkbox" checked={savePreset} onChange={(e) => setSavePreset(e.target.checked)} />
-            <span>Guardar como preset para reutilizar</span>
-          </label>
-          {savePreset && (
-            <input style={inp} value={presetTitle} placeholder={reason || 'Nombre del preset'}
-              onChange={(e) => setPresetTitle(e.target.value)} />
-          )}
-        </div>
-
-        {error   && <p style={{ margin: 0, color: '#ef4444', fontSize: '0.85rem' }}>{error}</p>}
-        {success && <p style={{ margin: 0, color: '#16a34a', fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>}
+        {(record.error as any)?.response?.data?.message && (
+          <p style={{ margin: 0, color: '#ef4444', fontSize: '0.85rem' }}>
+            {(record.error as any).response.data.message}
+          </p>
+        )}
+        {record.isSuccess && (
+          <p style={{ margin: 0, color: '#16a34a', fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>
+        )}
 
         <button type="submit"
           style={{ padding: '0.65rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem' }}
           disabled={record.isPending || !selectedChildren.length}>
           {record.isPending ? 'Aplicando…'
-            : isNeg ? `❌ Quitar ${coins} 🪙${xp > 0 ? ` · +${xp} XP` : ''}`
-            : `✅ Dar ${coins} 🪙${xp > 0 ? ` · +${xp} XP` : ''}`}
+            : isNeg ? `❌ Quitar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`
+            : `✅ Dar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`}
         </button>
       </form>
     </div>

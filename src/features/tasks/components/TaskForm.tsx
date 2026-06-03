@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useCreateTask, useEditTask } from '../hooks/useTasks';
-import { useTaskTemplates } from '../../task-templates/hooks/useTaskTemplates';
+import { useQuery } from '@tanstack/react-query';
+import { useCreateTask, useEditTask, TASKS_KEY } from '../hooks/useTasks';
+import { tasksApi } from '../api';
 import type { Task, CreateTaskDto, EditTaskDto } from '../api';
 
 interface Child { id: number; username: string; displayName: string }
@@ -23,8 +24,16 @@ export default function TaskForm({ task, children, onClose }: Props) {
     task ? [task.assignedTo] : children.length === 1 ? [children[0].id] : []
   );
 
-  const { data: templates = [] } = useTaskTemplates(true);
-  const taskTemplates = templates.filter((t) => !(t as any).isRecordPreset);
+  // Approved tasks as suggestions (deduplicated by title)
+  const { data: suggestions = [] } = useQuery({
+    queryKey: [TASKS_KEY, 'suggestions'],
+    queryFn: () => tasksApi.getAll({ status: 'Approved' }),
+    select: (tasks) => {
+      const seen = new Set<string>();
+      return tasks.filter((t) => { if (seen.has(t.title)) return false; seen.add(t.title); return true; }).slice(0, 15);
+    },
+    enabled: !task, // only for creation
+  });
 
   const toggleChild = (id: number) =>
     setSelectedChildren((prev) =>
@@ -85,22 +94,24 @@ export default function TaskForm({ task, children, onClose }: Props) {
       <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
         <h2 style={styles.title}>{isEditing ? 'Editar tarea' : 'Nueva tarea'}</h2>
 
-        {!isEditing && taskTemplates.length > 0 && (
+        {/* Selector de tarea anterior — pre-rellena el formulario */}
+        {!isEditing && suggestions.length > 0 && (
           <label style={styles.label}>
-            Cargar plantilla (opcional)
+            Usar tarea anterior (opcional)
             <select style={styles.input} defaultValue=""
               onChange={(e) => {
-                const tpl = taskTemplates.find((t) => t.id === +e.target.value);
-                if (tpl) {
-                  setForm((p) => ({ ...p, title: tpl.title, type: tpl.type, coinsReward: tpl.coinsReward, xpReward: tpl.xpReward, description: tpl.description ?? '' }));
-                }
+                const t = suggestions.find((s) => s.id === +e.target.value);
+                if (t) setForm((p) => ({ ...p, title: t.title, type: t.type, coinsReward: t.coinsReward, xpReward: t.xpReward, description: t.description ?? '' }));
               }}>
               <option value="">— Rellenar manualmente —</option>
-              {taskTemplates.map((t) => <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>)}
+              {suggestions.map((t) => (
+                <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>
+              ))}
             </select>
           </label>
         )}
 
+        {/* Multi-select hijos */}
         {!isEditing && (
           <div>
             <p style={{ ...styles.label, marginBottom: '0.35rem' }}>
@@ -119,18 +130,6 @@ export default function TaskForm({ task, children, onClose }: Props) {
               })}
             </div>
           </div>
-        )}
-
-        {!isEditing && false && ( // legacy single-select — replaced by multi above
-          <label style={styles.label}>
-            Asignar a (legacy)
-            <select style={styles.input} value={form.assignedTo}
-              onChange={(e) => set('assignedTo', Number(e.target.value))}>
-              {children.map((c) => (
-                <option key={c.id} value={c.id}>{c.displayName} (@{c.username})</option>
-              ))}
-            </select>
-          </label>
         )}
 
         <label style={styles.label}>
