@@ -31,32 +31,31 @@ export default function AdminActivityPage() {
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: 800, margin: '0 auto' }}>
-      {/* Header con botón */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
+      <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
+
+      {/* Filtros + botón — mismo layout que TaskPanel */}
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <select style={sel} value={filterChild}
+            onChange={(e) => setFilterChild(e.target.value ? Number(e.target.value) : '')}>
+            <option value="">Todos los hijos</option>
+            {children.map((c) => (
+              <option key={c.id} value={c.id}>{c.displayName}</option>
+            ))}
+          </select>
+          <select style={sel} value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}>
+            <option value="">Todos los tipos</option>
+            <option value="TaskReward">Tareas</option>
+            <option value="DirectRecord">Registros directos</option>
+            <option value="RewardRedeemed">Recompensas</option>
+          </select>
+        </div>
         <button
-          style={{ padding: '0.5rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 }}
+          style={{ padding: '0.45rem 1.1rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
           onClick={() => setShowForm(true)}>
           + Nuevo registro
         </button>
-      </div>
-
-      {/* Filtros */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
-        <select style={sel} value={filterChild}
-          onChange={(e) => setFilterChild(e.target.value ? Number(e.target.value) : '')}>
-          <option value="">Todos los hijos</option>
-          {children.map((c) => (
-            <option key={c.id} value={c.id}>{c.displayName}</option>
-          ))}
-        </select>
-        <select style={sel} value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}>
-          <option value="">Todos los tipos</option>
-          <option value="TaskReward">Tareas</option>
-          <option value="DirectRecord">Registros directos</option>
-          <option value="RewardRedeemed">Recompensas</option>
-        </select>
       </div>
 
       <HistoryList
