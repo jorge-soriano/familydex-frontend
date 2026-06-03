@@ -55,32 +55,25 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
     );
   }
 
-  // ── Child compact interactive variant ────────────────────────────────────
+  // ── Child variant — mismo estilo visual que las reward cards ────────────
+  // Padding, radius, shadow y gap idénticos a RewardShop.card
   const borderColor = isPending ? '#3b82f6' : isReview ? '#f59e0b' : isApproved ? '#22c55e' : '#ef4444';
 
   return (
     <div style={{ ...s.childCard, borderLeftColor: borderColor }}>
 
-      {/* Row 1: title + rewards */}
-      <div style={s.childRow}>
-        <span style={s.childTitle}>{task.title}</span>
-        <span style={s.childRewards}>🪙 {task.coinsReward} · ⭐ {task.xpReward}</span>
-      </div>
+      {/* Título — igual que reward name */}
+      <span style={s.childTitle}>{task.title}</span>
 
-      {/* Row 2: type + optional description */}
-      <div style={s.childMeta}>
-        <span style={s.typePill}>{TYPE_LABEL[task.type] ?? task.type}</span>
-        {task.description && <span style={s.childDesc}>{task.description}</span>}
-      </div>
+      {/* Recompensas debajo del título — igual que reward cost */}
+      <span style={s.childCost}>🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>
 
-      {/* State messages */}
-      {isReview && (
-        <p style={s.stateReview}>⏳ Esperando revisión…</p>
-      )}
+      {/* Descripción opcional */}
+      {task.description && <p style={s.childDesc}>{task.description}</p>}
 
-      {isApproved && (
-        <p style={s.stateApproved}>✅ ¡Completada!</p>
-      )}
+      {/* Mensajes de estado */}
+      {isReview && <p style={s.stateReview}>⏳ Esperando revisión…</p>}
+      {isApproved && <p style={s.stateApproved}>✅ ¡Completada!</p>}
 
       {isRejected && task.rejectionReason && (
         <div style={s.rejectionBox}>
@@ -89,7 +82,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
         </div>
       )}
 
-      {/* Action button */}
+      {/* Botón de acción — marginTop:'auto' lo empuja al fondo */}
       {isPending && (
         <button style={s.completeBtn} disabled={complete.isPending}
           onClick={() => complete.mutate(task.id)}>
@@ -124,34 +117,32 @@ const s: Record<string, React.CSSProperties> = {
   adminDesc:      { fontSize: '0.82rem', color: '#666', margin: '0.35rem 0 0' },
   adminRejection: { fontSize: '0.82rem', color: '#ef4444', background: '#fef2f2', padding: '0.3rem 0.5rem', borderRadius: 4, margin: '0.35rem 0 0' },
 
-  // child card — compact grid card, similar to reward cards
-  // justify-content: space-between pushes the button to the bottom when
-  // cards in the same grid row have different heights
+  // child card — idéntico a RewardShop.card (mismo padding, radius, shadow, gap)
+  // El borde izquierdo de color indica el estado sin romper la cohesión visual
   childCard: {
-    background: '#fff', borderRadius: 8,
+    background: '#fff',
+    borderRadius: 10,                          // = reward card
     borderLeft: '4px solid #3b82f6',
-    padding: '0.65rem 0.85rem',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-    display: 'flex', flexDirection: 'column', gap: '0.3rem',
-    justifyContent: 'space-between',
+    padding: '1.25rem',                        // = reward card
+    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',  // = reward card
+    display: 'flex', flexDirection: 'column',
+    gap: '0.5rem',                             // = reward card
   },
-  childRow:     { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' },
-  childTitle:   { fontWeight: 700, fontSize: '0.9rem', color: '#1e293b', flex: 1, minWidth: 0 },
-  childRewards: { fontSize: '0.78rem', color: '#64748b', whiteSpace: 'nowrap' as const, flexShrink: 0 },
-  childMeta:    { display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' },
-  childDesc:    { fontSize: '0.75rem', color: '#94a3b8' },
+  childTitle:   { fontWeight: 700, color: '#1e293b' },        // = reward name
+  childCost:    { fontWeight: 800, fontSize: '1rem', color: '#1d4ed8' }, // = reward cost
+  childDesc:    { fontSize: '0.85rem', color: '#64748b', margin: 0 },    // = reward desc
 
-  stateReview:   { margin: 0, fontSize: '0.75rem', color: '#d97706', fontWeight: 600 },
-  stateApproved: { margin: 0, fontSize: '0.75rem', color: '#16a34a', fontWeight: 700 },
+  stateReview:   { margin: 0, fontSize: '0.82rem', color: '#d97706', fontWeight: 600 },
+  stateApproved: { margin: 0, fontSize: '0.82rem', color: '#16a34a', fontWeight: 700 },
 
-  rejectionBox:  { background: '#fef9c3', borderRadius: 6, padding: '0.35rem 0.6rem' },
-  rejectionTitle:{ margin: 0, fontSize: '0.75rem', color: '#92400e', fontWeight: 600 },
-  rejectionText: { margin: '0.1rem 0 0', fontSize: '0.75rem', color: '#78350f' },
+  rejectionBox:  { background: '#fef9c3', borderRadius: 6, padding: '0.4rem 0.6rem' },
+  rejectionTitle:{ margin: 0, fontSize: '0.82rem', color: '#92400e', fontWeight: 600 },
+  rejectionText: { margin: '0.1rem 0 0', fontSize: '0.82rem', color: '#78350f' },
 
   completeBtn: {
-    padding: '0.45rem 0.75rem', background: '#3b82f6', color: '#fff',
-    border: 'none', borderRadius: 7, fontSize: '0.85rem', fontWeight: 700,
-    cursor: 'pointer', marginTop: 'auto',  // stick to bottom in grid
+    padding: '0.45rem 1rem', background: '#3b82f6', color: '#fff',
+    border: 'none', borderRadius: 6, fontSize: '0.85rem', fontWeight: 700,
+    cursor: 'pointer', marginTop: 'auto',  // = reward btn
   },
 
   typePill,

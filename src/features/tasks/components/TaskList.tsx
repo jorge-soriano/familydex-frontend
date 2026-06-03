@@ -52,7 +52,7 @@ export default function TaskList() {
             {/* Grid — mismo patrón que RewardShop */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
               gap: '0.75rem',
             }}>
               {group.map((t) => <TaskCard key={t.id} task={t} variant="child" />)}
