@@ -80,3 +80,24 @@ export function useQuickComplete() {
     },
   });
 }
+
+export function useDirectApprove() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => tasksApi.directApprove(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [TASKS_KEY] });
+      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
+      qc.invalidateQueries({ queryKey: [TRANSACTIONS_KEY] });
+      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
+    },
+  });
+}
+
+export function useToggleEnabled() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => tasksApi.toggleEnabled(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [TASKS_KEY] }),
+  });
+}

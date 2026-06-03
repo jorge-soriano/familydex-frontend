@@ -79,6 +79,25 @@ export const tasksApi = {
   reject: (id: number, reason?: string) =>
     apiClient.post<Task>(`/tasks/${id}/reject`, { reason }).then((r) => r.data),
 
+  directApprove: (id: number) =>
+    apiClient.post<Task>(`/tasks/${id}/direct-approve`).then((r) => r.data),
+
+  toggleEnabled: (id: number) =>
+    apiClient.patch<{ isEnabled: boolean }>(`/tasks/${id}/enabled`).then((r) => r.data),
+
   quickComplete: (data: QuickCompleteDto) =>
     apiClient.post<{ task: Task }>('/tasks/quick-complete', data).then((r) => r.data),
 };
+
+export interface TaskSeriesInfo {
+  id: number;
+  frequency: 'Daily' | 'Weekly';
+  daysOfWeek: string | null;
+  isActive: boolean;
+}
+
+// Task with optional series info (included in getTasks response)
+export interface TaskWithSeries extends Task {
+  series?: TaskSeriesInfo | null;
+  isEnabled?: boolean;
+}
