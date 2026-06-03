@@ -69,27 +69,18 @@ export default function PokemonPage() {
         ))}
       </div>
 
-      {/* Evolution banner */}
+      {/* Evolution banner — mismo estilo que el de capturas pendientes */}
       {data?.active?.readyToEvolve && (
-        <button
-          style={{
-            display: 'flex', alignItems: 'center', gap: '0.75rem',
-            width: '100%', padding: '0.85rem 1.25rem',
-            background: 'linear-gradient(135deg, #fef3c7, #fde68a)',
-            border: '2px solid #f59e0b', borderRadius: 12,
-            cursor: 'pointer', marginBottom: '1rem', textAlign: 'left',
-          }}
-          onClick={() => setShowEvo(true)}>
-          <span style={{ fontSize: '1.5rem' }}>⚡</span>
-          <div>
-            <div style={{ fontWeight: 800, color: '#92400e' }}>
-              ¡{data.active.pokemon.name} puede evolucionar!
-            </div>
-            <div style={{ fontSize: '0.8rem', color: '#b45309' }}>
-              Toca para ver la evolución
-            </div>
-          </div>
-        </button>
+        <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: '#92400e', fontSize: '0.9rem' }}>
+            ⚡ <strong>{data.active.pokemon.name}</strong> puede evolucionar
+          </span>
+          <button
+            style={{ padding: '0.35rem 0.85rem', background: '#f59e0b', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', flexShrink: 0 }}
+            onClick={() => setShowEvo(true)}>
+            Evolucionar
+          </button>
+        </div>
       )}
 
       {/* ── Activo ─────────────────────────────────────────────────────────── */}
