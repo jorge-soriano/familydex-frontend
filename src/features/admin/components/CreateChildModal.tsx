@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useCreateChild } from '../hooks/useAdmin';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
+import { FormInput } from '../../../shared/components/FormInput';
 
 const COLORS = ['#6366f1','#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6'];
 
@@ -32,26 +34,36 @@ export default function CreateChildModal({ onClose }: Props) {
           <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
-        <label style={styles.label}>
-          Nombre visible *
-          <input style={styles.input} value={form.displayName} required minLength={2}
-            onChange={(e) => set('displayName', e.target.value)} placeholder="Ej: Lucas" />
-        </label>
+        <FormInput
+          label="Nombre visible *"
+          helper="El nombre que verá en la app"
+          value={form.displayName}
+          required
+          minLength={2}
+          onChange={(e) => set('displayName', e.target.value)}
+          placeholder="Ej: Lucas"
+        />
 
-        <label style={styles.label}>
-          Nombre de usuario * <span className="text-caption font-normal text-[0.78rem]">(sin espacios, para iniciar sesión)</span>
-          <input style={styles.input} value={form.username} required
-            onChange={(e) => set('username', e.target.value)} placeholder="Ej: lucas" />
-        </label>
+        <FormInput
+          label="Nombre de usuario *"
+          helper="Sin espacios, para iniciar sesión"
+          value={form.username}
+          required
+          onChange={(e) => set('username', e.target.value)}
+          placeholder="Ej: lucas"
+        />
 
-        <label style={styles.label}>
-          Contraseña *
-          <input style={styles.input} type="password" value={form.password} required
-            onChange={(e) => set('password', e.target.value)} placeholder="Contraseña" />
-        </label>
+        <FormInput
+          label="Contraseña *"
+          type="password"
+          value={form.password}
+          required
+          onChange={(e) => set('password', e.target.value)}
+          placeholder="Contraseña"
+        />
 
         <div>
-          <p style={styles.label}>Color del avatar</p>
+          <p style={styles.colorLabel}>Color del avatar</p>
           <div style={styles.colorRow}>
             {COLORS.map((col) => (
               <button key={col} type="button"
@@ -68,10 +80,10 @@ export default function CreateChildModal({ onClose }: Props) {
         {error && <p className="text-danger text-[0.85rem] m-0">{error}</p>}
 
         <div style={styles.actions}>
-          <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
-          <button type="submit" style={styles.submit} disabled={create.isPending}>
+          <Button variant="secondary" type="button" onClick={onClose}>Cancelar</Button>
+          <Button type="submit" disabled={create.isPending}>
             {create.isPending ? 'Creando…' : 'Crear hijo'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
@@ -83,12 +95,9 @@ const styles: Record<string, React.CSSProperties> = {
   modal:        { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.85rem' },
   title:        { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   closeBtn:     { background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  label:        { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600, margin: 0 },
-  input:        { padding: '0.5rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.9rem' },
-  colorRow:     { display: 'flex', gap: '0.5rem', marginTop: '0.4rem', flexWrap: 'wrap' },
+  colorLabel:   { margin: '0 0 0.4rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading },
+  colorRow:     { display: 'flex', gap: '0.5rem', flexWrap: 'wrap' },
   colorBtn:     { width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer', flexShrink: 0 },
   avatarPreview:{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem', marginTop: '0.5rem' },
   actions:      { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' },
-  cancel:       { padding: '0.5rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer' },
-  submit:       { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
 };
