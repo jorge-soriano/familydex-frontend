@@ -1,6 +1,7 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
+import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import { c } from '../../../styles/tokens';
 
 interface Props { familyChildren: { id: number; username: string; displayName: string; avatarColor?: string | null }[] }
@@ -11,6 +12,7 @@ export default function InboxTab({ familyChildren }: Props) {
   const reject  = useRejectTask();
   const [rejectId, setRejectId]         = useState<number | null>(null);
   const [rejectReason, setRejectReason] = useState('');
+  const isNarrow = useWindowWidth() < 640;
 
   const childById = Object.fromEntries(familyChildren.map((ch) => [ch.id, ch]));
 
@@ -40,13 +42,21 @@ export default function InboxTab({ familyChildren }: Props) {
               </div>
             </div>
             <div className="flex gap-[0.4rem] shrink-0">
-              <button style={{ padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+              <button
+                title="Aprobar"
+                style={isNarrow
+                  ? { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+                  : { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
                 disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>
-                ✔ Aprobar
+                {isNarrow ? '✔' : '✔ Aprobar'}
               </button>
-              <button style={{ padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+              <button
+                title="Rechazar"
+                style={isNarrow
+                  ? { width: 34, height: 34, background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+                  : { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
                 onClick={() => { setRejectId(task.id); setRejectReason(''); }}>
-                ✖ Rechazar
+                {isNarrow ? '✖' : '✖ Rechazar'}
               </button>
             </div>
           </div>
