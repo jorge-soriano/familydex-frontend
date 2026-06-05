@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRewards, useToggleReward, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
+import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import RewardForm from './RewardForm';
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import apiClient from '../../../shared/api/apiClient';
@@ -35,17 +36,11 @@ export default function AdminRewardsPage() {
   const reject  = useRejectRequest();
 
   const pending = requests.filter((r) => r.status === 'Pending');
+  const isNarrow = useWindowWidth() < 640;
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.h2}>
-        Tienda de recompensas
-        {pending.length > 0 && (
-          <span style={{ background: c.warning, color: c.surface, fontSize: '0.8rem', padding: '3px 10px', borderRadius: 12, fontWeight: 700 }}>
-            {pending.length} pendientes
-          </span>
-        )}
-      </h2>
+      <h2 style={styles.h2}>Tienda de recompensas</h2>
 
       {/* Tabs */}
       <div style={styles.tabs}>
@@ -75,8 +70,19 @@ export default function AdminRewardsPage() {
               <div style={styles.reqActions}>
                 {rr.status === 'Pending' ? (
                   <>
-                    <button style={styles.approveBtn} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓ Aprobar</button>
-                    <button style={styles.rejectBtn} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗ Rechazar</button>
+                    <button
+                      title="Aprobar"
+                      style={isNarrow ? styles.approveBtnSm : styles.approveBtn}
+                      disabled={approve.isPending}
+                      onClick={() => approve.mutate(rr.id)}>
+                      {isNarrow ? '✓' : '✓ Aprobar'}
+                    </button>
+                    <button
+                      title="Rechazar"
+                      style={isNarrow ? styles.rejectBtnSm : styles.rejectBtn}
+                      onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>
+                      {isNarrow ? '✗' : '✗ Rechazar'}
+                    </button>
                   </>
                 ) : (
                   <Badge variant={rr.status === 'Approved' ? 'success' : 'danger'} subtle>
@@ -152,7 +158,9 @@ const styles: Record<string, React.CSSProperties> = {
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },
   reqActions:    { display: 'flex', gap: '0.5rem' },
   approveBtn:    { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
-  rejectBtn:     { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
+  rejectBtn:     { padding: '0.35rem 0.75rem', background: c.danger,  color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
+  approveBtnSm:  { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  rejectBtnSm:   { width: 34, height: 34, background: c.danger,  color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   grid:          { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' },
   rewardCard:    { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd },
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
