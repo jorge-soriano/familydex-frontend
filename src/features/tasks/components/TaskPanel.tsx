@@ -93,7 +93,7 @@ export default function TaskPanel({ children }: Props) {
 
       {/* ── Wide: table ──────────────────────────────────────────────────────── */}
       {!isNarrow && (
-        <div style={{ overflowX: 'auto', borderRadius: 10, boxShadow: '0 1px 4px rgba(0,0,0,0.07)' }}>
+        <div style={{ overflowX: 'auto', borderRadius: 10, boxShadow: c.shadowSm }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 540, background: c.surface }}>
             <thead>
               <tr>
@@ -182,7 +182,7 @@ export default function TaskPanel({ children }: Props) {
                     Deshabilitadas
                   </div>
                 )}
-                <div key={task.id} style={{ background: isDisabled ? c.page : c.surface, borderRadius: 8, padding: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', opacity: isDisabled ? 0.5 : 1 }}>
+                <div key={task.id} style={{ background: isDisabled ? c.page : c.surface, borderRadius: 8, padding: '0.75rem', boxShadow: c.shadowSm, opacity: isDisabled ? 0.5 : 1 }}>
                   <div style={{ fontWeight: 700, marginBottom: '0.25rem' }}>{TYPE_LABEL[task.type]} {task.title}</div>
                   <div style={{ fontSize: '0.8rem', color: c.body, marginBottom: '0.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>{childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}{freqLabel(task)} · 🪙{task.coinsReward} ⭐{task.xpReward}</div>
@@ -201,7 +201,7 @@ export default function TaskPanel({ children }: Props) {
 
       {/* Reject modal */}
       {rejectId !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
+        <div style={{ position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
           onClick={() => setRejectId(null)}>
           <div style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
             onClick={(e) => e.stopPropagation()}>

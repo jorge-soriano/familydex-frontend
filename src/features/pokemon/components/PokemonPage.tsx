@@ -155,7 +155,7 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     background: c.surface, borderRadius: 10, padding: '1rem',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+    boxShadow: c.shadowMd,
   },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
   activeBadge: { fontSize: '0.72rem', color: c.primary, fontWeight: 700 },

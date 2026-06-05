@@ -80,7 +80,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '2.5rem',
     width: '100%',
     maxWidth: 420,
-    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+    boxShadow: c.shadowLg,
   },
   title: { margin: 0, fontSize: '1.75rem', fontWeight: 800, color: c.night, textAlign: 'center' },
   subtitle: { margin: '0.25rem 0 1.5rem', color: c.body, textAlign: 'center', fontSize: '1rem', fontWeight: 600 },

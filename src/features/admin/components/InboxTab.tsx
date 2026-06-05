@@ -31,7 +31,7 @@ export default function InboxTab({ familyChildren }: Props) {
 
       <div className="flex flex-col gap-[0.6rem]">
         {tasks.map((task) => (
-          <div key={task.id} style={{ background: c.surface, borderRadius: 10, borderLeft: `4px solid ${c.warning}`, padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', flexWrap: 'wrap' }}>
+          <div key={task.id} style={{ background: c.surface, borderRadius: 10, borderLeft: `4px solid ${c.warning}`, padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: c.shadowSm, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, color: c.heading }}>{task.title}</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: c.body, marginTop: '0.2rem' }}>
@@ -54,7 +54,7 @@ export default function InboxTab({ familyChildren }: Props) {
       </div>
 
       {rejectId !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
+        <div style={{ position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
           onClick={() => setRejectId(null)}>
           <div style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
             onClick={(e) => e.stopPropagation()}>

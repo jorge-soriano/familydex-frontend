@@ -89,7 +89,7 @@ const styles: Record<string, React.CSSProperties> = {
   alertNum:  { fontSize: '1.75rem', fontWeight: 800 },
   alertAction: { marginLeft: 'auto', opacity: 0.85, fontSize: '0.9rem' },
   grid:      { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' },
-  childCard: { background: c.surface, borderRadius: 12, padding: '1.25rem', boxShadow: '0 2px 8px rgba(0,0,0,0.07)', textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem', transition: 'box-shadow 0.15s' },
+  childCard: { background: c.surface, borderRadius: 12, padding: '1.25rem', boxShadow: c.shadowMd, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem', transition: 'box-shadow 0.15s' },
   avatar:    { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem' },
   childInfo: { display: 'flex', flexDirection: 'column' },
   childName: { fontSize: '1.05rem' },

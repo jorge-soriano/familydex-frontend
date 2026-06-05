@@ -144,10 +144,10 @@ const styles: Record<string, React.CSSProperties> = {
   tabs:        { display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
   tab:         { padding: '0.45rem 1rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' },
   summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' },
-  statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: '0 1px 4px rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column' },
+  statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowSm, display: 'flex', flexDirection: 'column' },
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },
   statValue:   { margin: 0, fontSize: '1.6rem', fontWeight: 800 },
   pokeGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '1rem' },
-  pokeCard:    { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' },
-  reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.75rem', background: c.surface, borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.05)' },
+  pokeCard:    { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', boxShadow: c.shadowSm },
+  reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.75rem', background: c.surface, borderRadius: 8, boxShadow: c.shadowSm },
 };

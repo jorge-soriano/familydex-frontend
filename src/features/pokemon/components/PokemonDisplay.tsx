@@ -57,7 +57,7 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex', gap: '1.5rem', alignItems: 'center',
     background: c.surface, borderRadius: 14, padding: '1.5rem',
-    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+    boxShadow: c.shadowMd,
   },
   spriteWrap: {
     background: c.page, borderRadius: 12, padding: '0.75rem',

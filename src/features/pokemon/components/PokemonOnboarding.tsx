@@ -72,7 +72,7 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
     padding: '1rem', borderRadius: 12, cursor: 'pointer', transition: 'all 0.15s',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+    boxShadow: c.shadowMd,
   },
   cardName: { fontSize: '1.1rem', fontWeight: 800 },
   types: { display: 'flex', gap: '0.3rem' },

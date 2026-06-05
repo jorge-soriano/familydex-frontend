@@ -79,7 +79,7 @@ const styles: Record<string, React.CSSProperties> = {
   h3:           { fontSize: '1rem', fontWeight: 700, margin: '1.5rem 0 0.75rem' },
   balance:      { color: c.body, marginBottom: '1.5rem' },
   grid:         { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' },
-  card:         { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column', gap: '0.5rem' },
+  card:         { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   cardTop:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   cost:         { fontWeight: 800, fontSize: '1.1rem', color: c.primaryDark },
   desc:         { fontSize: '0.85rem', color: c.body, margin: 0 },

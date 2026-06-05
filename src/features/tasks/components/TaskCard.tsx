@@ -61,7 +61,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
 
   return (
     <div className="bg-surface rounded-[10px] p-5 flex flex-col gap-2"
-      style={{ borderLeft: `4px solid ${borderColor}`, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+      style={{ borderLeft: `4px solid ${borderColor}`, boxShadow: c.shadowMd }}>
 
       <span className="font-bold text-heading">{task.title}</span>
       <span className="font-extrabold text-base text-primary-dark">🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>

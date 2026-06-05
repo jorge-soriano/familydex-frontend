@@ -122,7 +122,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
 const overlay: React.CSSProperties = {
   position: 'fixed', inset: 0,
-  background: 'rgba(0,0,0,0.65)',
+  background: c.overlayDark,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   zIndex: 200,
 };
@@ -130,7 +130,7 @@ const modal: React.CSSProperties = {
   background: c.surface, borderRadius: 16,
   padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 400,
   display: 'flex', flexDirection: 'column', alignItems: 'center',
-  gap: '0.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+  gap: '0.5rem', boxShadow: c.shadowLg,
   textAlign: 'center',
 };
 const title: React.CSSProperties  = { margin: 0, fontSize: '1.15rem', fontWeight: 800 };

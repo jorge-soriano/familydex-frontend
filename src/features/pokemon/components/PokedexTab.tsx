@@ -68,7 +68,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: c.surface, borderRadius: 10,
     padding: '0.75rem 0.5rem',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.07)',
+    boxShadow: c.shadowSm,
     transition: 'opacity 0.2s',
   },
   num: { fontSize: '0.7rem', color: c.caption, fontWeight: 700 },

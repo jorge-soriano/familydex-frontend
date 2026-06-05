@@ -28,7 +28,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-night p-4">
       <div className="bg-surface rounded-xl p-8 w-full max-w-[400px]"
-        style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+        style={{ boxShadow: c.shadowLg }}>
         <h1 className="m-0 text-[2rem] font-extrabold text-night text-center">FamilyDex</h1>
         <p className="mt-1 mb-6 text-body text-center text-[0.9rem]">Gestión familiar de tareas</p>
 

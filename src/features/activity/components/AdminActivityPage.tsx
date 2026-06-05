@@ -53,7 +53,7 @@ export default function AdminActivityPage() {
       <HistoryList childId={filterChild || undefined} filterType={filterType || undefined} childMap={childMap} />
 
       {showForm && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
+        <div style={{ position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
           onClick={() => setShowForm(false)}>
           <div style={{ background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }}
             onClick={(e) => e.stopPropagation()}>

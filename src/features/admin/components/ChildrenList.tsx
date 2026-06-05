@@ -93,7 +93,7 @@ const styles: Record<string, React.CSSProperties> = {
   h2:       { fontSize: '1.5rem', fontWeight: 800, margin: 0 },
   newBtn:   { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   table:    { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
-  row:      { display: 'grid', gridTemplateColumns: '2fr 1.2fr 0.7fr 0.8fr 1.8fr 0.8fr 1.5fr', alignItems: 'center', gap: '0.75rem', background: c.surface, borderRadius: 8, padding: '0.75rem 1rem', boxShadow: '0 1px 4px rgba(0,0,0,0.05)' },
+  row:      { display: 'grid', gridTemplateColumns: '2fr 1.2fr 0.7fr 0.8fr 1.8fr 0.8fr 1.5fr', alignItems: 'center', gap: '0.75rem', background: c.surface, borderRadius: 8, padding: '0.75rem 1rem', boxShadow: c.shadowSm },
   header:   { background: c.page, fontWeight: 700, fontSize: '0.85rem', color: c.body, boxShadow: 'none' },
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit', fontWeight: 600 },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },

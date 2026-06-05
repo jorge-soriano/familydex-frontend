@@ -40,4 +40,13 @@ export const c = {
   navy:          '#1e3a5f',
   navyDark:      '#162d4a',
   night:         '#1a1a2e',
+
+  // Overlays (fondos de modales)
+  overlay:       'rgba(0,0,0,0.5)',
+  overlayDark:   'rgba(0,0,0,0.65)',
+
+  // Sombras estandarizadas
+  shadowSm:      '0 1px 4px rgba(0,0,0,0.06)',
+  shadowMd:      '0 2px 8px rgba(0,0,0,0.07)',
+  shadowLg:      '0 8px 32px rgba(0,0,0,0.28)',
 } as const;

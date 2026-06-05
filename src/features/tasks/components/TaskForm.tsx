@@ -211,7 +211,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
               onClick={() => setLocalEnabled(!localEnabled)}>
               <div style={{ width: 40, height: 22, borderRadius: 11, background: localEnabled ? c.success : c.captionLight, position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-                <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: c.surface, boxShadow: '0 1px 3px rgba(0,0,0,0.25)', transition: 'left 0.2s' }} />
+                <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: c.surface, boxShadow: c.shadowSm, transition: 'left 0.2s' }} />
               </div>
               <span style={{ fontSize: '0.85rem', color: c.body, userSelect: 'none' }}>
                 {localEnabled ? 'Activa' : 'Desactivada'}
@@ -264,7 +264,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  overlay:   { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
+  overlay:   { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   modal:     { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   title:     { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   label:     { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600 },
