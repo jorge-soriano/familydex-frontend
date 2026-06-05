@@ -1,6 +1,8 @@
 import type { Task } from '../api';
 import { useCompleteTask } from '../hooks/useTasks';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
+import type { BadgeVariant } from '../../../shared/components/Badge';
 
 const TYPE_LABEL: Record<string, string> = {
   hogar:           '🏠 Hogar',
@@ -27,8 +29,8 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
 
   // ── Compact admin variant ──────────────────────────────────────────────────
   if (variant === 'admin') {
-    const STATUS_COLOR: Record<string, string> = {
-      Pending: 'bg-[#888]', InReview: 'bg-warning', Approved: 'bg-success', Rejected: 'bg-danger',
+    const STATUS_VARIANT: Record<string, BadgeVariant> = {
+      Pending: 'neutral', InReview: 'warning', Approved: 'success', Rejected: 'danger',
     };
     const STATUS_LABEL: Record<string, string> = {
       Pending: 'Pendiente', InReview: 'En revisión', Approved: 'Aprobada', Rejected: 'Rechazada',
@@ -38,9 +40,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
       <div className="bg-surface border border-stroke rounded-lg px-4 py-3 mb-[0.6rem]">
         <div className="flex justify-between items-center mb-[0.35rem]">
           <span className="font-bold text-[0.9rem]">{task.title}</span>
-          <span className={`${STATUS_COLOR[task.status]} text-white text-[0.7rem] font-bold py-[2px] px-2 rounded-[10px]`}>
-            {STATUS_LABEL[task.status]}
-          </span>
+          <Badge variant={STATUS_VARIANT[task.status]}>{STATUS_LABEL[task.status]}</Badge>
         </div>
         <div className="flex gap-3 text-[0.78rem] text-[#555] flex-wrap">
           <span className="text-[0.7rem] bg-subtle text-body py-[1px] px-[7px] rounded whitespace-nowrap">{TYPE_LABEL[task.type] ?? task.type}</span>

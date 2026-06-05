@@ -1,4 +1,6 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
+import { Badge } from '../../../shared/components/Badge';
+import type { BadgeVariant } from '../../../shared/components/Badge';
 import { useHistory } from '../hooks/useActivity';
 import type { TransactionType } from '../../../shared/types';
 
@@ -10,18 +12,18 @@ interface Props {
 }
 
 const TYPE_LABEL: Record<TransactionType, string> = {
-  TaskReward:     '✅ Tarea aprobada',
-  Penalty:        '❌ Penalización',
-  RewardRedeemed: '🎁 Recompensa canjeada',
-  DirectReward:   '🎁 Recompensa directa',
-  DirectRecord:   '📝 Registro directo',
+  TaskReward:     'Tarea aprobada',
+  Penalty:        'Penalización',
+  RewardRedeemed: 'Recompensa canjeada',
+  DirectReward:   'Recompensa directa',
+  DirectRecord:   'Registro directo',
 };
-const TYPE_COLOR: Record<TransactionType, string> = {
-  TaskReward:     'bg-success',
-  Penalty:        'bg-danger',
-  RewardRedeemed: 'bg-accent',
-  DirectReward:   'bg-primary',
-  DirectRecord:   'bg-warning',
+const TYPE_VARIANT: Record<TransactionType, BadgeVariant> = {
+  TaskReward:     'success',
+  Penalty:        'danger',
+  RewardRedeemed: 'info',
+  DirectReward:   'info',
+  DirectRecord:   'warning',
 };
 
 export default function HistoryList({ childId, filterType, childMap }: Props) {
@@ -46,9 +48,7 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
           {/* Left: badge + description + child name */}
           <div className="flex flex-col gap-[0.2rem] flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className={`${TYPE_COLOR[tx.type]} text-white text-[0.7rem] font-bold py-[2px] px-2 rounded-[10px] shrink-0`}>
-                {TYPE_LABEL[tx.type]}
-              </span>
+              <Badge variant={TYPE_VARIANT[tx.type]}>{TYPE_LABEL[tx.type]}</Badge>
               {childMap && tx.childId && childMap[tx.childId] && (
                 <ChildAvatar displayName={childMap[tx.childId].displayName} avatarColor={childMap[tx.childId].avatarColor} size={24} />
               )}

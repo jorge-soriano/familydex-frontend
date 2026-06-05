@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDashboard } from '../hooks/useAdmin';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
 
 export default function Dashboard() {
   const { data, isLoading } = useDashboard();
@@ -70,9 +71,7 @@ export default function Dashboard() {
             )}
 
             {child.pendingReviewCount > 0 && (
-              <div style={{ background: c.warningSubtle, color: c.warningDark, fontSize: '0.75rem', fontWeight: 700, padding: '3px 10px', borderRadius: 12, width: 'fit-content' }}>
-                {child.pendingReviewCount} en revisión
-              </div>
+              <Badge variant="warning" subtle>{child.pendingReviewCount} en revisión</Badge>
             )}
           </Link>
         ))}

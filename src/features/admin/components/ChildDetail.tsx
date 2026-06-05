@@ -8,6 +8,8 @@ import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import HistoryList from '../../activity/components/HistoryList';
 import TaskCard from '../../tasks/components/TaskCard';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
+import type { BadgeVariant } from '../../../shared/components/Badge';
 
 type Tab = 'resumen' | 'tareas' | 'historial' | 'pokemon' | 'solicitudes';
 
@@ -34,8 +36,8 @@ export default function ChildDetail() {
     { key: 'solicitudes', label: `🎁 Solicitudes (${childRequests.length})` },
   ];
 
-  const statusColor = (s: string) =>
-    s === 'Approved' ? c.success : s === 'Pending' ? c.warning : c.danger;
+  const statusVariant = (s: string): BadgeVariant =>
+    s === 'Approved' ? 'success' : s === 'Pending' ? 'warning' : 'danger';
 
   return (
     <div style={styles.page}>
@@ -50,8 +52,8 @@ export default function ChildDetail() {
           <span className="text-caption text-[0.85rem]">@{child.username}</span>
         </div>
         {!child.isActive && (
-          <span style={{ marginLeft: 'auto', background: c.dangerSubtle, color: c.danger, padding: '3px 10px', borderRadius: 12, fontWeight: 700, fontSize: '0.8rem' }}>
-            Cuenta inactiva
+          <span style={{ marginLeft: 'auto' }}>
+            <Badge variant="danger" subtle>Cuenta inactiva</Badge>
           </span>
         )}
       </div>
@@ -124,9 +126,9 @@ export default function ChildDetail() {
             <div key={rr.id} style={styles.reqRow}>
               <span>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</span>
               <span className="font-bold">🪙 {rr.coinsReserved}</span>
-              <span style={{ color: statusColor(rr.status), fontWeight: 600, fontSize: '0.85rem' }}>
-                {rr.status === 'Pending' ? '⏳ Pendiente' : rr.status === 'Approved' ? '✅ Aprobada' : '❌ Rechazada'}
-              </span>
+              <Badge variant={statusVariant(rr.status)} subtle>
+                {rr.status === 'Pending' ? 'Pendiente' : rr.status === 'Approved' ? 'Aprobada' : 'Rechazada'}
+              </Badge>
               {rr.rejectionReason && <span className="text-caption text-[0.8rem]">{rr.rejectionReason}</span>}
             </div>
           ))}

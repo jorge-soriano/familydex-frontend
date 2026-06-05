@@ -2,6 +2,7 @@ import { useRewards, useRequestReward, useRewardRequests } from '../hooks/useRew
 import { useBalance } from '../../activity/hooks/useActivity';
 import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
 
 export default function RewardShop() {
   const { data: rewards = [], isLoading } = useRewards();
@@ -53,9 +54,9 @@ export default function RewardShop() {
           {myRequests.map((rr) => (
             <div key={rr.id} style={styles.histRow}>
               <span>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</span>
-              <span style={{ color: rr.status === 'Pending' ? c.warning : rr.status === 'Approved' ? c.success : c.danger, fontWeight: 600 }}>
-                {rr.status === 'Pending' ? '⏳ Pendiente' : rr.status === 'Approved' ? '✅ Aprobada' : '❌ Rechazada'}
-              </span>
+              <Badge variant={rr.status === 'Pending' ? 'warning' : rr.status === 'Approved' ? 'success' : 'danger'} subtle>
+                {rr.status === 'Pending' ? 'Pendiente' : rr.status === 'Approved' ? 'Aprobada' : 'Rechazada'}
+              </Badge>
               {rr.status === 'Rejected' && rr.rejectionReason && (
                 <span style={{ fontSize: '0.8rem', color: c.danger }}>{rr.rejectionReason}</span>
               )}

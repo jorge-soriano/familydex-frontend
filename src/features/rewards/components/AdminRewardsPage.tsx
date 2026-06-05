@@ -6,6 +6,7 @@ import ChildAvatar from '../../../shared/components/ChildAvatar';
 import apiClient from '../../../shared/api/apiClient';
 import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
 
 interface ChildInfo { id: number; displayName: string; avatarColor?: string | null }
 
@@ -85,9 +86,9 @@ export default function AdminRewardsPage() {
                     <button style={styles.rejectBtn} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗ Rechazar</button>
                   </>
                 ) : (
-                  <span style={{ color: rr.status === 'Approved' ? c.success : c.danger, fontWeight: 600, fontSize: '0.85rem' }}>
-                    {rr.status === 'Approved' ? '✅ Aprobada' : '❌ Rechazada'}
-                  </span>
+                  <Badge variant={rr.status === 'Approved' ? 'success' : 'danger'} subtle>
+                    {rr.status === 'Approved' ? 'Aprobada' : 'Rechazada'}
+                  </Badge>
                 )}
               </div>
             </div>

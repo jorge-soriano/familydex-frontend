@@ -6,6 +6,7 @@ import CreateChildModal from './CreateChildModal';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import type { ChildSummary } from '../api';
 import { c } from '../../../styles/tokens';
+import { Badge } from '../../../shared/components/Badge';
 
 export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
@@ -62,9 +63,9 @@ export default function ChildrenList() {
                 ) : '—'}
               </span>
 
-              <span style={{ color: child.isActive ? c.success : c.danger, fontWeight: 600, fontSize: '0.85rem' }}>
+              <Badge variant={child.isActive ? 'success' : 'neutral'} subtle>
                 {child.isActive ? 'Activo' : 'Inactivo'}
-              </span>
+              </Badge>
 
               <div style={styles.actions}>
                 <button style={styles.editBtn} onClick={() => setEditing(child)}>Editar</button>
