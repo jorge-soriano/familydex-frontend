@@ -4,6 +4,7 @@ import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useNotifications } from '../../features/admin/hooks/useAdmin';
 import { useWindowWidth } from '../hooks/useWindowWidth';
+import BottomNav from './BottomNav';
 
 function NavBadge({ count }: { count: number }) {
   if (!count) return null;
@@ -23,6 +24,14 @@ const LINKS = (notif?: { inReview: number; pendingRequests: number }) => [
   { to: '/admin/children',  label: 'Hijos',       badge: 0 },
 ];
 
+const BOTTOM_NAV = (notif?: { inReview: number; pendingRequests: number }) => [
+  { to: '/admin/dashboard', icon: '🏠', label: 'Inicio',    badge: 0 },
+  { to: '/admin/tasks',     icon: '📋', label: 'Tareas',    badge: notif?.inReview ?? 0 },
+  { to: '/admin/economy',   icon: '📊', label: 'Actividad', badge: 0 },
+  { to: '/admin/rewards',   icon: '🏪', label: 'Tienda',    badge: notif?.pendingRequests ?? 0 },
+  { to: '/admin/children',  icon: '👦', label: 'Hijos',     badge: 0 },
+];
+
 export default function AdminLayout() {
   const { clearAuth } = useAuthStore();
   const navigate = useNavigate();
@@ -30,6 +39,7 @@ export default function AdminLayout() {
   const isNarrow = useWindowWidth() < 640;
   const [open, setOpen] = useState(false);
   const links = LINKS(notif);
+  const bottomItems = BOTTOM_NAV(notif);
 
   const handleLogout = () => {
     authApi.logout().catch(() => {});
@@ -57,43 +67,17 @@ export default function AdminLayout() {
         )}
 
         <div className="ml-auto flex items-center gap-2">
-          {!isNarrow && (
-            <button
-              className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
-              onClick={handleLogout}>Salir</button>
-          )}
-          {isNarrow && (
-            <button
-              className="bg-transparent border-none text-white text-[1.4rem] cursor-pointer py-1 px-[0.4rem] leading-none rounded"
-              aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-              onClick={() => setOpen(o => !o)}>
-              {open ? '✕' : '☰'}
-            </button>
-          )}
+          <button
+            className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
+            onClick={handleLogout}>Salir</button>
         </div>
       </nav>
 
-      {/* Menú desplegable móvil */}
-      {isNarrow && open && (
-        <div className="bg-navy-dark border-b border-navy z-[49]">
-          {links.map(({ to, label, badge }) => (
-            <Link key={to} to={to}
-              className="flex items-center py-[0.85rem] px-5 text-slate-200 no-underline text-[0.95rem] border-b border-navy/20"
-              onClick={() => setOpen(false)}>
-              {label}<NavBadge count={badge} />
-            </Link>
-          ))}
-          <button
-            className="block w-full py-[0.85rem] px-5 bg-transparent border-none text-caption text-left cursor-pointer text-[0.95rem]"
-            onClick={handleLogout}>
-            Salir
-          </button>
-        </div>
-      )}
-
-      <main className="flex-1">
+      <main className={`flex-1 ${isNarrow ? 'pb-[60px]' : ''}`}>
         <Outlet />
       </main>
+
+      {isNarrow && <BottomNav items={bottomItems} />}
     </div>
   );
 }

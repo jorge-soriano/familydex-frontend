@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import BalanceBar from '../../features/activity/components/BalanceBar';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useWindowWidth } from '../hooks/useWindowWidth';
+import BottomNav from './BottomNav';
 
 const LINKS = [
   { to: '/child/tasks',   label: '📋 Tareas'    },
@@ -12,11 +12,17 @@ const LINKS = [
   { to: '/child/economy', label: '📊 Actividad' },
 ];
 
+const BOTTOM_NAV = [
+  { to: '/child/tasks',   icon: '📋', label: 'Tareas'    },
+  { to: '/child/pokemon', icon: '🎮', label: 'Pokémon'   },
+  { to: '/child/rewards', icon: '🏪', label: 'Tienda'    },
+  { to: '/child/economy', icon: '📊', label: 'Actividad' },
+];
+
 export default function ChildLayout() {
   const { clearAuth } = useAuthStore();
   const navigate = useNavigate();
   const isNarrow = useWindowWidth() < 640;
-  const [open, setOpen] = useState(false);
 
   const handleLogout = () => {
     authApi.logout().catch(() => {});
@@ -43,45 +49,19 @@ export default function ChildLayout() {
         )}
 
         <div className="ml-auto flex items-center gap-2">
-          {!isNarrow && (
-            <button
-              className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
-              onClick={handleLogout}>Salir</button>
-          )}
-          {isNarrow && (
-            <button
-              className="bg-transparent border-none text-white text-[1.4rem] cursor-pointer py-1 px-[0.4rem] leading-none rounded"
-              aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-              onClick={() => setOpen(o => !o)}>
-              {open ? '✕' : '☰'}
-            </button>
-          )}
+          <button
+            className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
+            onClick={handleLogout}>Salir</button>
         </div>
       </nav>
 
-      {/* Menú desplegable móvil */}
-      {isNarrow && open && (
-        <div className="bg-gray-900 border-b border-night/20 z-[49]">
-          {LINKS.map(({ to, label }) => (
-            <Link key={to} to={to}
-              className="block py-[0.85rem] px-5 text-slate-200 no-underline text-[0.95rem] border-b border-white/10"
-              onClick={() => setOpen(false)}>
-              {label}
-            </Link>
-          ))}
-          <button
-            className="block w-full py-[0.85rem] px-5 bg-transparent border-none text-caption text-left cursor-pointer text-[0.95rem]"
-            onClick={handleLogout}>
-            Salir
-          </button>
-        </div>
-      )}
-
       <BalanceBar />
 
-      <main className="flex-1">
+      <main className={`flex-1 ${isNarrow ? 'pb-[60px]' : ''}`}>
         <Outlet />
       </main>
+
+      {isNarrow && <BottomNav items={BOTTOM_NAV} />}
     </div>
   );
 }
