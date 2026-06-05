@@ -38,21 +38,14 @@ export default function AdminRewardsPage() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.topbar}>
-        <h2 style={styles.h2}>
-          Tienda de recompensas
-          {pending.length > 0 && (
-            <span style={{ background: c.warning, color: c.surface, fontSize: '0.8rem', padding: '3px 10px', borderRadius: 12, fontWeight: 700 }}>
-              {pending.length} pendientes
-            </span>
-          )}
-        </h2>
-        {tab === 'rewards' && (
-          <button style={styles.newBtn} onClick={() => { setEditReward(null); setShowForm(true); }}>
-            + Nueva recompensa
-          </button>
+      <h2 style={styles.h2}>
+        Tienda de recompensas
+        {pending.length > 0 && (
+          <span style={{ background: c.warning, color: c.surface, fontSize: '0.8rem', padding: '3px 10px', borderRadius: 12, fontWeight: 700 }}>
+            {pending.length} pendientes
+          </span>
         )}
-      </div>
+      </h2>
 
       {/* Tabs */}
       <div style={styles.tabs}>
@@ -98,6 +91,12 @@ export default function AdminRewardsPage() {
 
       {/* Rewards tab */}
       {tab === 'rewards' && (
+        <>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+          <button style={styles.newBtn} onClick={() => { setEditReward(null); setShowForm(true); }}>
+            + Nueva recompensa
+          </button>
+        </div>
         <div style={styles.grid}>
           {rewards.map((r) => (
             <div key={r.id} style={{ ...styles.rewardCard, opacity: r.isActive ? 1 : 0.55 }}>
@@ -117,6 +116,7 @@ export default function AdminRewardsPage() {
           ))}
           {rewards.length === 0 && <p className="text-caption py-4" style={{ gridColumn: '1/-1' }}>Sin recompensas creadas.</p>}
         </div>
+        </>
       )}
 
       {/* Reject modal */}
@@ -145,8 +145,7 @@ export default function AdminRewardsPage() {
 
 const styles: Record<string, React.CSSProperties> = {
   page:          { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
-  topbar:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' },
-  h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem' },
+  h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0 0 1rem' },
   newBtn:        { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
