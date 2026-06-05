@@ -8,6 +8,7 @@ import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import type { ChildSummary } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
+import { Button } from '../../../shared/components/Button';
 
 export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
@@ -30,7 +31,7 @@ export default function ChildrenList() {
 
       {/* Toolbar — mismo nivel que los filtros en TaskPanel */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <button style={styles.newBtn} onClick={() => setCreating(true)}>+ Nuevo hijo</button>
+        <Button onClick={() => setCreating(true)}>+ Nuevo hijo</Button>
       </div>
 
       {/* Wide: tabla real */}
@@ -149,7 +150,6 @@ export default function ChildrenList() {
 const styles: Record<string, React.CSSProperties> = {
   page:     { padding: '1.5rem', maxWidth: 1000, margin: '0 auto' },
   h2:       { fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1.25rem' },
-  newBtn:   { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem' },
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },

@@ -8,6 +8,7 @@ import apiClient from '../../../shared/api/apiClient';
 import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
+import { Button } from '../../../shared/components/Button';
 
 interface ChildInfo { id: number; displayName: string; avatarColor?: string | null }
 
@@ -99,9 +100,7 @@ export default function AdminRewardsPage() {
       {tab === 'rewards' && (
         <>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-          <button style={styles.newBtn} onClick={() => { setEditReward(null); setShowForm(true); }}>
-            + Nueva recompensa
-          </button>
+          <Button onClick={() => { setEditReward(null); setShowForm(true); }}>+ Nueva recompensa</Button>
         </div>
         <div style={styles.grid}>
           {rewards.map((r) => (
@@ -152,7 +151,6 @@ export default function AdminRewardsPage() {
 const styles: Record<string, React.CSSProperties> = {
   page:          { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
   h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0 0 1rem' },
-  newBtn:        { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },

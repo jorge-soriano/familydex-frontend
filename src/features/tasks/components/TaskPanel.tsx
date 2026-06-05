@@ -6,6 +6,7 @@ import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import type { TaskWithSeries } from '../api';
 import type { TaskType } from '../../../shared/types';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props  { children: Child[] }
@@ -85,10 +86,7 @@ export default function TaskPanel({ children }: Props) {
             ))}
           </select>
         </div>
-        <button style={{ padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
-          onClick={() => { setEditTask(null); setShowForm(true); }}>
-          + Nueva tarea
-        </button>
+        <Button onClick={() => { setEditTask(null); setShowForm(true); }}>+ Nueva tarea</Button>
       </div>
 
       {/* ── Wide: table ──────────────────────────────────────────────────────── */}

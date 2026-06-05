@@ -4,6 +4,7 @@ import apiClient from '../../../shared/api/apiClient';
 import HistoryList from './HistoryList';
 import DirectRecordsForm from './DirectRecordsForm';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 
@@ -43,11 +44,7 @@ export default function AdminActivityPage() {
             <option value="RewardRedeemed">Recompensas</option>
           </select>
         </div>
-        <button
-          style={{ padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
-          onClick={() => setShowForm(true)}>
-          + Nuevo registro
-        </button>
+        <Button onClick={() => setShowForm(true)}>+ Nuevo registro</Button>
       </div>
 
       <HistoryList childId={filterChild || undefined} filterType={filterType || undefined} childMap={childMap} />
