@@ -159,7 +159,7 @@ const styles: Record<string, React.CSSProperties> = {
   statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column' },
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },
   statValue:   { margin: 0, fontSize: '1.6rem', fontWeight: 800 },
-  pokeGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '1rem' },
+  pokeGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
   pokeCard:    { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', boxShadow: c.shadowSm },
   reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.65rem 1rem' },
 };

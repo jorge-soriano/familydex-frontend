@@ -21,7 +21,7 @@ export default function AdminActivityPage() {
   const [filterType,  setFilterType]  = useState('');
   const [showForm,    setShowForm]    = useState(false);
 
-  if (isLoading) return <p className="p-8">Cargando…</p>;
+  if (isLoading) return <p className="p-8 text-caption">Cargando…</p>;
 
   const childMap = Object.fromEntries(children.map((ch) => [ch.id, { displayName: ch.displayName, avatarColor: ch.avatarColor ?? null }]));
 
@@ -29,7 +29,7 @@ export default function AdminActivityPage() {
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: 1200, margin: '0 auto' }}>
-      <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
+      <h2 style={{ margin: '0 0 1.25rem', fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
 
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>

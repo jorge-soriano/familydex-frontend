@@ -44,22 +44,16 @@ export default function InboxTab({ familyChildren }: Props) {
               </div>
             </div>
             <div className="flex gap-[0.4rem] shrink-0">
-              <button
-                title="Aprobar"
-                style={isNarrow
-                  ? { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }
-                  : { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
-                disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>
-                {isNarrow ? '✔' : '✔ Aprobar'}
-              </button>
-              <button
-                title="Rechazar"
-                style={isNarrow
-                  ? { width: 34, height: 34, background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }
-                  : { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
-                onClick={() => { setRejectId(task.id); setRejectReason(''); }}>
-                {isNarrow ? '✖' : '✖ Rechazar'}
-              </button>
+              {isNarrow ? (
+                <button title="Aprobar" style={smBtn(c.success)} disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔</button>
+              ) : (
+                <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔ Aprobar</Button>
+              )}
+              {isNarrow ? (
+                <button title="Rechazar" style={smBtn(c.danger)} onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖</button>
+              ) : (
+                <Button variant="danger" size="sm" onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖ Rechazar</Button>
+              )}
             </div>
           </div>
         ))}
@@ -91,3 +85,9 @@ export default function InboxTab({ familyChildren }: Props) {
     </div>
   );
 }
+
+const smBtn = (bg: string): React.CSSProperties => ({
+  width: 34, height: 34, background: bg, color: c.surface, border: 'none',
+  borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem',
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+});

@@ -68,7 +68,7 @@ const styles: Record<string, React.CSSProperties> = {
   page: { padding: '2rem', maxWidth: 1200, margin: '0 auto', textAlign: 'center' },
   title: { fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' },
   sub: { color: c.body, marginBottom: '2rem' },
-  center: { textAlign: 'center', padding: '2rem' },
+  center: { textAlign: 'center', padding: '2rem', color: c.caption },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem', marginBottom: '2rem' },
   card: {
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',

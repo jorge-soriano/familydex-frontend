@@ -151,7 +151,7 @@ export default function AdminRewardsPage() {
 
 const styles: Record<string, React.CSSProperties> = {
   page:          { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
-  h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0 0 1rem' },
+  h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0 0 1.25rem' },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },

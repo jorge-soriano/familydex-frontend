@@ -36,7 +36,7 @@ export default function PokemonPage() {
   );
   const [showEvo, setShowEvo] = useState(false);
 
-  if (isLoading) return <p style={{ padding: '2rem' }}>Cargando…</p>;
+  if (isLoading) return <p style={{ padding: '2rem', color: c.caption }}>Cargando…</p>;
 
   // Onboarding: no pokemon yet
   if (!data?.active && data?.collection.length === 0) {
