@@ -65,7 +65,7 @@ export default function PokemonOnboarding() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page: { padding: '2rem', maxWidth: 800, margin: '0 auto', textAlign: 'center' },
+  page: { padding: '2rem', maxWidth: 1200, margin: '0 auto', textAlign: 'center' },
   title: { fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' },
   sub: { color: c.body, marginBottom: '2rem' },
   center: { textAlign: 'center', padding: '2rem' },

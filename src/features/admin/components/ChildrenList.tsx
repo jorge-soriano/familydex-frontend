@@ -148,7 +148,7 @@ export default function ChildrenList() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page:     { padding: '1.5rem', maxWidth: 1000, margin: '0 auto' },
+  page:     { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   h2:       { fontSize: '1.5rem', fontWeight: 800, margin: '0 0 1.25rem' },
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },

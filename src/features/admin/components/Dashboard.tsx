@@ -91,7 +91,7 @@ export default function Dashboard() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page:      { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
+  page:      { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   h2:        { fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' },
   h3:          { fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.75rem', color: c.body },
   alertSection:{ marginBottom: '1.5rem' },

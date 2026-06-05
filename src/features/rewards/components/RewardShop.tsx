@@ -79,7 +79,7 @@ export default function RewardShop() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page:         { padding: '1.5rem', maxWidth: 800, margin: '0 auto' },
+  page:         { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   h2:           { fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.25rem' },
   h3:           { fontSize: '1rem', fontWeight: 700, margin: '1.5rem 0 0.75rem' },
   balance:      { color: c.body, marginBottom: '1.5rem' },

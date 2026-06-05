@@ -51,11 +51,10 @@ export default function TaskForm({ task, children, onClose }: Props) {
     title: task?.title ?? '',
     description: task?.description ?? '',
     type: task?.type ?? 'hogar',
-    coinsReward: task?.coinsReward ?? 0,
-    xpReward: task?.xpReward ?? 0,
+    coinsReward: task?.coinsReward ?? 5,
+    xpReward: task?.xpReward ?? 25,
     frequency: 'OneTime' as 'OneTime' | 'Daily' | 'Weekly',
     daysOfWeek: [] as number[],
-    dueDate: task?.dueDate ?? '',
   });
 
   const set = (key: string, value: unknown) =>
@@ -75,7 +74,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
       const dto: EditTaskDto = {
         title: form.title, description: form.description || undefined,
         type: form.type as any, coinsReward: form.coinsReward,
-        xpReward: form.xpReward, dueDate: form.dueDate || null,
+        xpReward: form.xpReward,
       };
       editTask.mutate({ id: task.id, data: dto }, {
         onSuccess: async () => {
@@ -92,7 +91,6 @@ export default function TaskForm({ task, children, onClose }: Props) {
         type: form.type as any, coinsReward: form.coinsReward, xpReward: form.xpReward,
         frequency: form.frequency,
         daysOfWeek: form.frequency === 'Weekly' ? form.daysOfWeek : undefined,
-        dueDate: form.frequency === 'OneTime' && form.dueDate ? form.dueDate : undefined,
       };
       createTask.mutate(dto, { onSuccess: onClose });
     }
@@ -183,10 +181,6 @@ export default function TaskForm({ task, children, onClose }: Props) {
               ))}
             </div>
           </div>
-        )}
-
-        {(isEditing || form.frequency === 'OneTime') && (
-          <FormInput label="Fecha límite" type="date" value={form.dueDate ?? ''} onChange={(e) => set('dueDate', e.target.value)} />
         )}
 
         {isEditing && task && (

@@ -17,7 +17,7 @@ export default function TaskList() {
   const byStatus    = (status: TaskStatus): Task[] => activeTasks.filter((t) => t.status === status);
 
   return (
-    <div className="px-5 py-5 max-w-[900px] mx-auto">
+    <div className="px-5 py-5 max-w-[1200px] mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <h2 className="m-0 text-[1.5rem] font-extrabold">Mis tareas</h2>
         {activeTasks.length > 0 && (

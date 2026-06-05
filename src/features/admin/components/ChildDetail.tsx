@@ -80,10 +80,20 @@ export default function ChildDetail() {
           {child.activePokemon && (
             <div style={{ ...styles.statCard, flexDirection: 'row', gap: '1rem', gridColumn: '1/-1', alignItems: 'center' }}>
               <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={64} height={64} style={{ imageRendering: 'pixelated' }} />
-              <div>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={styles.statLabel}>Pokémon activo</p>
                 <p style={{ ...styles.statValue, fontSize: '1.25rem' }}>{child.activePokemon.name}</p>
-                <p className="text-body m-0 text-[0.85rem]">Nivel {child.activePokemon.level}</p>
+                <p className="text-body m-0 text-[0.85rem]" style={{ marginBottom: '0.4rem' }}>Nivel {child.activePokemon.level}</p>
+                {pokemonData?.active && (
+                  <div>
+                    <div style={{ height: 6, borderRadius: 3, background: c.stroke, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${pokemonData.active.progressPercent}%`, background: c.primary, borderRadius: 3, transition: 'width 0.3s' }} />
+                    </div>
+                    <p style={{ margin: '0.15rem 0 0', fontSize: '0.72rem', color: c.caption }}>
+                      {pokemonData.active.pokemonXp} / {pokemonData.active.pokemonXp + pokemonData.active.xpForNextLevel} XP
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -139,7 +149,7 @@ export default function ChildDetail() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page:        { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
+  page:        { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   header:      { display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' },
   avatar:      { width: 52, height: 52, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.4rem', flexShrink: 0 },
   name:        { margin: 0, fontSize: '1.5rem', fontWeight: 800 },

@@ -148,7 +148,7 @@ export default function PokemonPage() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page: { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
+  page: { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   tabs: { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },

@@ -66,7 +66,7 @@ export default function CaptureScreen() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page: { maxWidth: 800, margin: '0 auto', paddingTop: '0.25rem' },
+  page: { maxWidth: 1200, margin: '0 auto', paddingTop: '0.25rem' },
   banner: { background: c.primarySubtle, border: `1px solid ${c.primaryLight}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.primaryDark },
   noCap: { background: c.page, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.body, fontSize: '0.9rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(148px, 1fr))', gap: '1rem' },

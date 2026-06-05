@@ -21,8 +21,8 @@ const TYPE_LABEL: Record<TransactionType, string> = {
 const TYPE_VARIANT: Record<TransactionType, BadgeVariant> = {
   TaskReward:     'success',
   Penalty:        'danger',
-  RewardRedeemed: 'info',
-  DirectReward:   'info',
+  RewardRedeemed: 'neutral',
+  DirectReward:   'neutral',
   DirectRecord:   'warning',
 };
 

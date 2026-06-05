@@ -74,8 +74,8 @@ export default function LoginPage() {
             {DEMO_ACCOUNTS.map((acc) => (
               <button
                 key={acc.identifier}
-                className="py-[0.6rem] px-4 text-white border-none rounded-lg text-[0.9rem] font-bold cursor-pointer text-left"
-                style={{ background: acc.color }}
+                className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2"
+                style={{ background: 'transparent', color: acc.color, borderColor: acc.color, opacity: login.isPending ? 0.5 : 1 }}
                 disabled={login.isPending}
                 onClick={() => handleDemo(acc)}
               >

@@ -32,7 +32,7 @@ export default function AdminMissionsPage() {
   ];
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 1100, margin: '0 auto' }}>
+    <div style={{ padding: '1.5rem', maxWidth: 1200, margin: '0 auto' }}>
       <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' }}>Tareas</h2>
 
       <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' }}>

@@ -28,7 +28,7 @@ export default function AdminActivityPage() {
   const sel: React.CSSProperties = { padding: '0.4rem 0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, background: c.surface, fontSize: '0.875rem', color: c.heading };
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 800, margin: '0 auto' }}>
+    <div style={{ padding: '1.5rem', maxWidth: 1200, margin: '0 auto' }}>
       <h2 style={{ margin: '0 0 1rem', fontSize: '1.5rem', fontWeight: 800 }}>Actividad familiar</h2>
 
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
