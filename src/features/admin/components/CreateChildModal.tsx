@@ -27,7 +27,10 @@ export default function CreateChildModal({ onClose }: Props) {
   return (
     <div style={styles.overlay} onClick={onClose}>
       <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <h2 style={styles.title}>Nuevo hijo</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={styles.title}>Nuevo hijo</h2>
+          <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
+        </div>
 
         <label style={styles.label}>
           Nombre visible *
@@ -79,6 +82,7 @@ const styles: Record<string, React.CSSProperties> = {
   overlay:      { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   modal:        { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.85rem' },
   title:        { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
+  closeBtn:     { background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
   label:        { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600, margin: 0 },
   input:        { padding: '0.5rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.9rem' },
   colorRow:     { display: 'flex', gap: '0.5rem', marginTop: '0.4rem', flexWrap: 'wrap' },
