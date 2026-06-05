@@ -9,6 +9,7 @@ import type { ChildSummary } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
 import { Button } from '../../../shared/components/Button';
+import { Button } from '../../../shared/components/Button';
 
 export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
@@ -63,7 +64,7 @@ export default function ChildrenList() {
                       <span style={{ fontWeight: 600 }}>{child.displayName}</span>
                     </Link>
                   </td>
-                  <td style={{ padding: '0.6rem 0.75rem', fontSize: '0.85rem', color: c.body }}>@{child.username}</td>
+                  <td style={{ padding: '0.6rem 0.75rem', fontSize: '0.875rem', color: c.body }}>@{child.username}</td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>{child.coins}</td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>{child.xp}</td>
                   <td style={{ padding: '0.6rem 0.75rem' }}>
@@ -83,7 +84,7 @@ export default function ChildrenList() {
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>
                     <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                      <button style={styles.editBtn} onClick={() => setEditing(child)}>Editar</button>
+                      <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>Editar</Button>
                       <button
                         style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.primary }}
                         disabled={toggle.isPending}
@@ -105,7 +106,7 @@ export default function ChildrenList() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {children.length === 0 && <p className="text-caption">No hay hijos registrados.</p>}
           {children.map((child) => (
-            <div key={child.id} style={{ background: c.surface, borderRadius: 8, padding: '0.75rem', boxShadow: c.shadowSm, opacity: child.isActive ? 1 : 0.55 }}>
+            <div key={child.id} style={{ background: c.surface, borderRadius: 10, padding: '0.75rem', boxShadow: c.shadowSm, opacity: child.isActive ? 1 : 0.55 }}>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.4rem' }}>
                 <div style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>
                   {child.displayName.charAt(0).toUpperCase()}
@@ -153,6 +154,5 @@ const styles: Record<string, React.CSSProperties> = {
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },
-  editBtn:  { padding: '0.35rem 0.75rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
   toggleBtn:{ padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
 };

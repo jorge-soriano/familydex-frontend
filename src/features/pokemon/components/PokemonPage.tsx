@@ -10,6 +10,7 @@ import PokedexTab from './PokedexTab';
 import TypeBadge from './TypeBadge';
 import EvolutionModal from './EvolutionModal';
 import type { CaughtPokemonItem } from '../api';
+import { Button } from '../../../shared/components/Button';
 import { c } from '../../../styles/tokens';
 
 type Tab = 'activo' | 'caja' | 'pokedex' | 'capturar';
@@ -76,11 +77,12 @@ export default function PokemonPage() {
           <span style={{ color: c.warningDark, fontSize: '0.9rem' }}>
             ⚡ <strong>{data.active.pokemon.name}</strong> puede evolucionar
           </span>
-          <button
-            style={{ padding: '0.35rem 0.85rem', background: c.warning, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', flexShrink: 0 }}
+          <Button
+            size="sm"
+            style={{ background: c.warning, color: c.surface, border: 'none', flexShrink: 0 }}
             onClick={() => setShowEvo(true)}>
             Evolucionar
-          </button>
+          </Button>
         </div>
       )}
 
@@ -117,13 +119,14 @@ export default function PokemonPage() {
                 {isActive ? (
                   <span style={styles.activeBadge}>Activo ✓</span>
                 ) : (
-                  <button
-                    style={styles.activateBtn}
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => setActive.mutate(item.id)}
                     disabled={setActive.isPending}
                   >
                     Activar
-                  </button>
+                  </Button>
                 )}
               </div>
             );
@@ -162,10 +165,6 @@ const styles: Record<string, React.CSSProperties> = {
   evolvedBadge: {
     fontSize: '0.7rem', color: c.warning, fontWeight: 700,
     background: c.warningSubtle, padding: '2px 8px', borderRadius: 8,
-  },
-  activateBtn: {
-    padding: '0.3rem 0.75rem', background: c.subtle,
-    border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
   },
   empty: { color: c.caption, textAlign: 'center', padding: '2rem' },
 };

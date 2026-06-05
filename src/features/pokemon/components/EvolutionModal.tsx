@@ -5,6 +5,7 @@ import { useEvolveActive } from '../hooks/usePokemon';
 import type { ActivePokemonResult, PokemonData } from '../api';
 import '../evolution.css';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 type Phase = 'idle' | 'flashing' | 'revealing' | 'done';
 
@@ -75,10 +76,10 @@ export default function EvolutionModal({ active, onClose }: Props) {
             <div style={btns}>
               {phase === 'idle' && (
                 <>
-                  <button style={cancelBtn} onClick={onClose}>Ahora no</button>
-                  <button style={evolveBtn} onClick={handleEvolve} disabled={evolve.isPending}>
+                  <Button variant="secondary" style={{ padding: '0.55rem 1.25rem' }} onClick={onClose}>Ahora no</Button>
+                  <Button style={{ background: c.warning, color: c.surface, padding: '0.55rem 1.5rem', fontSize: '1rem', fontWeight: 800 }} onClick={handleEvolve} disabled={evolve.isPending}>
                     ⚡ Evolucionar
-                  </button>
+                  </Button>
                 </>
               )}
             </div>
@@ -110,7 +111,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
             <div style={btns}>
               {phase === 'done' && (
-                <button style={evolveBtn} onClick={onClose}>¡Genial! 🎉</button>
+                <Button style={{ background: c.warning, color: c.surface, padding: '0.55rem 1.5rem', fontSize: '1rem', fontWeight: 800 }} onClick={onClose}>¡Genial! 🎉</Button>
               )}
             </div>
           </>
@@ -127,7 +128,7 @@ const overlay: React.CSSProperties = {
   zIndex: 200,
 };
 const modal: React.CSSProperties = {
-  background: c.surface, borderRadius: 16,
+  background: c.surface, borderRadius: 12,
   padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 400,
   display: 'flex', flexDirection: 'column', alignItems: 'center',
   gap: '0.5rem', boxShadow: c.shadowLg,
@@ -143,11 +144,3 @@ const spriteWrap: React.CSSProperties = {
   margin: '0.5rem 0',
 };
 const btns: React.CSSProperties = { display: 'flex', gap: '0.75rem', marginTop: '0.5rem' };
-const cancelBtn: React.CSSProperties = {
-  padding: '0.55rem 1.25rem', background: c.subtle,
-  border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600,
-};
-const evolveBtn: React.CSSProperties = {
-  padding: '0.55rem 1.5rem', background: c.warning, color: c.surface,
-  border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem',
-};

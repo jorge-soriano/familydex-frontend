@@ -3,6 +3,7 @@ import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 export default function CaptureScreen() {
   const { data: available = [], isLoading } = useAvailableToCapture();
@@ -44,13 +45,13 @@ export default function CaptureScreen() {
               {p.unlockXp > 0 && (
                 <span style={styles.xpTag}>🔓 {p.unlockXp.toLocaleString()} XP</span>
               )}
-              <button
-                style={{ ...styles.btn, opacity: pendingCaptures > 0 ? 1 : 0.45 }}
+              <Button
+                size="sm"
                 disabled={pendingCaptures === 0 || capture.isPending}
                 onClick={() => capture.mutate(p.id)}
               >
                 {pendingCaptures > 0 ? '¡Capturar!' : 'Sin capturas'}
-              </button>
+              </Button>
             </div>
           ))}
         </div>
@@ -74,7 +75,6 @@ const styles: Record<string, React.CSSProperties> = {
   name: { fontSize: '0.9rem' },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
   xpTag: { fontSize: '0.72rem', color: c.success, fontWeight: 700 },
-  btn: { padding: '0.35rem 0.75rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
   loading: { color: c.caption },
   empty: { color: c.caption, textAlign: 'center', padding: '2rem', fontSize: '0.9rem' },
   error: { color: c.danger, marginTop: '1rem', textAlign: 'center' },
