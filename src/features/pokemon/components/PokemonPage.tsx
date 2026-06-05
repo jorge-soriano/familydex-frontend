@@ -153,7 +153,7 @@ const styles: Record<string, React.CSSProperties> = {
   tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
   card: {
-    background: c.surface, borderRadius: 10, padding: '1rem',
+    background: c.surface, borderRadius: 10, padding: '1.25rem',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
     boxShadow: c.shadowMd,
   },

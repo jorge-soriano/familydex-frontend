@@ -70,7 +70,7 @@ const styles: Record<string, React.CSSProperties> = {
   banner: { background: c.primarySubtle, border: `1px solid ${c.primaryLight}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.primaryDark },
   noCap: { background: c.page, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.body, fontSize: '0.9rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(148px, 1fr))', gap: '1rem' },
-  card: { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', boxShadow: c.shadowMd },
+  card: { background: c.surface, borderRadius: 10, padding: '1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', boxShadow: c.shadowMd },
   name: { fontSize: '0.9rem' },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
   xpTag: { fontSize: '0.72rem', color: c.success, fontWeight: 700 },

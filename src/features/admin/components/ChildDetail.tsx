@@ -120,10 +120,10 @@ export default function ChildDetail() {
 
       {/* Solicitudes tab */}
       {tab === 'solicitudes' && (
-        <div className="flex flex-col gap-2">
-          {childRequests.length === 0 && <p className="text-caption py-4">Sin solicitudes de recompensa.</p>}
+        <div style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
+          {childRequests.length === 0 && <p className="text-caption" style={{ padding: '1rem' }}>Sin solicitudes de recompensa.</p>}
           {childRequests.map((rr) => (
-            <div key={rr.id} style={styles.reqRow}>
+            <div key={rr.id} style={{ ...styles.reqRow, borderBottom: `1px solid ${c.subtle}` }}>
               <span>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</span>
               <span className="font-bold">🪙 {rr.coinsReserved}</span>
               <Badge variant={statusVariant(rr.status)} subtle>
@@ -146,10 +146,10 @@ const styles: Record<string, React.CSSProperties> = {
   tabs:        { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:         { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' },
-  statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowSm, display: 'flex', flexDirection: 'column' },
+  statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column' },
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },
   statValue:   { margin: 0, fontSize: '1.6rem', fontWeight: 800 },
   pokeGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '1rem' },
   pokeCard:    { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', boxShadow: c.shadowSm },
-  reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.75rem', background: c.surface, borderRadius: 8, boxShadow: c.shadowSm },
+  reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.65rem 1rem' },
 };

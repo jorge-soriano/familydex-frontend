@@ -66,10 +66,10 @@ export default function AdminRewardsPage() {
 
       {/* Requests tab */}
       {tab === 'requests' && (
-        <div>
-          {requests.length === 0 && <p className="text-caption py-4">No hay solicitudes.</p>}
+        <div style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
+          {requests.length === 0 && <p className="text-caption" style={{ padding: '1rem' }}>No hay solicitudes.</p>}
           {requests.map((rr) => (
-            <div key={rr.id} style={styles.reqRow}>
+            <div key={rr.id} style={{ ...styles.reqRow, borderBottom: `1px solid ${c.subtle}` }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                 <strong style={{ fontSize: '0.9rem' }}>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</strong>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', color: c.body }}>
@@ -150,7 +150,7 @@ const styles: Record<string, React.CSSProperties> = {
   newBtn:        { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
-  reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem 0.75rem', background: c.surface, borderRadius: 8, marginBottom: '0.4rem', boxShadow: c.shadowSm },
+  reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },
   reqActions:    { display: 'flex', gap: '0.5rem' },
   approveBtn:    { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
   rejectBtn:     { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },

@@ -25,7 +25,7 @@ export default function ChildrenList() {
         </button>
       </div>
 
-      <div style={{ overflowX: 'auto', borderRadius: 8 }}>
+      <div style={{ overflowX: 'auto', background: c.surface, borderRadius: 10, boxShadow: c.shadowSm }}>
         <div style={{ ...styles.table, minWidth: 640 }}>
           <div style={{ ...styles.row, ...styles.header }}>
             <span>Nombre</span>
@@ -93,9 +93,9 @@ const styles: Record<string, React.CSSProperties> = {
   topbar:   { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' },
   h2:       { fontSize: '1.5rem', fontWeight: 800, margin: 0 },
   newBtn:   { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
-  table:    { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
-  row:      { display: 'grid', gridTemplateColumns: '2fr 1.2fr 0.7fr 0.8fr 1.8fr 0.8fr 1.5fr', alignItems: 'center', gap: '0.75rem', background: c.surface, borderRadius: 8, padding: '0.55rem 1rem', boxShadow: c.shadowSm },
-  header:   { background: c.page, fontWeight: 700, fontSize: '0.85rem', color: c.body, boxShadow: 'none' },
+  table:    { display: 'flex', flexDirection: 'column' },
+  row:      { display: 'grid', gridTemplateColumns: '2fr 1.2fr 0.7fr 0.8fr 1.8fr 0.8fr 1.5fr', alignItems: 'center', gap: '0.75rem', padding: '0.6rem 1rem', borderBottom: `1px solid ${c.subtle}` },
+  header:   { background: c.page, fontWeight: 700, fontSize: '0.85rem', color: c.body, borderBottom: `2px solid ${c.stroke}` },
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit', fontWeight: 600 },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },
