@@ -1,3 +1,5 @@
+import { c } from '../../styles/tokens';
+
 interface Props {
   displayName: string;
   avatarColor?: string | null;
@@ -18,7 +20,7 @@ export default function ChildAvatar({ displayName, avatarColor, size = 28 }: Pro
         borderRadius: '50%',
         background: avatarColor ?? '#6366f1',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: '#fff',
+        color: c.surface,
         fontWeight: 700,
         fontSize: Math.round(size * 0.43) + 'px',
         flexShrink: 0,

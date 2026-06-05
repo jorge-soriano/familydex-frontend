@@ -66,7 +66,7 @@ export default function LoginPage() {
         <div className="mt-6">
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-subtle text-body text-[0.75rem] font-bold py-[2px] px-[10px] rounded-[10px] whitespace-nowrap border border-stroke"
-              style={{ boxShadow: '0 0 0 1px #e2e8f0' }}>
+              style={{ boxShadow: `0 0 0 1px ${c.stroke}` }}>
               Acceso demo
             </span>
           </div>

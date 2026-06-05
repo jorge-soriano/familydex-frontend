@@ -204,25 +204,22 @@ export default function TaskForm({ task, children, onClose }: Props) {
           {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
               {!confirmDel ? (
-                <button type="button"
-                  style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: `1px solid ${c.stroke}`, background: c.dangerSubtle, color: c.dangerDark, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+                <Button type="button" size="sm"
+                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}` }}
                   onClick={() => setConfirmDel(true)}>
                   🗑 Eliminar
-                </button>
+                </Button>
               ) : (
                 <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.78rem', color: c.dangerDark, fontWeight: 600 }}>¿Seguro?</span>
-                  <button type="button"
-                    style={{ padding: '0.3rem 0.65rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
-                    disabled={del.isPending}
+                  <Button type="button" variant="danger" size="sm" disabled={del.isPending}
                     onClick={() => del.mutate({ id: task.id }, { onSuccess: onClose })}>
                     Sí
-                  </button>
-                  <button type="button"
-                    style={{ padding: '0.3rem 0.6rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.78rem' }}
+                  </Button>
+                  <Button type="button" variant="secondary" size="sm"
                     onClick={() => setConfirmDel(false)}>
                     No
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
