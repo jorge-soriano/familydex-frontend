@@ -53,11 +53,11 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
                 <ChildAvatar displayName={childMap[tx.childId].displayName} avatarColor={childMap[tx.childId].avatarColor} size={24} />
               )}
             </div>
-            <span className="text-[0.83rem] text-body overflow-hidden text-ellipsis whitespace-nowrap">{tx.description}</span>
+            <span className="text-[0.875rem] text-body overflow-hidden text-ellipsis whitespace-nowrap">{tx.description}</span>
           </div>
 
           {/* Right: amounts + date */}
-          <div className="flex gap-[0.65rem] items-center text-[0.83rem] shrink-0">
+          <div className="flex gap-[0.65rem] items-center text-[0.875rem] shrink-0">
             {tx.coinsDelta !== 0 && (
               <span className={`font-bold ${tx.coinsDelta > 0 ? 'text-success' : 'text-danger'}`}>
                 {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta} 🪙

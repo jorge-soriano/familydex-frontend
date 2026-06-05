@@ -9,7 +9,6 @@ import type { ChildSummary } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
 import { Button } from '../../../shared/components/Button';
-import { Button } from '../../../shared/components/Button';
 
 export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
@@ -128,7 +127,7 @@ export default function ChildrenList() {
                 </div>
               )}
               <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <button style={styles.editBtn} onClick={() => setEditing(child)}>Editar</button>
+                <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>Editar</Button>
                 <button
                   style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.primary }}
                   disabled={toggle.isPending}

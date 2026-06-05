@@ -56,7 +56,7 @@ export default function PokemonDisplay({ data }: Props) {
 const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex', gap: '1.5rem', alignItems: 'center',
-    background: c.surface, borderRadius: 14, padding: '1.5rem',
+    background: c.surface, borderRadius: 10, padding: '1.5rem',
     boxShadow: c.shadowMd,
   },
   spriteWrap: {
