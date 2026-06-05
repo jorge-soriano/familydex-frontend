@@ -14,27 +14,37 @@ export default function Dashboard() {
       <h2 style={styles.h2}>Dashboard familiar</h2>
 
       {/* Action alerts */}
-      <div style={styles.alerts}>
-        {(data?.totalInReview ?? 0) > 0 && (
-          <Link to="/admin/tasks?status=InReview" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: c.warning, color: c.surface, padding: '1rem 1.5rem', borderRadius: 10, textDecoration: 'none', fontWeight: 600 }}>
-            <span style={styles.alertNum}>{data!.totalInReview}</span>
-            <span>tarea{data!.totalInReview !== 1 ? 's' : ''} en revisión</span>
-            <span style={styles.alertAction}>Revisar →</span>
-          </Link>
-        )}
-        {(data?.totalPendingRequests ?? 0) > 0 && (
-          <Link to="/admin/rewards" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: c.accent, color: c.surface, padding: '1rem 1.5rem', borderRadius: 10, textDecoration: 'none', fontWeight: 600 }}>
-            <span style={styles.alertNum}>{data!.totalPendingRequests}</span>
-            <span>solicitud{data!.totalPendingRequests !== 1 ? 'es' : ''} pendiente{data!.totalPendingRequests !== 1 ? 's' : ''}</span>
-            <span style={styles.alertAction}>Ver →</span>
-          </Link>
-        )}
-        {!data?.totalInReview && !data?.totalPendingRequests && (
-          <div style={{ background: c.successSubtle, color: c.successDark, padding: '0.75rem 1.25rem', borderRadius: 8, fontWeight: 600 }}>
-            ✅ Todo al día — no hay acciones pendientes
+      {(data?.totalInReview ?? 0) > 0 || (data?.totalPendingRequests ?? 0) > 0 ? (
+        <div style={styles.alertSection}>
+          <p style={styles.alertTitle}>Acciones pendientes</p>
+          <div style={styles.alerts}>
+            {(data?.totalInReview ?? 0) > 0 && (
+              <Link to="/admin/tasks" style={styles.alertCard}>
+                <span style={styles.alertNum}>{data!.totalInReview}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Tarea{data!.totalInReview !== 1 ? 's' : ''} por revisar</div>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.85 }}>El niño espera tu aprobación</div>
+                </div>
+                <span style={styles.alertAction}>Revisar →</span>
+              </Link>
+            )}
+            {(data?.totalPendingRequests ?? 0) > 0 && (
+              <Link to="/admin/rewards" style={{ ...styles.alertCard, background: c.accent }}>
+                <span style={styles.alertNum}>{data!.totalPendingRequests}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Solicitud{data!.totalPendingRequests !== 1 ? 'es' : ''} de recompensa</div>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.85 }}>Pendiente{data!.totalPendingRequests !== 1 ? 's' : ''} de aprobar o rechazar</div>
+                </div>
+                <span style={styles.alertAction}>Ver →</span>
+              </Link>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div style={{ background: c.successSubtle, color: c.successDark, padding: '0.75rem 1.25rem', borderRadius: 8, fontWeight: 600, marginBottom: '1.5rem' }}>
+          ✅ Todo al día — no hay acciones pendientes
+        </div>
+      )}
 
       {/* Child cards */}
       <h3 style={styles.h3}>Resumen de hijos</h3>
@@ -83,10 +93,13 @@ export default function Dashboard() {
 const styles: Record<string, React.CSSProperties> = {
   page:      { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
   h2:        { fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' },
-  h3:        { fontSize: '1.1rem', fontWeight: 700, margin: '1.5rem 0 0.75rem', color: c.body },
-  alerts:    { display: 'flex', gap: '1rem', marginBottom: '0.5rem', flexWrap: 'wrap' },
-  alertNum:  { fontSize: '1.75rem', fontWeight: 800 },
-  alertAction: { marginLeft: 'auto', opacity: 0.85, fontSize: '0.9rem' },
+  h3:          { fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.75rem', color: c.body },
+  alertSection:{ marginBottom: '1.5rem' },
+  alertTitle:  { fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.06em', color: c.body, margin: '0 0 0.6rem' },
+  alerts:      { display: 'flex', gap: '0.75rem', flexWrap: 'wrap' as const },
+  alertCard:   { display: 'flex', alignItems: 'center', gap: '1rem', background: c.warning, color: c.surface, padding: '0.9rem 1.25rem', borderRadius: 10, textDecoration: 'none', fontWeight: 600, flex: 1, minWidth: 220 },
+  alertNum:    { fontSize: '2rem', fontWeight: 800, lineHeight: 1, flexShrink: 0 },
+  alertAction: { marginLeft: 'auto', opacity: 0.85, fontSize: '0.85rem', flexShrink: 0 },
   grid:      { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' },
   childCard: { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem', transition: 'box-shadow 0.15s' },
   avatar:    { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem' },
