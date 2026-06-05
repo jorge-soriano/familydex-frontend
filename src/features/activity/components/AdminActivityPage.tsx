@@ -44,7 +44,7 @@ export default function AdminActivityPage() {
           </select>
         </div>
         <button
-          style={{ padding: '0.45rem 1.1rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
+          style={{ padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
           onClick={() => setShowForm(true)}>
           + Nuevo registro
         </button>

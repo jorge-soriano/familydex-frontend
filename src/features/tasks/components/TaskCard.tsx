@@ -89,7 +89,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
 
       {isRejected && !task.rejectionReason && (
         <button
-          className="py-[0.45rem] px-4 bg-warning text-white border-none rounded-md text-[0.85rem] font-bold cursor-pointer mt-auto"
+          className="py-[0.45rem] px-4 bg-primary text-white border-none rounded-md text-[0.85rem] font-bold cursor-pointer mt-auto"
           disabled={complete.isPending}
           onClick={() => complete.mutate(task.id)}>
           🔄 Intentarlo de nuevo

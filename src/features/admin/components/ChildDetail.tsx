@@ -60,7 +60,7 @@ export default function ChildDetail() {
       <div style={styles.tabs}>
         {TABS.map((t) => (
           <button key={t.key}
-            style={{ ...styles.tab, background: tab === t.key ? c.primary : c.subtle, color: tab === t.key ? c.surface : c.heading }}
+            style={{ ...styles.tab, color: tab === t.key ? c.primary : c.body, borderBottom: tab === t.key ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t.key)}>
             {t.label}
           </button>
@@ -141,8 +141,8 @@ const styles: Record<string, React.CSSProperties> = {
   header:      { display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' },
   avatar:      { width: 52, height: 52, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.4rem', flexShrink: 0 },
   name:        { margin: 0, fontSize: '1.5rem', fontWeight: 800 },
-  tabs:        { display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
-  tab:         { padding: '0.45rem 1rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem' },
+  tabs:        { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
+  tab:         { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' },
   statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowSm, display: 'flex', flexDirection: 'column' },
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },

@@ -63,7 +63,7 @@ export default function PokemonPage() {
       <div style={styles.tabs}>
         {TABS.map((t) => (
           <button key={t.key}
-            style={{ ...styles.tab, background: tab === t.key ? c.primary : c.subtle, color: tab === t.key ? c.surface : c.heading }}
+            style={{ ...styles.tab, color: tab === t.key ? c.primary : c.body, borderBottom: tab === t.key ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t.key)}>
             {t.label}
           </button>
@@ -149,8 +149,8 @@ export default function PokemonPage() {
 
 const styles: Record<string, React.CSSProperties> = {
   page: { padding: '1.5rem', maxWidth: 900, margin: '0 auto' },
-  tabs: { display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' },
-  tab: { padding: '0.45rem 1rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' },
+  tabs: { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
+  tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
   card: {
     background: c.surface, borderRadius: 10, padding: '1rem',

@@ -64,7 +64,7 @@ export default function TaskPanel({ children }: Props) {
   );
 
   const Btn = ({ onClick, icon, label, bg, color, border, disabled }: { onClick: () => void; icon: string; label: string; bg: string; color: string; border: string; disabled?: boolean }) => (
-    <button title={label} disabled={disabled} onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, background: bg, color, border: `1px solid ${border}`, borderRadius: 5, cursor: 'pointer', fontSize: '0.95rem', opacity: disabled ? 0.45 : 1 }}>
+    <button title={label} disabled={disabled} onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, background: bg, color, border: `1px solid ${border}`, borderRadius: 6, cursor: 'pointer', fontSize: '0.95rem', opacity: disabled ? 0.45 : 1 }}>
       {icon}
     </button>
   );
@@ -85,7 +85,7 @@ export default function TaskPanel({ children }: Props) {
             ))}
           </select>
         </div>
-        <button style={{ padding: '0.45rem 1.1rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
+        <button style={{ padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', flexShrink: 0 }}
           onClick={() => { setEditTask(null); setShowForm(true); }}>
           + Nueva tarea
         </button>

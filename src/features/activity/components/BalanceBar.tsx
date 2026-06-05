@@ -22,7 +22,7 @@ export default function BalanceBar() {
       {(readyToEvolve || pending > 0) && (
         <div className="ml-auto flex gap-2 items-center">
           {readyToEvolve && (
-            <Link to="/child/pokemon" className={`${chipBase} bg-accent`}>
+            <Link to="/child/pokemon" className={`${chipBase} bg-warning`}>
               ⚡ {isNarrow ? '' : `${activeName} puede evolucionar`}
             </Link>
           )}

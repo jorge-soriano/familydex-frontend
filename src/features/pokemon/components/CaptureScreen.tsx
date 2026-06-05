@@ -74,7 +74,7 @@ const styles: Record<string, React.CSSProperties> = {
   name: { fontSize: '0.9rem' },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
   xpTag: { fontSize: '0.72rem', color: c.success, fontWeight: 700 },
-  btn: { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
+  btn: { padding: '0.35rem 0.75rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
   loading: { color: c.caption },
   empty: { color: c.caption, textAlign: 'center', padding: '2rem', fontSize: '0.9rem' },
   error: { color: c.danger, marginTop: '1rem', textAlign: 'center' },

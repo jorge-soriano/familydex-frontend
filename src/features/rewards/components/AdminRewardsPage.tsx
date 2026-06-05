@@ -56,7 +56,7 @@ export default function AdminRewardsPage() {
       {/* Tabs */}
       <div style={styles.tabs}>
         {(['requests', 'rewards'] as Tab[]).map((t) => (
-          <button key={t} style={{ ...styles.tab, background: tab === t ? c.primary : c.subtle, color: tab === t ? c.surface : c.heading }}
+          <button key={t} style={{ ...styles.tab, color: tab === t ? c.primary : c.body, borderBottom: tab === t ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t)}>
             {t === 'requests' ? `📋 Solicitudes${pending.length ? ` (${pending.length})` : ''}` : '🏪 Recompensas'}
           </button>
@@ -107,7 +107,7 @@ export default function AdminRewardsPage() {
               {r.description && <p style={styles.desc}>{r.description}</p>}
               <div style={styles.cardFooter}>
                 <button style={styles.editBtn} onClick={() => { setEditReward(r); setShowForm(true); }}>Editar</button>
-                <button style={{ ...styles.toggleBtn, color: r.isActive ? c.danger : c.success }}
+                <button style={{ ...styles.toggleBtn, color: r.isActive ? c.danger : c.primary }}
                   onClick={() => toggle.mutate({ id: r.id, isActive: !r.isActive })}>
                   {r.isActive ? 'Desactivar' : 'Activar'}
                 </button>
@@ -147,8 +147,8 @@ const styles: Record<string, React.CSSProperties> = {
   topbar:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' },
   h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem' },
   newBtn:        { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
-  tabs:          { display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' },
-  tab:           { padding: '0.5rem 1.25rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
+  tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
+  tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: c.surface, borderRadius: 8, marginBottom: '0.5rem', boxShadow: c.shadowSm },
   reqActions:    { display: 'flex', gap: '0.5rem' },
   approveBtn:    { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
@@ -158,8 +158,8 @@ const styles: Record<string, React.CSSProperties> = {
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
   cardFooter:    { display: 'flex', gap: '0.5rem' },
-  editBtn:       { padding: '0.3rem 0.6rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem' },
-  toggleBtn:     { padding: '0.3rem 0.6rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 },
+  editBtn:       { padding: '0.35rem 0.75rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
+  toggleBtn:     { padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
   overlay:       { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   rejectModal:   { background: c.surface, borderRadius: 10, padding: '1.5rem', width: 380, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   textarea:      { padding: '0.5rem', borderRadius: 6, border: `2px solid ${c.stroke}`, minHeight: 80 },

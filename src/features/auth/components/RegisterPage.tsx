@@ -89,7 +89,7 @@ const styles: Record<string, React.CSSProperties> = {
   input: { padding: '0.6rem 0.8rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '1rem' },
   button: {
     padding: '0.75rem',
-    background: c.danger,
+    background: c.primary,
     color: c.surface,
     border: 'none',
     borderRadius: 6,

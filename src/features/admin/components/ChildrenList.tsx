@@ -69,7 +69,7 @@ export default function ChildrenList() {
               <div style={styles.actions}>
                 <button style={styles.editBtn} onClick={() => setEditing(child)}>Editar</button>
                 <button
-                  style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.success }}
+                  style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.primary }}
                   disabled={toggle.isPending}
                   onClick={() => toggle.mutate({ id: child.id, isActive: !child.isActive })}
                 >
@@ -99,6 +99,6 @@ const styles: Record<string, React.CSSProperties> = {
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },
   actions:  { display: 'flex', gap: '0.4rem' },
-  editBtn:  { padding: '0.3rem 0.6rem', background: c.subtle, border: 'none', borderRadius: 5, cursor: 'pointer', fontSize: '0.78rem' },
-  toggleBtn:{ padding: '0.3rem 0.6rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 5, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600 },
+  editBtn:  { padding: '0.35rem 0.75rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
+  toggleBtn:{ padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
 };

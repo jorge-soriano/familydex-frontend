@@ -62,7 +62,7 @@ export default function LoginPage() {
           {login.isError && <p className="text-danger text-[0.85rem] m-0">{errorMessage}</p>}
 
           <button
-            className="py-3 bg-danger text-white border-none rounded-md text-base font-bold cursor-pointer mt-2"
+            className="py-3 bg-primary text-white border-none rounded-md text-base font-bold cursor-pointer mt-2"
             type="submit" disabled={login.isPending}>
             {login.isPending ? 'Entrando…' : 'Entrar'}
           </button>

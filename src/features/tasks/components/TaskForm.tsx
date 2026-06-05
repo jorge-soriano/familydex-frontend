@@ -236,13 +236,13 @@ export default function TaskForm({ task, children, onClose }: Props) {
                 <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.78rem', color: c.dangerDark, fontWeight: 600 }}>¿Seguro?</span>
                   <button type="button"
-                    style={{ padding: '0.3rem 0.65rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 5, cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
+                    style={{ padding: '0.3rem 0.65rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
                     disabled={del.isPending}
                     onClick={() => del.mutate({ id: task.id }, { onSuccess: onClose })}>
                     Sí
                   </button>
                   <button type="button"
-                    style={{ padding: '0.3rem 0.6rem', background: c.subtle, border: 'none', borderRadius: 5, cursor: 'pointer', fontSize: '0.78rem' }}
+                    style={{ padding: '0.3rem 0.6rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.78rem' }}
                     onClick={() => setConfirmDel(false)}>
                     No
                   </button>

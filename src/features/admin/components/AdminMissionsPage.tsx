@@ -37,7 +37,7 @@ export default function AdminMissionsPage() {
       <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' }}>
         {TABS.map(({ key, label, badge }) => (
           <button key={key} onClick={() => setTab(key)} style={{
-            padding: '0.5rem 1.1rem', border: 'none', cursor: 'pointer',
+            padding: '0.5rem 1rem', border: 'none', cursor: 'pointer',
             fontWeight: 700, fontSize: '0.875rem', background: 'transparent',
             color: tab === key ? c.primary : c.body,
             borderBottom: tab === key ? `2px solid ${c.primary}` : '2px solid transparent',

@@ -84,7 +84,7 @@ const styles: Record<string, React.CSSProperties> = {
   cost:         { fontWeight: 800, fontSize: '1.1rem', color: c.primaryDark },
   desc:         { fontSize: '0.85rem', color: c.body, margin: 0 },
   hint:         { fontSize: '0.75rem', color: c.danger, margin: 0 },
-  btn:          { padding: '0.45rem 1rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, marginTop: 'auto' },
+  btn:          { padding: '0.45rem 1rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, marginTop: 'auto' },
   pendingBadge: { fontSize: '0.8rem', color: c.warning, fontWeight: 700 },
   history:      {},
   histRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.5rem 0', borderBottom: `1px solid ${c.subtle}`, fontSize: '0.9rem' },

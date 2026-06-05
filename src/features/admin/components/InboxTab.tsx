@@ -40,11 +40,11 @@ export default function InboxTab({ familyChildren }: Props) {
               </div>
             </div>
             <div className="flex gap-[0.4rem] shrink-0">
-              <button style={{ padding: '0.4rem 0.9rem', background: c.success, color: c.surface, border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 700 }}
+              <button style={{ padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
                 disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>
                 ✔ Aprobar
               </button>
-              <button style={{ padding: '0.4rem 0.9rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 7, cursor: 'pointer', fontWeight: 700 }}
+              <button style={{ padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
                 onClick={() => { setRejectId(task.id); setRejectReason(''); }}>
                 ✖ Rechazar
               </button>
