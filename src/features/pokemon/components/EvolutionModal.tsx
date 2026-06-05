@@ -4,6 +4,7 @@ import TypeBadge from './TypeBadge';
 import { useEvolveActive } from '../hooks/usePokemon';
 import type { ActivePokemonResult, PokemonData } from '../api';
 import '../evolution.css';
+import { c } from '../../../styles/tokens';
 
 type Phase = 'idle' | 'flashing' | 'revealing' | 'done';
 
@@ -87,7 +88,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
         {/* revealing / done: show evolved pokemon */}
         {(phase === 'revealing' || phase === 'done') && evolvedPokemon && (
           <>
-            <h2 style={{ ...title, color: '#f59e0b' }}>
+            <h2 style={{ ...title, color: c.warning }}>
               ✨ ¡{p.name} ha evolucionado en {evolvedPokemon.name}!
             </h2>
             {trigger && <p style={triggerText}>{trigger}</p>}
@@ -126,27 +127,27 @@ const overlay: React.CSSProperties = {
   zIndex: 200,
 };
 const modal: React.CSSProperties = {
-  background: '#fff', borderRadius: 16,
+  background: c.surface, borderRadius: 16,
   padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 400,
   display: 'flex', flexDirection: 'column', alignItems: 'center',
   gap: '0.5rem', boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
   textAlign: 'center',
 };
 const title: React.CSSProperties  = { margin: 0, fontSize: '1.15rem', fontWeight: 800 };
-const triggerText: React.CSSProperties = { margin: 0, fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic' };
-const desc: React.CSSProperties   = { fontSize: '0.85rem', color: '#555', margin: 0, lineHeight: 1.5 };
+const triggerText: React.CSSProperties = { margin: 0, fontSize: '0.85rem', color: c.body, fontStyle: 'italic' };
+const desc: React.CSSProperties   = { fontSize: '0.85rem', color: c.body, margin: 0, lineHeight: 1.5 };
 const spriteWrap: React.CSSProperties = {
-  background: 'radial-gradient(circle, #fef3c7 0%, #f8fafc 70%)',
+  background: `radial-gradient(circle, ${c.warningSubtle} 0%, ${c.page} 70%)`,
   borderRadius: '50%', width: 180, height: 180,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   margin: '0.5rem 0',
 };
 const btns: React.CSSProperties = { display: 'flex', gap: '0.75rem', marginTop: '0.5rem' };
 const cancelBtn: React.CSSProperties = {
-  padding: '0.55rem 1.25rem', background: '#f1f5f9',
+  padding: '0.55rem 1.25rem', background: c.subtle,
   border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600,
 };
 const evolveBtn: React.CSSProperties = {
-  padding: '0.55rem 1.5rem', background: '#f59e0b', color: '#fff',
+  padding: '0.55rem 1.5rem', background: c.warning, color: c.surface,
   border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem',
 };

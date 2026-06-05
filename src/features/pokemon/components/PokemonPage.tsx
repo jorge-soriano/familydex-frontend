@@ -10,6 +10,7 @@ import PokedexTab from './PokedexTab';
 import TypeBadge from './TypeBadge';
 import EvolutionModal from './EvolutionModal';
 import type { CaughtPokemonItem } from '../api';
+import { c } from '../../../styles/tokens';
 
 type Tab = 'activo' | 'caja' | 'pokedex' | 'capturar';
 
@@ -62,21 +63,21 @@ export default function PokemonPage() {
       <div style={styles.tabs}>
         {TABS.map((t) => (
           <button key={t.key}
-            style={{ ...styles.tab, background: tab === t.key ? '#3b82f6' : '#f1f5f9', color: tab === t.key ? '#fff' : '#333' }}
+            style={{ ...styles.tab, background: tab === t.key ? c.primary : c.subtle, color: tab === t.key ? c.surface : c.heading }}
             onClick={() => setTab(t.key)}>
             {t.label}
           </button>
         ))}
       </div>
 
-      {/* Evolution banner — mismo estilo que el de capturas pendientes */}
+      {/* Evolution banner */}
       {data?.active?.readyToEvolve && (
-        <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ color: '#92400e', fontSize: '0.9rem' }}>
+        <div style={{ background: c.warningSubtle, border: `1px solid ${c.warning}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: c.warningDark, fontSize: '0.9rem' }}>
             ⚡ <strong>{data.active.pokemon.name}</strong> puede evolucionar
           </span>
           <button
-            style={{ padding: '0.35rem 0.85rem', background: '#f59e0b', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', flexShrink: 0 }}
+            style={{ padding: '0.35rem 0.85rem', background: c.warning, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem', flexShrink: 0 }}
             onClick={() => setShowEvo(true)}>
             Evolucionar
           </button>
@@ -103,7 +104,7 @@ export default function PokemonPage() {
               <div key={item.id}
                 style={{
                   ...styles.card,
-                  border: isActive ? '3px solid #3b82f6' : '3px solid transparent',
+                  border: isActive ? `3px solid ${c.primary}` : '3px solid transparent',
                 }}>
                 <PokemonSprite pokedexNumber={item.pokemon.pokedexNumber} size={72} alt={item.pokemon.name} />
                 <strong style={{ fontSize: '0.85rem' }}>{item.pokemon.name}</strong>
@@ -111,7 +112,7 @@ export default function PokemonPage() {
                   <TypeBadge type={item.pokemon.type1} />
                   {item.pokemon.type2 && <TypeBadge type={item.pokemon.type2} />}
                 </div>
-                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>Nv. {item.level}</span>
+                <span style={{ fontSize: '0.78rem', color: c.body }}>Nv. {item.level}</span>
 
                 {isActive ? (
                   <span style={styles.activeBadge}>Activo ✓</span>
@@ -152,19 +153,19 @@ const styles: Record<string, React.CSSProperties> = {
   tab: { padding: '0.45rem 1rem', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.85rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
   card: {
-    background: '#fff', borderRadius: 10, padding: '1rem',
+    background: c.surface, borderRadius: 10, padding: '1rem',
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
   },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
-  activeBadge: { fontSize: '0.72rem', color: '#3b82f6', fontWeight: 700 },
+  activeBadge: { fontSize: '0.72rem', color: c.primary, fontWeight: 700 },
   evolvedBadge: {
-    fontSize: '0.7rem', color: '#f59e0b', fontWeight: 700,
-    background: '#fef3c7', padding: '2px 8px', borderRadius: 8,
+    fontSize: '0.7rem', color: c.warning, fontWeight: 700,
+    background: c.warningSubtle, padding: '2px 8px', borderRadius: 8,
   },
   activateBtn: {
-    padding: '0.3rem 0.75rem', background: '#f1f5f9',
+    padding: '0.3rem 0.75rem', background: c.subtle,
     border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
   },
-  empty: { color: '#94a3b8', textAlign: 'center', padding: '2rem' },
+  empty: { color: c.caption, textAlign: 'center', padding: '2rem' },
 };

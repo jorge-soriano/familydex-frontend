@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../hooks/useAuth';
+import { c } from '../../../styles/tokens';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -70,26 +71,26 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: '#1a1a2e',
+    background: c.night,
     padding: '1rem',
   },
   card: {
-    background: '#fff',
+    background: c.surface,
     borderRadius: 12,
     padding: '2.5rem',
     width: '100%',
     maxWidth: 420,
     boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
   },
-  title: { margin: 0, fontSize: '1.75rem', fontWeight: 800, color: '#1a1a2e', textAlign: 'center' },
-  subtitle: { margin: '0.25rem 0 1.5rem', color: '#444', textAlign: 'center', fontSize: '1rem', fontWeight: 600 },
+  title: { margin: 0, fontSize: '1.75rem', fontWeight: 800, color: c.night, textAlign: 'center' },
+  subtitle: { margin: '0.25rem 0 1.5rem', color: c.body, textAlign: 'center', fontSize: '1rem', fontWeight: 600 },
   form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
   label: { display: 'flex', flexDirection: 'column', gap: '0.4rem', fontWeight: 600, fontSize: '0.85rem' },
-  input: { padding: '0.6rem 0.8rem', borderRadius: 6, border: '2px solid #ddd', fontSize: '1rem' },
+  input: { padding: '0.6rem 0.8rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '1rem' },
   button: {
     padding: '0.75rem',
-    background: '#e53935',
-    color: '#fff',
+    background: c.danger,
+    color: c.surface,
     border: 'none',
     borderRadius: 6,
     fontSize: '1rem',
@@ -97,6 +98,6 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     marginTop: '0.5rem',
   },
-  error: { color: '#e53935', fontSize: '0.85rem', margin: 0 },
-  loginLink: { textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: '#666' },
+  error: { color: c.danger, fontSize: '0.85rem', margin: 0 },
+  loginLink: { textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: c.body },
 };

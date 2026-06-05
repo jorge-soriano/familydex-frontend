@@ -8,11 +8,8 @@ import { useWindowWidth } from '../hooks/useWindowWidth';
 function NavBadge({ count }: { count: number }) {
   if (!count) return null;
   return (
-    <span style={{
-      background: '#ef4444', color: '#fff', fontSize: '0.65rem',
-      fontWeight: 800, padding: '1px 5px', borderRadius: 10,
-      marginLeft: '4px', verticalAlign: 'middle', lineHeight: 1.4,
-    }}>
+    <span className="bg-danger text-white font-extrabold rounded-[10px] ml-1 align-middle leading-[1.4]"
+      style={{ fontSize: '0.65rem', padding: '1px 5px' }}>
       {count}
     </span>
   );
@@ -41,36 +38,33 @@ export default function AdminLayout() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+    <div className="min-h-screen bg-page flex flex-col">
 
       {/* Barra de navegación */}
-      <nav style={{
-        display: 'flex', alignItems: 'center', gap: '1rem',
-        background: '#1e3a5f', color: '#fff',
-        padding: '0 1rem', height: 52,
-        position: 'sticky', top: 0, zIndex: 50,
-        flexShrink: 0,
-      }}>
-        <span style={{ fontWeight: 800, fontSize: '1.05rem', flexShrink: 0 }}>FamilyDex Admin</span>
+      <nav className="flex items-center gap-4 bg-navy text-white px-4 h-[52px] sticky top-0 z-50 shrink-0">
+        <span className="font-extrabold text-[1.05rem] shrink-0">FamilyDex Admin</span>
 
         {/* Links — solo en pantallas anchas */}
         {!isNarrow && (
-          <div style={{ display: 'flex', gap: '0.25rem', flex: 1 }}>
+          <div className="flex gap-1 flex-1">
             {links.map(({ to, label, badge }) => (
-              <Link key={to} to={to} style={{ color: '#cbd5e1', textDecoration: 'none', padding: '0.3rem 0.75rem', borderRadius: 6, fontSize: '0.9rem' }}>
+              <Link key={to} to={to}
+                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem]">
                 {label}<NavBadge count={badge} />
               </Link>
             ))}
           </div>
         )}
 
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="ml-auto flex items-center gap-2">
           {!isNarrow && (
-            <button style={{ padding: '0.3rem 0.75rem', background: 'transparent', color: '#94a3b8', border: '1px solid #475569', borderRadius: 6, cursor: 'pointer', fontSize: '0.85rem' }}
+            <button
+              className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
               onClick={handleLogout}>Salir</button>
           )}
           {isNarrow && (
-            <button style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '1.4rem', cursor: 'pointer', padding: '0.25rem 0.4rem', lineHeight: 1, borderRadius: 4 }}
+            <button
+              className="bg-transparent border-none text-white text-[1.4rem] cursor-pointer py-1 px-[0.4rem] leading-none rounded"
               aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
               onClick={() => setOpen(o => !o)}>
               {open ? '✕' : '☰'}
@@ -81,23 +75,23 @@ export default function AdminLayout() {
 
       {/* Menú desplegable móvil */}
       {isNarrow && open && (
-        <div style={{ background: '#162d4a', borderBottom: '1px solid #1e3a5f', zIndex: 49 }}>
+        <div className="bg-navy-dark border-b border-navy z-[49]">
           {links.map(({ to, label, badge }) => (
             <Link key={to} to={to}
-              style={{ display: 'flex', alignItems: 'center', padding: '0.85rem 1.25rem', color: '#e2e8f0', textDecoration: 'none', fontSize: '0.95rem', borderBottom: '1px solid #1e3a5f20' }}
+              className="flex items-center py-[0.85rem] px-5 text-slate-200 no-underline text-[0.95rem] border-b border-navy/20"
               onClick={() => setOpen(false)}>
               {label}<NavBadge count={badge} />
             </Link>
           ))}
           <button
-            style={{ display: 'block', width: '100%', padding: '0.85rem 1.25rem', background: 'transparent', border: 'none', color: '#94a3b8', textAlign: 'left', cursor: 'pointer', fontSize: '0.95rem' }}
+            className="block w-full py-[0.85rem] px-5 bg-transparent border-none text-caption text-left cursor-pointer text-[0.95rem]"
             onClick={handleLogout}>
             Salir
           </button>
         </div>
       )}
 
-      <main style={{ flex: 1 }}>
+      <main className="flex-1">
         <Outlet />
       </main>
     </div>

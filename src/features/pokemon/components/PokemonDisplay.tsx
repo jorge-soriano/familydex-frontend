@@ -2,6 +2,7 @@ import type { ActivePokemonResult } from '../api';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
+import { c } from '../../../styles/tokens';
 
 interface Props { data: ActivePokemonResult }
 
@@ -55,25 +56,25 @@ export default function PokemonDisplay({ data }: Props) {
 const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex', gap: '1.5rem', alignItems: 'center',
-    background: '#fff', borderRadius: 14, padding: '1.5rem',
+    background: c.surface, borderRadius: 14, padding: '1.5rem',
     boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
   },
   spriteWrap: {
-    background: '#f8fafc', borderRadius: 12, padding: '0.75rem',
+    background: c.page, borderRadius: 12, padding: '0.75rem',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     minWidth: 140, minHeight: 140,
   },
   info: { flex: 1 },
   nameRow: { display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' },
   name: { margin: 0, fontSize: '1.5rem', fontWeight: 800 },
-  num: { color: '#94a3b8', fontSize: '0.85rem' },
+  num: { color: c.caption, fontSize: '0.85rem' },
   types: { display: 'flex', gap: '0.4rem', marginBottom: '0.75rem' },
-  desc: { fontSize: '0.85rem', color: '#555', margin: '0 0 0.75rem', lineHeight: 1.5 },
+  desc: { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem', lineHeight: 1.5 },
   levelRow: { display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', fontSize: '0.85rem' },
   levelLabel: { fontWeight: 700 },
-  xpLabel: { color: '#64748b' },
-  barBg: { height: 10, background: '#e2e8f0', borderRadius: 5, overflow: 'hidden', marginBottom: '0.5rem' },
-  barFill: { height: '100%', background: 'linear-gradient(90deg, #3b82f6, #6366f1)', borderRadius: 5, transition: 'width 0.4s ease' },
-  finalForm: { margin: 0, fontSize: '0.8rem', color: '#f59e0b', fontWeight: 700 },
-  evoHint: { margin: 0, fontSize: '0.8rem', color: '#64748b' },
+  xpLabel: { color: c.body },
+  barBg: { height: 10, background: c.stroke, borderRadius: 5, overflow: 'hidden', marginBottom: '0.5rem' },
+  barFill: { height: '100%', background: `linear-gradient(90deg, ${c.primary}, ${c.accent})`, borderRadius: 5, transition: 'width 0.4s ease' },
+  finalForm: { margin: 0, fontSize: '0.8rem', color: c.warning, fontWeight: 700 },
+  evoHint: { margin: 0, fontSize: '0.8rem', color: c.body },
 };

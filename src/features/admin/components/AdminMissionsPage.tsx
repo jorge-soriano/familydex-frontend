@@ -4,6 +4,7 @@ import apiClient from '../../../shared/api/apiClient';
 import InboxTab           from './InboxTab';
 import TaskPanelPage      from '../../tasks/components/TaskPanelPage';
 import { useTasks }       from '../../tasks/hooks/useTasks';
+import { c } from '../../../styles/tokens';
 
 interface Child { id: number; username: string; displayName: string }
 
@@ -22,7 +23,7 @@ export default function AdminMissionsPage() {
   const { data: inReviewTasks = [] } = useTasks({ status: 'InReview' });
   const inReviewCount = inReviewTasks.length;
 
-  if (isLoading) return <p style={{ padding: '2rem', color: '#94a3b8' }}>Cargando…</p>;
+  if (isLoading) return <p className="p-8 text-caption">Cargando…</p>;
 
   const TABS: { key: Tab; label: string; badge?: number }[] = [
     { key: 'inbox', label: '📥 Bandeja', badge: inReviewCount },
@@ -33,19 +34,19 @@ export default function AdminMissionsPage() {
     <div style={{ padding: '1.5rem', maxWidth: 1100, margin: '0 auto' }}>
       <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' }}>Tareas</h2>
 
-      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', borderBottom: '2px solid #e2e8f0', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' }}>
         {TABS.map(({ key, label, badge }) => (
           <button key={key} onClick={() => setTab(key)} style={{
             padding: '0.5rem 1.1rem', border: 'none', cursor: 'pointer',
             fontWeight: 700, fontSize: '0.875rem', background: 'transparent',
-            color: tab === key ? '#3b82f6' : '#64748b',
-            borderBottom: tab === key ? '2px solid #3b82f6' : '2px solid transparent',
+            color: tab === key ? c.primary : c.body,
+            borderBottom: tab === key ? `2px solid ${c.primary}` : '2px solid transparent',
             marginBottom: '-2px',
             display: 'flex', alignItems: 'center', gap: '0.4rem',
           }}>
             {label}
             {badge != null && badge > 0 && (
-              <span style={{ background: '#f59e0b', color: '#fff', fontSize: '0.65rem', fontWeight: 800, padding: '1px 6px', borderRadius: 10 }}>
+              <span style={{ background: c.warning, color: c.surface, fontSize: '0.65rem', fontWeight: 800, padding: '1px 6px', borderRadius: 10 }}>
                 {badge}
               </span>
             )}

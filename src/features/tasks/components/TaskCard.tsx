@@ -1,5 +1,6 @@
 import type { Task } from '../api';
 import { useCompleteTask } from '../hooks/useTasks';
+import { c } from '../../../styles/tokens';
 
 const TYPE_LABEL: Record<string, string> = {
   hogar:           '🏠 Hogar',
@@ -27,71 +28,68 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
   // ── Compact admin variant ──────────────────────────────────────────────────
   if (variant === 'admin') {
     const STATUS_COLOR: Record<string, string> = {
-      Pending: '#888', InReview: '#f59e0b', Approved: '#22c55e', Rejected: '#ef4444',
+      Pending: 'bg-[#888]', InReview: 'bg-warning', Approved: 'bg-success', Rejected: 'bg-danger',
     };
     const STATUS_LABEL: Record<string, string> = {
       Pending: 'Pendiente', InReview: 'En revisión', Approved: 'Aprobada', Rejected: 'Rechazada',
     };
 
     return (
-      <div style={s.adminCard}>
-        <div style={s.adminHeader}>
-          <span style={s.adminTitle}>{task.title}</span>
-          <span style={{ ...s.adminBadge, background: STATUS_COLOR[task.status] }}>
+      <div className="bg-surface border border-stroke rounded-lg px-4 py-3 mb-[0.6rem]">
+        <div className="flex justify-between items-center mb-[0.35rem]">
+          <span className="font-bold text-[0.9rem]">{task.title}</span>
+          <span className={`${STATUS_COLOR[task.status]} text-white text-[0.7rem] font-bold py-[2px] px-2 rounded-[10px]`}>
             {STATUS_LABEL[task.status]}
           </span>
         </div>
-        <div style={s.adminMeta}>
-          <span style={s.typePill}>{TYPE_LABEL[task.type] ?? task.type}</span>
+        <div className="flex gap-3 text-[0.78rem] text-[#555] flex-wrap">
+          <span className="text-[0.7rem] bg-subtle text-body py-[1px] px-[7px] rounded whitespace-nowrap">{TYPE_LABEL[task.type] ?? task.type}</span>
           <span>🪙 {task.coinsReward}</span>
           <span>⭐ {task.xpReward} XP</span>
-          {task.dueDate && <span style={{ color: '#94a3b8' }}>📅 {task.dueDate}</span>}
+          {task.dueDate && <span className="text-caption">📅 {task.dueDate}</span>}
         </div>
-        {task.description && <p style={s.adminDesc}>{task.description}</p>}
+        {task.description && <p className="text-[0.82rem] text-[#666] mt-[0.35rem] mb-0">{task.description}</p>}
         {isRejected && task.rejectionReason && (
-          <p style={s.adminRejection}>❌ {task.rejectionReason}</p>
+          <p className="text-[0.82rem] text-danger bg-danger-subtle px-2 py-[0.3rem] rounded mt-[0.35rem] mb-0">❌ {task.rejectionReason}</p>
         )}
       </div>
     );
   }
 
-  // ── Child variant — mismo estilo visual que las reward cards ────────────
-  // Padding, radius, shadow y gap idénticos a RewardShop.card
-  const borderColor = isPending ? '#3b82f6' : isReview ? '#f59e0b' : isApproved ? '#22c55e' : '#ef4444';
+  // ── Child variant ─────────────────────────────────────────────────────────
+  const borderColor = isPending ? c.primary : isReview ? c.warning : isApproved ? c.success : c.danger;
 
   return (
-    <div style={{ ...s.childCard, borderLeftColor: borderColor }}>
+    <div className="bg-surface rounded-[10px] p-5 flex flex-col gap-2"
+      style={{ borderLeft: `4px solid ${borderColor}`, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
 
-      {/* Título — igual que reward name */}
-      <span style={s.childTitle}>{task.title}</span>
+      <span className="font-bold text-heading">{task.title}</span>
+      <span className="font-extrabold text-base text-primary-dark">🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>
 
-      {/* Recompensas debajo del título — igual que reward cost */}
-      <span style={s.childCost}>🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>
+      {task.description && <p className="text-[0.85rem] text-body m-0">{task.description}</p>}
 
-      {/* Descripción opcional */}
-      {task.description && <p style={s.childDesc}>{task.description}</p>}
-
-      {/* Mensajes de estado */}
-      {isReview && <p style={s.stateReview}>⏳ Esperando revisión…</p>}
-      {isApproved && <p style={s.stateApproved}>✅ ¡Completada!</p>}
+      {isReview && <p className="m-0 text-[0.82rem] text-[#d97706] font-semibold">⏳ Esperando revisión…</p>}
+      {isApproved && <p className="m-0 text-[0.82rem] text-success-dark font-bold">✅ ¡Completada!</p>}
 
       {isRejected && task.rejectionReason && (
-        <div style={s.rejectionBox}>
-          <p style={s.rejectionTitle}>💪 Casi, falta esto:</p>
-          <p style={s.rejectionText}>{task.rejectionReason}</p>
+        <div className="bg-[#fef9c3] rounded-md px-[0.6rem] py-[0.4rem]">
+          <p className="m-0 text-[0.82rem] text-warning-dark font-semibold">💪 Casi, falta esto:</p>
+          <p className="mt-[0.1rem] mb-0 text-[0.82rem] text-[#78350f]">{task.rejectionReason}</p>
         </div>
       )}
 
-      {/* Botón de acción — marginTop:'auto' lo empuja al fondo */}
       {isPending && (
-        <button style={s.completeBtn} disabled={complete.isPending}
+        <button
+          className="py-[0.45rem] px-4 bg-primary text-white border-none rounded-md text-[0.85rem] font-bold cursor-pointer mt-auto"
+          disabled={complete.isPending}
           onClick={() => complete.mutate(task.id)}>
           {complete.isPending ? 'Enviando…' : '🙋 ¡He terminado!'}
         </button>
       )}
 
       {isRejected && !task.rejectionReason && (
-        <button style={{ ...s.completeBtn, background: '#f59e0b' }}
+        <button
+          className="py-[0.45rem] px-4 bg-warning text-white border-none rounded-md text-[0.85rem] font-bold cursor-pointer mt-auto"
           disabled={complete.isPending}
           onClick={() => complete.mutate(task.id)}>
           🔄 Intentarlo de nuevo
@@ -100,50 +98,3 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
     </div>
   );
 }
-
-// ── Shared ────────────────────────────────────────────────────────────────────
-const typePill: React.CSSProperties = {
-  fontSize: '0.7rem', background: '#f1f5f9', color: '#64748b',
-  padding: '1px 7px', borderRadius: 4, whiteSpace: 'nowrap' as const,
-};
-
-// ── Admin styles ──────────────────────────────────────────────────────────────
-const s: Record<string, React.CSSProperties> = {
-  adminCard:      { background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '0.6rem' },
-  adminHeader:    { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' },
-  adminTitle:     { fontWeight: 700, fontSize: '0.9rem' },
-  adminBadge:     { color: '#fff', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 10 },
-  adminMeta:      { display: 'flex', gap: '0.75rem', fontSize: '0.78rem', color: '#555', flexWrap: 'wrap' },
-  adminDesc:      { fontSize: '0.82rem', color: '#666', margin: '0.35rem 0 0' },
-  adminRejection: { fontSize: '0.82rem', color: '#ef4444', background: '#fef2f2', padding: '0.3rem 0.5rem', borderRadius: 4, margin: '0.35rem 0 0' },
-
-  // child card — idéntico a RewardShop.card (mismo padding, radius, shadow, gap)
-  // El borde izquierdo de color indica el estado sin romper la cohesión visual
-  childCard: {
-    background: '#fff',
-    borderRadius: 10,                          // = reward card
-    borderLeft: '4px solid #3b82f6',
-    padding: '1.25rem',                        // = reward card
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',  // = reward card
-    display: 'flex', flexDirection: 'column',
-    gap: '0.5rem',                             // = reward card
-  },
-  childTitle:   { fontWeight: 700, color: '#1e293b' },        // = reward name
-  childCost:    { fontWeight: 800, fontSize: '1rem', color: '#1d4ed8' }, // = reward cost
-  childDesc:    { fontSize: '0.85rem', color: '#64748b', margin: 0 },    // = reward desc
-
-  stateReview:   { margin: 0, fontSize: '0.82rem', color: '#d97706', fontWeight: 600 },
-  stateApproved: { margin: 0, fontSize: '0.82rem', color: '#16a34a', fontWeight: 700 },
-
-  rejectionBox:  { background: '#fef9c3', borderRadius: 6, padding: '0.4rem 0.6rem' },
-  rejectionTitle:{ margin: 0, fontSize: '0.82rem', color: '#92400e', fontWeight: 600 },
-  rejectionText: { margin: '0.1rem 0 0', fontSize: '0.82rem', color: '#78350f' },
-
-  completeBtn: {
-    padding: '0.45rem 1rem', background: '#3b82f6', color: '#fff',
-    border: 'none', borderRadius: 6, fontSize: '0.85rem', fontWeight: 700,
-    cursor: 'pointer', marginTop: 'auto',  // = reward btn
-  },
-
-  typePill,
-};

@@ -11,34 +11,23 @@ export default function BalanceBar() {
   const readyToEvolve = pokemon?.active?.readyToEvolve ?? false;
   const activeName    = pokemon?.active?.pokemon.name ?? '';
 
-  const chipStyle = (bg: string) => ({
-    background: bg, color: '#fff',
-    padding: isNarrow ? '0.2rem 0.6rem' : '0.25rem 0.75rem',
-    borderRadius: 12, fontWeight: 700,
-    fontSize: isNarrow ? '0.72rem' : '0.8rem',
-    textDecoration: 'none', whiteSpace: 'nowrap' as const,
-  });
+  const chipBase = `text-white font-bold rounded-xl no-underline whitespace-nowrap ${isNarrow ? 'text-[0.72rem] py-[0.2rem] px-[0.6rem]' : 'text-[0.8rem] py-1 px-3'}`;
 
   return (
-    <div style={{
-      display: 'flex', gap: isNarrow ? '0.75rem' : '1.5rem', alignItems: 'center',
-      background: '#1a1a2e', color: '#fff',
-      padding: isNarrow ? '0.4rem 1rem' : '0.5rem 1.5rem',
-      fontSize: isNarrow ? '0.82rem' : '0.9rem',
-      flexShrink: 0,
-    }}>
+    <div
+      className={`flex items-center bg-night text-white shrink-0 ${isNarrow ? 'gap-3 px-4 py-[0.4rem] text-[0.82rem]' : 'gap-6 px-6 py-2 text-[0.9rem]'}`}>
       <span>🪙 <strong>{balance?.coins ?? '—'}</strong></span>
       <span>⭐ <strong>{balance?.xp ?? '—'}</strong> XP</span>
 
       {(readyToEvolve || pending > 0) && (
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <div className="ml-auto flex gap-2 items-center">
           {readyToEvolve && (
-            <Link to="/child/pokemon" style={chipStyle('#8b5cf6')}>
+            <Link to="/child/pokemon" className={`${chipBase} bg-accent`}>
               ⚡ {isNarrow ? '' : `${activeName} puede evolucionar`}
             </Link>
           )}
           {pending > 0 && (
-            <Link to="/child/pokemon?tab=capturar" style={chipStyle('#f59e0b')}>
+            <Link to="/child/pokemon?tab=capturar" className={`${chipBase} bg-warning`}>
               🎯 {isNarrow ? pending : `${pending} Pokémon por capturar`}
             </Link>
           )}

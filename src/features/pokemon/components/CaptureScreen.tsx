@@ -2,6 +2,7 @@ import { useAvailableToCapture, useCapture } from '../hooks/usePokemon';
 import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
+import { c } from '../../../styles/tokens';
 
 export default function CaptureScreen() {
   const { data: available = [], isLoading } = useAvailableToCapture();
@@ -66,15 +67,15 @@ export default function CaptureScreen() {
 
 const styles: Record<string, React.CSSProperties> = {
   page: { maxWidth: 800, margin: '0 auto', paddingTop: '0.25rem' },
-  banner: { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: '#1d4ed8' },
-  noCap: { background: '#f8fafc', borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: '#64748b', fontSize: '0.9rem' },
+  banner: { background: c.primarySubtle, border: `1px solid ${c.primaryLight}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.primaryDark },
+  noCap: { background: c.page, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1.25rem', color: c.body, fontSize: '0.9rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(148px, 1fr))', gap: '1rem' },
-  card: { background: '#fff', borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
+  card: { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
   name: { fontSize: '0.9rem' },
   types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
-  xpTag: { fontSize: '0.72rem', color: '#22c55e', fontWeight: 700 },
-  btn: { padding: '0.35rem 0.75rem', background: '#e53935', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
-  loading: { color: '#94a3b8' },
-  empty: { color: '#94a3b8', textAlign: 'center', padding: '2rem', fontSize: '0.9rem' },
-  error: { color: '#ef4444', marginTop: '1rem', textAlign: 'center' },
+  xpTag: { fontSize: '0.72rem', color: c.success, fontWeight: 700 },
+  btn: { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
+  loading: { color: c.caption },
+  empty: { color: c.caption, textAlign: 'center', padding: '2rem', fontSize: '0.9rem' },
+  error: { color: c.danger, marginTop: '1rem', textAlign: 'center' },
 };

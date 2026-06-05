@@ -5,6 +5,7 @@ import apiClient from '../../../shared/api/apiClient';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useActivity';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 import type { TransactionItem } from '../api';
+import { c } from '../../../styles/tokens';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props { familyChildren: Child[]; onClose?: () => void }
@@ -22,7 +23,6 @@ function useDirectRecord() {
   });
 }
 
-/** Recent DirectRecord + Penalty transactions deduplicated by description */
 function useRecentRecords() {
   return useQuery({
     queryKey: ['recent-records'],
@@ -46,7 +46,7 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
   const [xp,     setXp]     = useState(50);
   const [reason, setReason] = useState('');
 
-  const record       = useDirectRecord();
+  const record = useDirectRecord();
   const { data: recentRecords = [] } = useRecentRecords();
 
   const toggleChild = (id: number) =>
@@ -72,7 +72,6 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 
   return (
     <div style={{ maxWidth: 560 }}>
-      {/* Selector de registros recientes */}
       {recentRecords.length > 0 && (
         <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '1rem' }}>
           Usar registro anterior (opcional)
@@ -95,16 +94,16 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
         {/* Multi-select hijos */}
         <div>
           <p style={{ ...lbl, marginBottom: '0.35rem' }}>
-            Hijos <span style={{ color: '#94a3b8', fontWeight: 400 }}>(uno o varios)</span>
+            Hijos <span style={{ color: c.caption, fontWeight: 400 }}>(uno o varios)</span>
           </p>
           <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-            {familyChildren.map((c) => {
-              const sel = selectedChildren.includes(c.id);
+            {familyChildren.map((ch) => {
+              const sel = selectedChildren.includes(ch.id);
               return (
-                <button key={c.id} type="button" title={c.displayName}
-                  style={{ padding: '0.25rem', borderRadius: '50%', border: `3px solid ${sel ? '#3b82f6' : 'transparent'}`, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: sel ? '2px solid #bfdbfe' : 'none', outlineOffset: '1px' }}
-                  onClick={() => toggleChild(c.id)}>
-                  <ChildAvatar displayName={c.displayName} avatarColor={c.avatarColor} size={34} />
+                <button key={ch.id} type="button" title={ch.displayName}
+                  style={{ padding: '0.25rem', borderRadius: '50%', border: `3px solid ${sel ? c.primary : 'transparent'}`, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', outline: sel ? `2px solid ${c.primaryLight}` : 'none', outlineOffset: '1px' }}
+                  onClick={() => toggleChild(ch.id)}>
+                  <ChildAvatar displayName={ch.displayName} avatarColor={ch.avatarColor} size={34} />
                 </button>
               );
             })}
@@ -117,25 +116,25 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
-                borderColor: !isNeg ? '#22c55e' : '#e2e8f0', background: !isNeg ? '#f0fdf4' : '#fff', color: !isNeg ? '#16a34a' : '#64748b' }}
+                borderColor: !isNeg ? c.success : c.stroke, background: !isNeg ? c.successSubtle : c.surface, color: !isNeg ? c.successDark : c.body }}
               onClick={() => setIsNeg(false)}>+ Dar</button>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
-                borderColor: isNeg ? '#ef4444' : '#e2e8f0', background: isNeg ? '#fef2f2' : '#fff', color: isNeg ? '#dc2626' : '#64748b' }}
+                borderColor: isNeg ? c.danger : c.stroke, background: isNeg ? c.dangerSubtle : c.surface, color: isNeg ? c.dangerDark : c.body }}
               onClick={() => setIsNeg(true)}>− Quitar</button>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={coins}
               onChange={(e) => setCoins(Math.max(0, +e.target.value))} />
-            <span style={{ fontSize: '0.85rem', color: '#64748b' }}>monedas</span>
+            <span style={{ fontSize: '0.85rem', color: c.body }}>monedas</span>
           </div>
         </div>
 
         {/* XP */}
         <div>
-          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP <span style={{ color: '#94a3b8', fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP <span style={{ color: c.caption, fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={xp}
               onChange={(e) => setXp(Math.max(0, +e.target.value))} />
-            <span style={{ fontSize: '0.85rem', color: '#64748b' }}>XP</span>
+            <span style={{ fontSize: '0.85rem', color: c.body }}>XP</span>
           </div>
         </div>
 
@@ -148,16 +147,16 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
         </label>
 
         {(record.error as any)?.response?.data?.message && (
-          <p style={{ margin: 0, color: '#ef4444', fontSize: '0.85rem' }}>
+          <p style={{ margin: 0, color: c.danger, fontSize: '0.85rem' }}>
             {(record.error as any).response.data.message}
           </p>
         )}
         {record.isSuccess && (
-          <p style={{ margin: 0, color: '#16a34a', fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>
+          <p style={{ margin: 0, color: c.successDark, fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>
         )}
 
         <button type="submit"
-          style={{ padding: '0.65rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem' }}
+          style={{ padding: '0.65rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem' }}
           disabled={record.isPending || !selectedChildren.length}>
           {record.isPending ? 'Aplicando…'
             : isNeg ? `❌ Quitar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`
@@ -169,4 +168,4 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 }
 
 const lbl: React.CSSProperties = { margin: 0, fontSize: '0.85rem', fontWeight: 700 };
-const inp: React.CSSProperties = { padding: '0.45rem 0.6rem', borderRadius: 6, border: '2px solid #e2e8f0', fontSize: '0.875rem' };
+const inp: React.CSSProperties = { padding: '0.45rem 0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.875rem' };

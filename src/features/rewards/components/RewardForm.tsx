@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCreateReward, useEditReward } from '../hooks/useRewards';
 import type { Reward } from '../api';
+import { c } from '../../../styles/tokens';
 
 interface Props {
   reward?: Reward;
@@ -81,12 +82,12 @@ export default function RewardForm({ reward, onClose }: Props) {
 
 const styles: Record<string, React.CSSProperties> = {
   overlay: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal: { background: '#fff', borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  modal: { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   title: { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   label: { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600 },
-  input: { padding: '0.5rem', borderRadius: 6, border: '2px solid #e2e8f0', fontSize: '0.9rem' },
-  error: { color: '#ef4444', fontSize: '0.85rem' },
+  input: { padding: '0.5rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.9rem' },
+  error: { color: c.danger, fontSize: '0.85rem' },
   actions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' },
-  cancel: { padding: '0.5rem 1rem', background: '#f1f5f9', border: 'none', borderRadius: 6, cursor: 'pointer' },
-  submit: { padding: '0.5rem 1.25rem', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
+  cancel: { padding: '0.5rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer' },
+  submit: { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
 };

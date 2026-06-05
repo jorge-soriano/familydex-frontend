@@ -3,6 +3,7 @@ import { useStarters, useChooseInitial } from '../hooks/usePokemon';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import type { PokemonData } from '../api';
+import { c } from '../../../styles/tokens';
 
 export default function PokemonOnboarding() {
   const { data: starters = [], isLoading } = useStarters();
@@ -27,8 +28,8 @@ export default function PokemonOnboarding() {
             key={p.id}
             style={{
               ...styles.card,
-              border: selected?.id === p.id ? '3px solid #3b82f6' : '3px solid transparent',
-              background: selected?.id === p.id ? '#eff6ff' : '#fff',
+              border: selected?.id === p.id ? `3px solid ${c.primary}` : '3px solid transparent',
+              background: selected?.id === p.id ? c.primarySubtle : c.surface,
             }}
             onClick={() => setSelected(p)}
           >
@@ -65,7 +66,7 @@ export default function PokemonOnboarding() {
 const styles: Record<string, React.CSSProperties> = {
   page: { padding: '2rem', maxWidth: 800, margin: '0 auto', textAlign: 'center' },
   title: { fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' },
-  sub: { color: '#64748b', marginBottom: '2rem' },
+  sub: { color: c.body, marginBottom: '2rem' },
   center: { textAlign: 'center', padding: '2rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem', marginBottom: '2rem' },
   card: {
@@ -75,11 +76,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   cardName: { fontSize: '1.1rem', fontWeight: 800 },
   types: { display: 'flex', gap: '0.3rem' },
-  desc: { fontSize: '0.75rem', color: '#64748b', textAlign: 'center', margin: 0 },
+  desc: { fontSize: '0.75rem', color: c.body, textAlign: 'center', margin: 0 },
   btn: {
-    padding: '0.75rem 2rem', background: '#3b82f6', color: '#fff',
+    padding: '0.75rem 2rem', background: c.primary, color: c.surface,
     border: 'none', borderRadius: 8, fontSize: '1rem', fontWeight: 700,
     cursor: 'pointer', transition: 'opacity 0.15s',
   },
-  error: { color: '#ef4444', marginBottom: '1rem' },
+  error: { color: c.danger, marginBottom: '1rem' },
 };
