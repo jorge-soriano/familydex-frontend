@@ -1,5 +1,6 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { Button } from '../../../shared/components/Button';
+import { FormInput, FormSelect, FormTextarea } from '../../../shared/components/FormInput';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useCreateTask, useEditTask, useDeleteTask, useToggleEnabled, TASKS_KEY } from '../hooks/useTasks';
@@ -141,47 +142,29 @@ export default function TaskForm({ task, children, onClose }: Props) {
           </div>
         )}
 
-        <label style={styles.label}>
-          Título *
-          <input style={styles.input} value={form.title} required onChange={(e) => set('title', e.target.value)} />
-        </label>
+        <FormInput label="Título *" value={form.title} required onChange={(e) => set('title', e.target.value)} />
 
-        <label style={styles.label}>
-          Descripción
-          <textarea style={{ ...styles.input, minHeight: 60 }} value={form.description} onChange={(e) => set('description', e.target.value)} />
-        </label>
+        <FormTextarea label="Descripción" value={form.description} onChange={(e) => set('description', e.target.value)} style={{ minHeight: 60 }} />
 
         <div style={styles.row}>
-          <label style={{ ...styles.label, flex: 1 }}>
-            Tipo
-            <select style={styles.input} value={form.type} onChange={(e) => set('type', e.target.value)}>
-              {['hogar','deberes','comportamiento','responsabilidad'].map((t) => (
-                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-              ))}
-            </select>
-          </label>
+          <FormSelect label="Tipo" value={form.type} onChange={(e) => set('type', e.target.value)} style={{ flex: 1 }}>
+            {['hogar','deberes','comportamiento','responsabilidad'].map((t) => (
+              <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+            ))}
+          </FormSelect>
 
           {!isEditing && (
-            <label style={{ ...styles.label, flex: 1 }}>
-              Frecuencia
-              <select style={styles.input} value={form.frequency} onChange={(e) => set('frequency', e.target.value)}>
-                <option value="OneTime">Puntual</option>
-                <option value="Daily">Diaria</option>
-                <option value="Weekly">Semanal</option>
-              </select>
-            </label>
+            <FormSelect label="Frecuencia" value={form.frequency} onChange={(e) => set('frequency', e.target.value)} style={{ flex: 1 }}>
+              <option value="OneTime">Puntual</option>
+              <option value="Daily">Diaria</option>
+              <option value="Weekly">Semanal</option>
+            </FormSelect>
           )}
         </div>
 
         <div style={styles.row}>
-          <label style={{ ...styles.label, flex: 1 }}>
-            Monedas 🪙
-            <input style={styles.input} type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} />
-          </label>
-          <label style={{ ...styles.label, flex: 1 }}>
-            XP ⭐
-            <input style={styles.input} type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} />
-          </label>
+          <FormInput label="Monedas 🪙" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} style={{ flex: 1 }} />
+          <FormInput label="XP ⭐" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} style={{ flex: 1 }} />
         </div>
 
         {!isEditing && form.frequency === 'Weekly' && (
@@ -200,10 +183,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
         )}
 
         {(isEditing || form.frequency === 'OneTime') && (
-          <label style={styles.label}>
-            Fecha límite
-            <input style={styles.input} type="date" value={form.dueDate ?? ''} onChange={(e) => set('dueDate', e.target.value)} />
-          </label>
+          <FormInput label="Fecha límite" type="date" value={form.dueDate ?? ''} onChange={(e) => set('dueDate', e.target.value)} />
         )}
 
         {isEditing && task && (

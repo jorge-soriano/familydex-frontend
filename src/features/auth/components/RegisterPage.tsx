@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRegister } from '../hooks/useAuth';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
+import { FormInput } from '../../../shared/components/FormInput';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -37,18 +38,16 @@ export default function RegisterPage() {
             { name: 'password',        label: 'Contraseña',         type: 'password', placeholder: 'Mín. 8 chars, 1 mayúscula, 1 número' },
             { name: 'confirmPassword', label: 'Confirmar contraseña', type: 'password', placeholder: '' },
           ] as const).map(({ name, label, type, placeholder }) => (
-            <label key={name} style={styles.label}>
-              {label}
-              <input
-                style={styles.input}
-                type={type}
-                name={name}
-                value={form[name]}
-                onChange={handleChange}
-                placeholder={placeholder}
-                required
-              />
-            </label>
+            <FormInput
+              key={name}
+              label={label}
+              type={type}
+              name={name}
+              value={form[name]}
+              onChange={handleChange}
+              placeholder={placeholder}
+              required
+            />
           ))}
 
           {register.isError && <p style={styles.error}>{errorMessage}</p>}
