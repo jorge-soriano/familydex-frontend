@@ -108,19 +108,18 @@ export default function TaskForm({ task, children, onClose }: Props) {
         </div>
 
         {!isEditing && suggestions.length > 0 && (
-          <label style={styles.label}>
-            Usar tarea anterior (opcional)
-            <select style={styles.input} defaultValue=""
-              onChange={(e) => {
-                const t = suggestions.find((s) => s.id === +e.target.value);
-                if (t) setForm((p) => ({ ...p, title: t.title, type: t.type, coinsReward: t.coinsReward, xpReward: t.xpReward, description: t.description ?? '' }));
-              }}>
-              <option value="">— Rellenar manualmente —</option>
-              {suggestions.map((t) => (
-                <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>
-              ))}
-            </select>
-          </label>
+          <FormSelect
+            label="Usar tarea anterior (opcional)"
+            defaultValue=""
+            onChange={(e) => {
+              const t = suggestions.find((s) => s.id === +e.target.value);
+              if (t) setForm((p) => ({ ...p, title: t.title, type: t.type, coinsReward: t.coinsReward, xpReward: t.xpReward, description: t.description ?? '' }));
+            }}>
+            <option value="">— Rellenar manualmente —</option>
+            {suggestions.map((t) => (
+              <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>
+            ))}
+          </FormSelect>
         )}
 
         {!isEditing && (
@@ -206,7 +205,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
               {!confirmDel ? (
                 <button type="button"
-                  style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: `1px solid #fecaca`, background: c.dangerSubtle, color: c.dangerDark, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
+                  style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: `1px solid ${c.stroke}`, background: c.dangerSubtle, color: c.dangerDark, cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}
                   onClick={() => setConfirmDel(true)}>
                   🗑 Eliminar
                 </button>
@@ -246,13 +245,9 @@ const styles: Record<string, React.CSSProperties> = {
   modal:     { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   title:     { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
   closeBtn:  { background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  label:     { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600 },
-  input:     { padding: '0.5rem 0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.95rem' },
   row:       { display: 'flex', gap: '1rem' },
   daysLabel: { fontSize: '0.85rem', fontWeight: 600, margin: '0 0 0.4rem' },
   days:      { display: 'flex', gap: '0.4rem', flexWrap: 'wrap' },
   dayBtn:    { border: 'none', borderRadius: 6, padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' },
   error:     { color: c.danger, fontSize: '0.85rem' },
-  cancel:    { padding: '0.5rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 },
-  submit:    { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
 };

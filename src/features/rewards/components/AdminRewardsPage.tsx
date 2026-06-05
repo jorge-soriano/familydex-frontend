@@ -72,19 +72,16 @@ export default function AdminRewardsPage() {
               <div style={styles.reqActions}>
                 {rr.status === 'Pending' ? (
                   <>
-                    <button
-                      title="Aprobar"
-                      style={isNarrow ? styles.approveBtnSm : styles.approveBtn}
-                      disabled={approve.isPending}
-                      onClick={() => approve.mutate(rr.id)}>
-                      {isNarrow ? '✓' : '✓ Aprobar'}
-                    </button>
-                    <button
-                      title="Rechazar"
-                      style={isNarrow ? styles.rejectBtnSm : styles.rejectBtn}
-                      onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>
-                      {isNarrow ? '✗' : '✗ Rechazar'}
-                    </button>
+                    {isNarrow ? (
+                      <button title="Aprobar" style={styles.approveBtnSm} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓</button>
+                    ) : (
+                      <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓ Aprobar</Button>
+                    )}
+                    {isNarrow ? (
+                      <button title="Rechazar" style={styles.rejectBtnSm} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗</button>
+                    ) : (
+                      <Button variant="danger" size="sm" onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗ Rechazar</Button>
+                    )}
                   </>
                 ) : (
                   <Badge variant={rr.status === 'Approved' ? 'success' : 'danger'} subtle>
@@ -112,7 +109,7 @@ export default function AdminRewardsPage() {
               </div>
               {r.description && <p style={styles.desc}>{r.description}</p>}
               <div style={styles.cardFooter}>
-                <button style={styles.editBtn} onClick={() => { setEditReward(r); setShowForm(true); }}>Editar</button>
+                <Button variant="secondary" size="sm" onClick={() => { setEditReward(r); setShowForm(true); }}>Editar</Button>
                 <button style={{ ...styles.toggleBtn, color: r.isActive ? c.danger : c.primary }}
                   onClick={() => toggle.mutate({ id: r.id, isActive: !r.isActive })}>
                   {r.isActive ? 'Desactivar' : 'Activar'}
@@ -159,8 +156,6 @@ const styles: Record<string, React.CSSProperties> = {
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },
   reqActions:    { display: 'flex', gap: '0.5rem' },
-  approveBtn:    { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
-  rejectBtn:     { padding: '0.35rem 0.75rem', background: c.danger,  color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
   approveBtnSm:  { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   rejectBtnSm:   { width: 34, height: 34, background: c.danger,  color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   grid:          { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' },
@@ -168,10 +163,8 @@ const styles: Record<string, React.CSSProperties> = {
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
   cardFooter:    { display: 'flex', gap: '0.5rem' },
-  editBtn:       { padding: '0.35rem 0.75rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
   toggleBtn:     { padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
   overlay:       { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  rejectModal:   { background: c.surface, borderRadius: 10, padding: '1.5rem', width: 380, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  rejectModal:   { background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
-  confirmReject: { padding: '0.4rem 1rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
 };

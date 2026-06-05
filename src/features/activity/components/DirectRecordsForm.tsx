@@ -174,5 +174,5 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
   );
 }
 
-const lbl: React.CSSProperties = { margin: 0, fontSize: '0.85rem', fontWeight: 700 };
+const lbl: React.CSSProperties = { margin: 0, fontSize: '0.85rem', fontWeight: 600 };
 const inp: React.CSSProperties = { padding: '0.45rem 0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.875rem' };
