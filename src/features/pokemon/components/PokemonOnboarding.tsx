@@ -4,6 +4,7 @@ import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import type { PokemonData } from '../api';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 export default function PokemonOnboarding() {
   const { data: starters = [], isLoading } = useStarters();
@@ -52,13 +53,13 @@ export default function PokemonOnboarding() {
         </p>
       )}
 
-      <button
-        style={{ ...styles.btn, opacity: selected ? 1 : 0.4 }}
+      <Button
         disabled={!selected || choose.isPending}
         onClick={handleChoose}
+        style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}
       >
         {choose.isPending ? 'Eligiendo…' : selected ? `¡Elegir a ${selected.name}!` : 'Selecciona un Pokémon'}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -77,10 +78,5 @@ const styles: Record<string, React.CSSProperties> = {
   cardName: { fontSize: '1.1rem', fontWeight: 800 },
   types: { display: 'flex', gap: '0.3rem' },
   desc: { fontSize: '0.75rem', color: c.body, textAlign: 'center', margin: 0 },
-  btn: {
-    padding: '0.75rem 2rem', background: c.primary, color: c.surface,
-    border: 'none', borderRadius: 8, fontSize: '1rem', fontWeight: 700,
-    cursor: 'pointer', transition: 'opacity 0.15s',
-  },
   error: { color: c.danger, marginBottom: '1rem' },
 };
