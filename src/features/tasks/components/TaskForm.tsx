@@ -1,4 +1,5 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
+import { Button } from '../../../shared/components/Button';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useCreateTask, useEditTask, useDeleteTask, useToggleEnabled, TASKS_KEY } from '../hooks/useTasks';
@@ -252,10 +253,10 @@ export default function TaskForm({ task, children, onClose }: Props) {
           ) : <span />}
 
           <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button type="button" style={styles.cancel} onClick={onClose}>Cancelar</button>
-            <button type="submit" style={styles.submit} disabled={isPending}>
+            <Button type="button" variant="secondary" onClick={onClose}>Cancelar</Button>
+            <Button type="submit" disabled={isPending}>
               {isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear tarea'}
-            </button>
+            </Button>
           </div>
         </div>
       </form>

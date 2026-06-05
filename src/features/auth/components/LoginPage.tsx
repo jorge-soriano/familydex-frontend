@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../hooks/useAuth';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 const DEMO_ACCOUNTS = [
   { label: '👨‍👩‍👧‍👦 Padre (admin)',     identifier: 'padre@demo.com', password: 'Demo1234',  color: '#1e3a5f' },
@@ -61,11 +62,9 @@ export default function LoginPage() {
 
           {login.isError && <p className="text-danger text-[0.85rem] m-0">{errorMessage}</p>}
 
-          <button
-            className="py-3 bg-primary text-white border-none rounded-md text-base font-bold cursor-pointer mt-2"
-            type="submit" disabled={login.isPending}>
+          <Button type="submit" disabled={login.isPending} style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.5rem' }}>
             {login.isPending ? 'Entrando…' : 'Entrar'}
-          </button>
+          </Button>
         </form>
 
         {/* Acceso demo ─────────────────────────────────────────────────── */}

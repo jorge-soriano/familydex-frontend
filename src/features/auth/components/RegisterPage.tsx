@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRegister } from '../hooks/useAuth';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -52,9 +53,9 @@ export default function RegisterPage() {
 
           {register.isError && <p style={styles.error}>{errorMessage}</p>}
 
-          <button style={styles.button} type="submit" disabled={register.isPending}>
+          <Button type="submit" disabled={register.isPending} style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.5rem' }}>
             {register.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
-          </button>
+          </Button>
         </form>
 
         <p style={styles.loginLink}>
