@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLogin } from '../hooks/useAuth';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
+import { FormInput } from '../../../shared/components/FormInput';
 
 const DEMO_ACCOUNTS = [
   { label: '👨‍👩‍👧‍👦 Padre (admin)',     identifier: 'padre@demo.com', password: 'Demo1234',  color: '#1e3a5f' },
@@ -35,30 +36,24 @@ export default function LoginPage() {
         <p className="mt-1 mb-6 text-body text-center text-[0.9rem]">Gestión familiar de tareas</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <label className="flex flex-col gap-[0.4rem] font-semibold text-[0.85rem]">
-            Email / Usuario
-            <input
-              className="px-[0.8rem] py-[0.6rem] rounded-md border-2 border-[#ddd] text-base outline-none"
-              type="text"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="Email o nombre de usuario"
-              required
-              autoFocus
-            />
-          </label>
+          <FormInput
+            label="Email / Usuario"
+            type="text"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="Email o nombre de usuario"
+            required
+            autoFocus
+          />
 
-          <label className="flex flex-col gap-[0.4rem] font-semibold text-[0.85rem]">
-            Contraseña
-            <input
-              className="px-[0.8rem] py-[0.6rem] rounded-md border-2 border-[#ddd] text-base outline-none"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Contraseña"
-              required
-            />
-          </label>
+          <FormInput
+            label="Contraseña"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+            required
+          />
 
           {login.isError && <p className="text-danger text-[0.85rem] m-0">{errorMessage}</p>}
 

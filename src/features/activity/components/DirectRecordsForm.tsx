@@ -6,6 +6,8 @@ import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useActivity';
 import { POKEMON_KEY } from '../../pokemon/hooks/usePokemon';
 import type { TransactionItem } from '../api';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
+import { FormInput, FormSelect } from '../../../shared/components/FormInput';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props { familyChildren: Child[]; onClose?: () => void }
@@ -73,21 +75,23 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
   return (
     <div style={{ maxWidth: 560 }}>
       {recentRecords.length > 0 && (
-        <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '1rem' }}>
-          Usar registro anterior (opcional)
-          <select style={inp} defaultValue=""
+        <div style={{ marginBottom: '1rem' }}>
+          <FormSelect
+            label="Usar registro anterior (opcional)"
+            defaultValue=""
             onChange={(e) => {
               const tx = recentRecords.find((r) => r.id === +e.target.value);
               if (tx) applyRecord(tx);
-            }}>
+            }}
+          >
             <option value="">— Rellenar manualmente —</option>
             {recentRecords.map((tx) => (
               <option key={tx.id} value={tx.id}>
                 {tx.description} · {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta}🪙 +{tx.xpDelta}⭐
               </option>
             ))}
-          </select>
-        </label>
+          </FormSelect>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -139,12 +143,13 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
         </div>
 
         {/* Motivo */}
-        <label style={{ ...lbl, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-          Motivo *
-          <input style={inp} value={reason} required
-            placeholder="Ej: Buen comportamiento en el médico"
-            onChange={(e) => setReason(e.target.value)} />
-        </label>
+        <FormInput
+          label="Motivo *"
+          value={reason}
+          required
+          placeholder="Ej: Buen comportamiento en el médico"
+          onChange={(e) => setReason(e.target.value)}
+        />
 
         {(record.error as any)?.response?.data?.message && (
           <p style={{ margin: 0, color: c.danger, fontSize: '0.85rem' }}>
@@ -155,13 +160,15 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
           <p style={{ margin: 0, color: c.successDark, fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>
         )}
 
-        <button type="submit"
-          style={{ padding: '0.65rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 800, fontSize: '1rem' }}
-          disabled={record.isPending || !selectedChildren.length}>
+        <Button
+          type="submit"
+          disabled={record.isPending || !selectedChildren.length}
+          style={{ padding: '0.65rem 1.25rem', fontSize: '1rem', width: '100%', justifyContent: 'center' }}
+        >
           {record.isPending ? 'Aplicando…'
             : isNeg ? `❌ Quitar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`
             : `✅ Dar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`}
-        </button>
+        </Button>
       </form>
     </div>
   );
