@@ -31,7 +31,7 @@ export default function InboxTab({ familyChildren }: Props) {
 
       <div className="flex flex-col gap-[0.6rem]">
         {tasks.map((task) => (
-          <div key={task.id} style={{ background: c.surface, borderRadius: 10, borderLeft: `4px solid ${c.warning}`, padding: '0.9rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: c.shadowSm, flexWrap: 'wrap' }}>
+          <div key={task.id} style={{ background: c.surface, borderRadius: 10, borderLeft: `4px solid ${c.warning}`, padding: '0.65rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: c.shadowSm, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, color: c.heading }}>{task.title}</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: c.body, marginTop: '0.2rem' }}>

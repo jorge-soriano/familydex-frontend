@@ -43,7 +43,7 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
   return (
     <div className="bg-surface rounded-[10px] px-4 py-2">
       {transactions.map((tx) => (
-        <div key={tx.id} className="flex justify-between items-center py-[0.65rem] border-b border-subtle gap-3">
+        <div key={tx.id} className="flex justify-between items-center py-[0.45rem] border-b border-subtle gap-3">
 
           {/* Left: badge + description + child name */}
           <div className="flex flex-col gap-[0.2rem] flex-1 min-w-0">

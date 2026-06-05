@@ -150,7 +150,7 @@ const styles: Record<string, React.CSSProperties> = {
   newBtn:        { padding: '0.5rem 1.25rem', background: c.primary, color: c.surface, border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 700 },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
-  reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: c.surface, borderRadius: 8, marginBottom: '0.5rem', boxShadow: c.shadowSm },
+  reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem 0.75rem', background: c.surface, borderRadius: 8, marginBottom: '0.4rem', boxShadow: c.shadowSm },
   reqActions:    { display: 'flex', gap: '0.5rem' },
   approveBtn:    { padding: '0.35rem 0.75rem', background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },
   rejectBtn:     { padding: '0.35rem 0.75rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' },

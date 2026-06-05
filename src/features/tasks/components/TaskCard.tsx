@@ -37,7 +37,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
     };
 
     return (
-      <div className="bg-surface border border-stroke rounded-lg px-4 py-3 mb-[0.6rem]">
+      <div className="bg-surface border border-stroke rounded-lg px-4 py-[0.55rem] mb-[0.4rem]">
         <div className="flex justify-between items-center mb-[0.35rem]">
           <span className="font-bold text-[0.9rem]">{task.title}</span>
           <Badge variant={STATUS_VARIANT[task.status]}>{STATUS_LABEL[task.status]}</Badge>
