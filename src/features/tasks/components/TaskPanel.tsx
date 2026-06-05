@@ -7,6 +7,7 @@ import type { TaskWithSeries } from '../api';
 import type { TaskType } from '../../../shared/types';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
+import { FormTextarea } from '../../../shared/components/FormInput';
 
 interface Child { id: number; username: string; displayName: string; avatarColor?: string | null }
 interface Props  { children: Child[] }
@@ -204,17 +205,19 @@ export default function TaskPanel({ children }: Props) {
           <div style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
             onClick={(e) => e.stopPropagation()}>
             <h3 style={{ margin: 0, fontWeight: 800 }}>Motivo del rechazo</h3>
-            <p style={{ margin: 0, fontSize: '0.85rem', color: c.body }}>Opcional. Ayuda al niño a mejorar.</p>
-            <textarea style={{ padding: '0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, minHeight: 80, fontSize: '0.9rem', resize: 'vertical' }}
-              value={rejectReason} onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Ej: Falta ordenar los juguetes…" autoFocus />
+            <FormTextarea
+              helper="Opcional. Ayuda al niño a mejorar."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="Ej: Falta ordenar los juguetes…"
+              autoFocus
+            />
             <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-              <button style={{ padding: '0.45rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }} onClick={() => setRejectId(null)}>Cancelar</button>
-              <button style={{ padding: '0.45rem 1.1rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 }}
-                disabled={reject.isPending}
+              <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
+              <Button variant="danger" disabled={reject.isPending}
                 onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
                 ✖ Rechazar
-              </button>
+              </Button>
             </div>
           </div>
         </div>

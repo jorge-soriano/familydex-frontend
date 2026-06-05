@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import { c } from '../../../styles/tokens';
+import { Button } from '../../../shared/components/Button';
+import { FormTextarea } from '../../../shared/components/FormInput';
 
 interface Props { familyChildren: { id: number; username: string; displayName: string; avatarColor?: string | null }[] }
 
@@ -69,18 +71,19 @@ export default function InboxTab({ familyChildren }: Props) {
           <div style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
             onClick={(e) => e.stopPropagation()}>
             <h3 className="m-0 font-extrabold">Motivo del rechazo</h3>
-            <p className="m-0 text-[0.85rem] text-body">Opcional. Ayuda al niño a saber qué mejorar.</p>
-            <textarea style={{ padding: '0.6rem', borderRadius: 6, border: `2px solid ${c.stroke}`, minHeight: 80, fontSize: '0.9rem', resize: 'vertical' }}
-              value={rejectReason} onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Ej: Falta ordenar los juguetes…" autoFocus />
+            <FormTextarea
+              helper="Opcional. Ayuda al niño a saber qué mejorar."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="Ej: Falta ordenar los juguetes…"
+              autoFocus
+            />
             <div className="flex gap-2 justify-end">
-              <button style={{ padding: '0.45rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}
-                onClick={() => setRejectId(null)}>Cancelar</button>
-              <button style={{ padding: '0.45rem 1.1rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 }}
-                disabled={reject.isPending}
+              <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
+              <Button variant="danger" disabled={reject.isPending}
                 onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
                 ✖ Rechazar
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
 import { Button } from '../../../shared/components/Button';
+import { FormTextarea } from '../../../shared/components/FormInput';
 
 interface ChildInfo { id: number; displayName: string; avatarColor?: string | null }
 
@@ -128,16 +129,19 @@ export default function AdminRewardsPage() {
       {rejectId !== null && (
         <div style={styles.overlay} onClick={() => setRejectId(null)}>
           <div style={styles.rejectModal} onClick={(e) => e.stopPropagation()}>
-            <h3 className="m-0 font-extrabold">Motivo del rechazo (opcional)</h3>
-            <textarea style={styles.textarea} value={rejectReason}
+            <h3 className="m-0 font-extrabold">Motivo del rechazo</h3>
+            <FormTextarea
+              helper="Opcional. Se enviará al hijo al rechazar."
+              value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Explica por qué se rechaza la solicitud…" />
+              placeholder="Explica por qué se rechaza la solicitud…"
+            />
             <div style={styles.rejectActions}>
-              <button style={styles.cancelBtn} onClick={() => setRejectId(null)}>Cancelar</button>
-              <button style={styles.confirmReject} disabled={reject.isPending}
+              <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
+              <Button variant="danger" disabled={reject.isPending}
                 onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-                Rechazar
-              </button>
+                ✖ Rechazar
+              </Button>
             </div>
           </div>
         </div>
@@ -168,8 +172,6 @@ const styles: Record<string, React.CSSProperties> = {
   toggleBtn:     { padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
   overlay:       { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
   rejectModal:   { background: c.surface, borderRadius: 10, padding: '1.5rem', width: 380, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
-  textarea:      { padding: '0.5rem', borderRadius: 6, border: `2px solid ${c.stroke}`, minHeight: 80 },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
-  cancelBtn:     { padding: '0.4rem 1rem', background: c.subtle, border: 'none', borderRadius: 6, cursor: 'pointer' },
   confirmReject: { padding: '0.4rem 1rem', background: c.danger, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700 },
 };
