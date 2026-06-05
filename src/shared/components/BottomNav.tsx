@@ -3,7 +3,7 @@ import { c } from '../../styles/tokens';
 
 interface NavItem {
   to: string;
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   badge?: number;
 }
@@ -45,7 +45,7 @@ export default function BottomNav({ items }: BottomNavProps) {
             paddingTop: 2,
           })}
         >
-          <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>{icon}</span>
+          <span style={{ lineHeight: 1, display: 'flex' }}>{icon}</span>
           <span>{label}</span>
           {badge != null && badge > 0 && (
             <span style={{

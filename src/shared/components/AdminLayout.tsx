@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, ClipboardList, BarChart2, ShoppingBag, Users } from 'lucide-react';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useNotifications } from '../../features/admin/hooks/useAdmin';
@@ -17,19 +18,19 @@ function NavBadge({ count }: { count: number }) {
 }
 
 const LINKS = (notif?: { inReview: number; pendingRequests: number }) => [
-  { to: '/admin/dashboard', label: 'Dashboard',  badge: 0 },
-  { to: '/admin/tasks',     label: 'Tareas',      badge: notif?.inReview ?? 0 },
-  { to: '/admin/economy',   label: 'Actividad',   badge: 0 },
-  { to: '/admin/rewards',   label: 'Tienda',      badge: notif?.pendingRequests ?? 0 },
-  { to: '/admin/children',  label: 'Hijos',       badge: 0 },
+  { to: '/admin/dashboard', label: 'Dashboard',  Icon: LayoutDashboard, badge: 0 },
+  { to: '/admin/tasks',     label: 'Tareas',      Icon: ClipboardList,   badge: notif?.inReview ?? 0 },
+  { to: '/admin/economy',   label: 'Actividad',   Icon: BarChart2,       badge: 0 },
+  { to: '/admin/rewards',   label: 'Tienda',      Icon: ShoppingBag,     badge: notif?.pendingRequests ?? 0 },
+  { to: '/admin/children',  label: 'Hijos',       Icon: Users,           badge: 0 },
 ];
 
 const BOTTOM_NAV = (notif?: { inReview: number; pendingRequests: number }) => [
-  { to: '/admin/dashboard', icon: '🏠', label: 'Inicio',    badge: 0 },
-  { to: '/admin/tasks',     icon: '📋', label: 'Tareas',    badge: notif?.inReview ?? 0 },
-  { to: '/admin/economy',   icon: '📊', label: 'Actividad', badge: 0 },
-  { to: '/admin/rewards',   icon: '🏪', label: 'Tienda',    badge: notif?.pendingRequests ?? 0 },
-  { to: '/admin/children',  icon: '👦', label: 'Hijos',     badge: 0 },
+  { to: '/admin/dashboard', icon: <LayoutDashboard size={18} />, label: 'Inicio',    badge: 0 },
+  { to: '/admin/tasks',     icon: <ClipboardList   size={18} />, label: 'Tareas',    badge: notif?.inReview ?? 0 },
+  { to: '/admin/economy',   icon: <BarChart2       size={18} />, label: 'Actividad', badge: 0 },
+  { to: '/admin/rewards',   icon: <ShoppingBag     size={18} />, label: 'Tienda',    badge: notif?.pendingRequests ?? 0 },
+  { to: '/admin/children',  icon: <Users           size={18} />, label: 'Hijos',     badge: 0 },
 ];
 
 export default function AdminLayout() {
@@ -57,10 +58,10 @@ export default function AdminLayout() {
         {/* Links — solo en pantallas anchas */}
         {!isNarrow && (
           <div className="flex gap-1 flex-1">
-            {links.map(({ to, label, badge }) => (
+            {links.map(({ to, label, Icon, badge }) => (
               <Link key={to} to={to}
-                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem]">
-                {label}<NavBadge count={badge} />
+                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem] flex items-center gap-[0.3rem]">
+                <Icon size={14} />{label}<NavBadge count={badge} />
               </Link>
             ))}
           </div>

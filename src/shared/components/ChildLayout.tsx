@@ -1,4 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { ClipboardList, Sword, ShoppingBag, BarChart2 } from 'lucide-react';
 import BalanceBar from '../../features/activity/components/BalanceBar';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
@@ -6,17 +7,17 @@ import { useWindowWidth } from '../hooks/useWindowWidth';
 import BottomNav from './BottomNav';
 
 const LINKS = [
-  { to: '/child/tasks',   label: '📋 Tareas'    },
-  { to: '/child/pokemon', label: '🎮 Pokémon'   },
-  { to: '/child/rewards', label: '🏪 Tienda'    },
-  { to: '/child/economy', label: '📊 Actividad' },
+  { to: '/child/tasks',   label: 'Tareas',    Icon: ClipboardList },
+  { to: '/child/pokemon', label: 'Pokémon',   Icon: Sword         },
+  { to: '/child/rewards', label: 'Tienda',    Icon: ShoppingBag   },
+  { to: '/child/economy', label: 'Actividad', Icon: BarChart2     },
 ];
 
 const BOTTOM_NAV = [
-  { to: '/child/tasks',   icon: '📋', label: 'Tareas'    },
-  { to: '/child/pokemon', icon: '🎮', label: 'Pokémon'   },
-  { to: '/child/rewards', icon: '🏪', label: 'Tienda'    },
-  { to: '/child/economy', icon: '📊', label: 'Actividad' },
+  { to: '/child/tasks',   icon: <ClipboardList size={18} />, label: 'Tareas'    },
+  { to: '/child/pokemon', icon: <Sword         size={18} />, label: 'Pokémon'   },
+  { to: '/child/rewards', icon: <ShoppingBag   size={18} />, label: 'Tienda'    },
+  { to: '/child/economy', icon: <BarChart2     size={18} />, label: 'Actividad' },
 ];
 
 export default function ChildLayout() {
@@ -39,10 +40,10 @@ export default function ChildLayout() {
 
         {!isNarrow && (
           <div className="flex gap-1 flex-1">
-            {LINKS.map(({ to, label }) => (
+            {LINKS.map(({ to, label, Icon }) => (
               <Link key={to} to={to}
-                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem]">
-                {label}
+                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem] flex items-center gap-[0.3rem]">
+                <Icon size={14} />{label}
               </Link>
             ))}
           </div>
