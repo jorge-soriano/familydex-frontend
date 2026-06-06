@@ -46,9 +46,14 @@ export default function AdminRewardsPage() {
       <h2 style={styles.h2}>Tienda de recompensas</h2>
 
       {/* Tabs */}
-      <div style={styles.tabs}>
+      <div role="tablist" style={styles.tabs}>
         {(['requests', 'rewards'] as Tab[]).map((t) => (
-          <button key={t} style={{ ...styles.tab, color: tab === t ? c.primary : c.body, borderBottom: tab === t ? `2px solid ${c.primary}` : '2px solid transparent' }}
+          <button key={t}
+            role="tab"
+            aria-selected={tab === t}
+            aria-controls={`tab-panel-${t}`}
+            id={`tab-${t}`}
+            style={{ ...styles.tab, color: tab === t ? c.primary : c.body, borderBottom: tab === t ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t)}>
             {t === 'requests' ? `📋 Solicitudes${pending.length ? ` (${pending.length})` : ''}` : '🏪 Recompensas'}
           </button>
@@ -57,7 +62,7 @@ export default function AdminRewardsPage() {
 
       {/* Requests tab */}
       {tab === 'requests' && (
-        <div style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
+        <div role="tabpanel" id="tab-panel-requests" aria-labelledby="tab-requests" style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
           {requests.length === 0 && <p className="text-caption" style={{ padding: '1rem' }}>No hay solicitudes.</p>}
           {requests.map((rr) => (
             <div key={rr.id} style={{ ...styles.reqRow, borderBottom: `1px solid ${c.subtle}` }}>
@@ -97,7 +102,7 @@ export default function AdminRewardsPage() {
 
       {/* Rewards tab */}
       {tab === 'rewards' && (
-        <>
+        <div role="tabpanel" id="tab-panel-rewards" aria-labelledby="tab-rewards">
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
           <Button onClick={() => { setEditReward(null); setShowForm(true); }}>+ Nueva recompensa</Button>
         </div>
@@ -120,7 +125,7 @@ export default function AdminRewardsPage() {
           ))}
           {rewards.length === 0 && <p className="text-caption py-4" style={{ gridColumn: '1/-1' }}>Sin recompensas creadas.</p>}
         </div>
-        </>
+        </div>
       )}
 
       {/* Reject modal */}

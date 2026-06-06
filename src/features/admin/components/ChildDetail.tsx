@@ -59,9 +59,13 @@ export default function ChildDetail() {
       </div>
 
       {/* Tabs */}
-      <div style={styles.tabs}>
+      <div role="tablist" style={styles.tabs}>
         {TABS.map((t) => (
           <button key={t.key}
+            role="tab"
+            aria-selected={tab === t.key}
+            aria-controls={`tab-panel-${t.key}`}
+            id={`tab-${t.key}`}
             style={{ ...styles.tab, color: tab === t.key ? c.primary : c.body, borderBottom: tab === t.key ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t.key)}>
             {t.label}
@@ -71,7 +75,7 @@ export default function ChildDetail() {
 
       {/* Resumen tab */}
       {tab === 'resumen' && (
-        <div style={styles.summaryGrid}>
+        <div role="tabpanel" id="tab-panel-resumen" aria-labelledby="tab-resumen" style={styles.summaryGrid}>
           <div style={styles.statCard}><p style={styles.statLabel}>Monedas</p><p style={styles.statValue}>🪙 {child.coins}</p></div>
           <div style={styles.statCard}><p style={styles.statLabel}>XP total</p><p style={styles.statValue}>⭐ {child.xp}</p></div>
           <div style={styles.statCard}><p style={styles.statLabel}>Pokémon</p><p style={styles.statValue}>{pokemonData?.collection.length ?? 0} / {1 + Math.floor(child.xp / 5000)}</p></div>
@@ -102,18 +106,22 @@ export default function ChildDetail() {
 
       {/* Tareas tab */}
       {tab === 'tareas' && (
-        <div className="flex flex-col gap-2">
+        <div role="tabpanel" id="tab-panel-tareas" aria-labelledby="tab-tareas" className="flex flex-col gap-2">
           {tasks.length === 0 && <p className="text-caption py-4">Sin tareas asignadas.</p>}
           {tasks.map((t) => <TaskCard key={t.id} task={t} />)}
         </div>
       )}
 
       {/* Historial tab */}
-      {tab === 'historial' && <HistoryList childId={childId} />}
+      {tab === 'historial' && (
+        <div role="tabpanel" id="tab-panel-historial" aria-labelledby="tab-historial">
+          <HistoryList childId={childId} />
+        </div>
+      )}
 
       {/* Pokémon tab */}
       {tab === 'pokemon' && (
-        <div style={styles.pokeGrid}>
+        <div role="tabpanel" id="tab-panel-pokemon" aria-labelledby="tab-pokemon" style={styles.pokeGrid}>
           {(pokemonData?.collection.length ?? 0) === 0 && (
             <p className="text-caption py-4">No ha elegido su Pokémon inicial todavía.</p>
           )}
@@ -130,7 +138,7 @@ export default function ChildDetail() {
 
       {/* Solicitudes tab */}
       {tab === 'solicitudes' && (
-        <div style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
+        <div role="tabpanel" id="tab-panel-solicitudes" aria-labelledby="tab-solicitudes" style={{ background: c.surface, borderRadius: 10, boxShadow: c.shadowSm, overflow: 'hidden' }}>
           {childRequests.length === 0 && <p className="text-caption" style={{ padding: '1rem' }}>Sin solicitudes de recompensa.</p>}
           {childRequests.map((rr) => (
             <div key={rr.id} style={{ ...styles.reqRow, borderBottom: `1px solid ${c.subtle}` }}>
