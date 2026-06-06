@@ -15,7 +15,7 @@ export default {
         accent:  { DEFAULT: '#8b5cf6', subtle: '#f5f3ff' }, // XP, recompensas
 
         // Superficies
-        page:    '#f8fafc',  // fondo de página
+        page:    '#eef2f7',  // fondo de página
         surface: '#ffffff',  // tarjetas, modales
         subtle:  '#f1f5f9',  // fondos secundarios, botones inactivos
         stroke:  '#e2e8f0',  // bordes

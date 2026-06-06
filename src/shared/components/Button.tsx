@@ -19,7 +19,7 @@ const VARIANT_STYLES: Record<ButtonVariant, React.CSSProperties> = {
 
 const SIZE_STYLES: Record<ButtonSize, React.CSSProperties> = {
   sm: { padding: '0.35rem 0.75rem', fontSize: '0.8rem',   borderRadius: 6 },
-  md: { padding: '0.5rem 1.25rem',  fontSize: '0.875rem', borderRadius: 8 },
+  md: { padding: '0.5rem 1.25rem',  fontSize: '0.875rem', borderRadius: 10 },
 };
 
 export function Button({ variant = 'primary', size = 'md', children, style, disabled, className, ...props }: ButtonProps) {

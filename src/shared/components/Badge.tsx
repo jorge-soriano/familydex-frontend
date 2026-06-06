@@ -29,10 +29,10 @@ export function Badge({ variant, subtle = false, children }: BadgeProps) {
   return (
     <span style={{
       ...colors,
-      fontSize: '0.7rem',
+      fontSize: '0.73rem',
       fontWeight: 700,
-      padding: '2px 8px',
-      borderRadius: 10,
+      padding: '3px 10px',
+      borderRadius: 999,
       display: 'inline-flex',
       alignItems: 'center',
       whiteSpace: 'nowrap',

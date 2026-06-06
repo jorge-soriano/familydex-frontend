@@ -27,7 +27,7 @@ export const c = {
   accent:        '#8b5cf6',
   accentSubtle:  '#f5f3ff',
 
-  page:          '#f8fafc',
+  page:          '#eef2f7',
   surface:       '#ffffff',
   subtle:        '#f1f5f9',
   stroke:        '#e2e8f0',
@@ -46,7 +46,9 @@ export const c = {
   overlayDark:   'rgba(0,0,0,0.65)',
 
   // Sombras estandarizadas
-  shadowSm:      '0 1px 4px rgba(0,0,0,0.06)',
-  shadowMd:      '0 2px 8px rgba(0,0,0,0.07)',
+  shadowSm:      '0 1px 4px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.05)',
+  shadowMd:      '0 2px 8px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.05)',
+  shadowCard:    '0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.05)',
+  shadowFloat:   '0 8px 24px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)',
   shadowLg:      '0 8px 32px rgba(0,0,0,0.28)',
 } as const;
