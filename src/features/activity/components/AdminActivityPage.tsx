@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import HistoryList from './HistoryList';
 import DirectRecordsForm from './DirectRecordsForm';
+import Modal from '../../../shared/components/Modal';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
 
@@ -50,18 +51,9 @@ export default function AdminActivityPage() {
       <HistoryList childId={filterChild || undefined} filterType={filterType || undefined} childMap={childMap} />
 
       {showForm && (
-        <div style={{ position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
-          onClick={() => setShowForm(false)}>
-          <div style={{ background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto' }}
-            onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800 }}>Nuevo registro</h2>
-              <button style={{ background: 'none', border: 'none', fontSize: '1.25rem', cursor: 'pointer', color: c.caption, lineHeight: 1 }}
-                onClick={() => setShowForm(false)}>✕</button>
-            </div>
-            <DirectRecordsForm familyChildren={children} onClose={() => setShowForm(false)} />
-          </div>
-        </div>
+        <Modal title="Nuevo registro" maxWidth={520} onClose={() => setShowForm(false)}>
+          <DirectRecordsForm familyChildren={children} onClose={() => setShowForm(false)} />
+        </Modal>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { useEvolveActive } from '../hooks/usePokemon';
@@ -19,6 +19,13 @@ export default function EvolutionModal({ active, onClose }: Props) {
   const [evolvedPokemon, setEvolvedPokemon] = useState<PokemonData | null>(null);
   const [trigger, setTrigger] = useState<string | null>(null);
   const evolve = useEvolveActive();
+
+  // Escape solo cierra cuando la animación ha terminado (igual que el overlay click)
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape' && phase === 'done') onClose(); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [phase, onClose]);
 
   // Congelar el Pokémon original al montar — cuando mutateAsync() complete,
   // React Query invalida la caché y el prop 'active' cambia al evolucionado.
@@ -42,13 +49,19 @@ export default function EvolutionModal({ active, onClose }: Props) {
   };
 
   return (
-    <div style={overlay} onClick={phase === 'done' ? onClose : undefined}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="evo-modal-title"
+      style={{ ...overlay, overscrollBehavior: 'contain' } as React.CSSProperties}
+      onClick={phase === 'done' ? onClose : undefined}
+    >
       <div style={modal} onClick={(e) => e.stopPropagation()}>
 
         {/* idle / flashing: show current pokemon */}
         {(phase === 'idle' || phase === 'flashing') && (
           <>
-            <h2 style={title}>
+            <h2 id="evo-modal-title" style={title}>
               {phase === 'idle'
                 ? `⚡ ¡${p.name} puede evolucionar!`
                 : `✨ ${p.name} está evolucionando…`}
@@ -89,7 +102,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
         {/* revealing / done: show evolved pokemon */}
         {(phase === 'revealing' || phase === 'done') && evolvedPokemon && (
           <>
-            <h2 style={{ ...title, color: c.warning }}>
+            <h2 id="evo-modal-title" style={{ ...title, color: c.warning }}>
               ✨ ¡{p.name} ha evolucionado en {evolvedPokemon.name}!
             </h2>
             {trigger && <p style={triggerText}>{trigger}</p>}

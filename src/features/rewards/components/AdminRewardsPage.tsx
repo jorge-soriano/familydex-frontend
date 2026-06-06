@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRewards, useToggleReward, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import RewardForm from './RewardForm';
+import Modal from '../../../shared/components/Modal';
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import apiClient from '../../../shared/api/apiClient';
 import type { Reward } from '../api';
@@ -73,12 +74,12 @@ export default function AdminRewardsPage() {
                 {rr.status === 'Pending' ? (
                   <>
                     {isNarrow ? (
-                      <button title="Aprobar" style={styles.approveBtnSm} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓</button>
+                      <button aria-label="Aprobar solicitud" style={styles.approveBtnSm} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓</button>
                     ) : (
                       <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓ Aprobar</Button>
                     )}
                     {isNarrow ? (
-                      <button title="Rechazar" style={styles.rejectBtnSm} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗</button>
+                      <button aria-label="Rechazar solicitud" style={styles.rejectBtnSm} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗</button>
                     ) : (
                       <Button variant="danger" size="sm" onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗ Rechazar</Button>
                     )}
@@ -124,24 +125,22 @@ export default function AdminRewardsPage() {
 
       {/* Reject modal */}
       {rejectId !== null && (
-        <div style={styles.overlay} onClick={() => setRejectId(null)}>
-          <div style={styles.rejectModal} onClick={(e) => e.stopPropagation()}>
-            <h3 className="m-0 font-extrabold">Motivo del rechazo</h3>
-            <FormTextarea
-              helper="Opcional. Se enviará al hijo al rechazar."
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Explica por qué se rechaza la solicitud…"
-            />
-            <div style={styles.rejectActions}>
-              <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
-              <Button variant="danger" disabled={reject.isPending}
-                onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-                ✖ Rechazar
-              </Button>
-            </div>
+        <Modal title="Motivo del rechazo" maxWidth={420} onClose={() => setRejectId(null)}>
+          <FormTextarea
+            label="Motivo (opcional)"
+            helper="Se enviará al hijo al rechazar."
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+            placeholder="Explica por qué se rechaza la solicitud…"
+          />
+          <div style={styles.rejectActions}>
+            <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
+            <Button variant="danger" disabled={reject.isPending}
+              onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
+              ✖ Rechazar
+            </Button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {showForm && <RewardForm reward={editReward ?? undefined} onClose={() => { setShowForm(false); setEditReward(null); }} />}
@@ -164,7 +163,5 @@ const styles: Record<string, React.CSSProperties> = {
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
   cardFooter:    { display: 'flex', gap: '0.5rem' },
   toggleBtn:     { padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
-  overlay:       { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  rejectModal:   { background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
 };

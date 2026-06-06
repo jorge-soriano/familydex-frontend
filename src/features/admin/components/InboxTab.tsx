@@ -1,4 +1,5 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
+import Modal from '../../../shared/components/Modal';
 import { useState } from 'react';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
@@ -45,12 +46,12 @@ export default function InboxTab({ familyChildren }: Props) {
             </div>
             <div className="flex gap-[0.4rem] shrink-0">
               {isNarrow ? (
-                <button title="Aprobar" style={smBtn(c.success)} disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔</button>
+                <button aria-label="Aprobar tarea" style={smBtn(c.success)} disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔</button>
               ) : (
                 <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔ Aprobar</Button>
               )}
               {isNarrow ? (
-                <button title="Rechazar" style={smBtn(c.danger)} onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖</button>
+                <button aria-label="Rechazar tarea" style={smBtn(c.danger)} onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖</button>
               ) : (
                 <Button variant="danger" size="sm" onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖ Rechazar</Button>
               )}
@@ -60,27 +61,23 @@ export default function InboxTab({ familyChildren }: Props) {
       </div>
 
       {rejectId !== null && (
-        <div style={{ position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}
-          onClick={() => setRejectId(null)}>
-          <div style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
-            onClick={(e) => e.stopPropagation()}>
-            <h3 className="m-0 font-extrabold">Motivo del rechazo</h3>
-            <FormTextarea
-              helper="Opcional. Ayuda al niño a saber qué mejorar."
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Ej: Falta ordenar los juguetes…"
-              autoFocus
-            />
-            <div className="flex gap-2 justify-end">
-              <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
-              <Button variant="danger" disabled={reject.isPending}
-                onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-                ✖ Rechazar
-              </Button>
-            </div>
+        <Modal title="Motivo del rechazo" maxWidth={420} onClose={() => setRejectId(null)}>
+          <FormTextarea
+            label="Motivo (opcional)"
+            helper="Ayuda al niño a saber qué mejorar."
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+            placeholder="Ej: Falta ordenar los juguetes…"
+            autoFocus
+          />
+          <div className="flex gap-2 justify-end">
+            <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
+            <Button variant="danger" disabled={reject.isPending}
+              onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
+              ✖ Rechazar
+            </Button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

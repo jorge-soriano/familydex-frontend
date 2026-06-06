@@ -21,3 +21,16 @@
 .evo-reveal {
   animation: evo-fade-in 0.8s ease-out forwards;
 }
+
+/* Usuarios con preferencia de movimiento reducido: sin flash ni escala */
+@media (prefers-reduced-motion: reduce) {
+  .evo-flashing {
+    animation: none;
+    filter: brightness(3) saturate(0);
+  }
+  .evo-reveal {
+    animation: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
