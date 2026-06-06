@@ -3,6 +3,7 @@ import { Badge } from '../../../shared/components/Badge';
 import type { BadgeVariant } from '../../../shared/components/Badge';
 import { useHistory } from '../hooks/useActivity';
 import type { TransactionType } from '../../../shared/types';
+import { c } from '../../../styles/tokens';
 
 interface Props {
   childId?: number;
@@ -25,6 +26,13 @@ const TYPE_VARIANT: Record<TransactionType, BadgeVariant> = {
   DirectReward:   'neutral',
   DirectRecord:   'warning',
 };
+const TYPE_ACCENT: Record<TransactionType, string> = {
+  TaskReward:     c.success,
+  Penalty:        c.danger,
+  RewardRedeemed: c.accent,
+  DirectReward:   c.warning,
+  DirectRecord:   c.warning,
+};
 
 export default function HistoryList({ childId, filterType, childMap }: Props) {
   const { data: transactions = [], isLoading } = useHistory({
@@ -41,9 +49,9 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
   );
 
   return (
-    <div className="bg-surface rounded-[10px] px-4 py-2">
+    <div className="bg-surface rounded-[10px] overflow-hidden py-1">
       {transactions.map((tx) => (
-        <div key={tx.id} className="flex justify-between items-center py-[0.45rem] border-b border-subtle gap-3">
+        <div key={tx.id} className="flex justify-between items-center py-[0.45rem] border-b border-subtle gap-3 px-4" style={{ borderLeft: `3px solid ${TYPE_ACCENT[tx.type]}` }}>
 
           {/* Left: badge + description + child name */}
           <div className="flex flex-col gap-[0.2rem] flex-1 min-w-0">

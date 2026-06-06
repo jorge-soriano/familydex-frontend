@@ -36,9 +36,12 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
     const STATUS_LABEL: Record<string, string> = {
       Pending: 'Pendiente', InReview: 'En revisión', Approved: 'Aprobada', Rejected: 'Rechazada',
     };
+    const STATUS_COLOR: Record<string, string> = {
+      Pending: c.caption, InReview: c.warning, Approved: c.success, Rejected: c.danger,
+    };
 
     return (
-      <div className="bg-surface rounded-[8px] px-4 py-[0.55rem] mb-[0.4rem]" style={{ boxShadow: c.shadowSm }}>
+      <div className="bg-surface rounded-[8px] px-4 py-[0.55rem] mb-[0.4rem]" style={{ boxShadow: c.shadowSm, borderLeft: `3px solid ${STATUS_COLOR[task.status]}` }}>
         <div className="flex justify-between items-center mb-[0.35rem]">
           <span className="font-bold text-[0.9rem]">{task.title}</span>
           <Badge variant={STATUS_VARIANT[task.status]}>{STATUS_LABEL[task.status]}</Badge>

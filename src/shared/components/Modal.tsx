@@ -24,6 +24,7 @@ export default function Modal({ onClose, title, maxWidth = 480, children }: Prop
       onClick={onClose}
     >
       <div
+        className="modal-content"
         style={{ background: c.surface, borderRadius: 12, padding: '1.5rem', width: 'calc(100% - 2rem)', maxWidth, display: 'flex', flexDirection: 'column', gap: '0.75rem', boxShadow: c.shadowLg }}
         onClick={(e) => e.stopPropagation()}
       >

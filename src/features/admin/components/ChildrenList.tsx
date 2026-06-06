@@ -54,7 +54,7 @@ export default function ChildrenList() {
                 <tr><td colSpan={7} style={{ padding: '2rem', textAlign: 'center', color: c.caption }}>No hay hijos registrados.</td></tr>
               )}
               {children.map((child) => (
-                <tr key={child.id} style={{ borderBottom: `1px solid ${c.subtle}`, opacity: child.isActive ? 1 : 0.55, background: c.surface }}>
+                <tr key={child.id} className="hover:bg-subtle transition-colors duration-100" style={{ borderBottom: `1px solid ${c.stroke}`, opacity: child.isActive ? 1 : 0.55, background: child.isActive ? undefined : c.surface }}>
                   <td style={{ padding: '0.6rem 0.75rem' }}>
                     <Link to={`/admin/children/${child.id}`} style={styles.nameCell}>
                       <div style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>
