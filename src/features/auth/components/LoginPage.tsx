@@ -42,8 +42,9 @@ export default function LoginPage() {
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             placeholder="Email o nombre de usuario"
+            autoComplete="username"
+            spellCheck={false}
             required
-            autoFocus
           />
 
           <FormInput
@@ -52,10 +53,15 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Contraseña"
+            autoComplete="current-password"
             required
           />
 
-          {login.isError && <p className="text-danger text-[0.85rem] m-0">{errorMessage}</p>}
+          {login.isError && (
+            <p aria-live="polite" role="alert" className="text-danger text-[0.85rem] m-0">
+              {errorMessage}
+            </p>
+          )}
 
           <Button type="submit" disabled={login.isPending} style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.5rem' }}>
             {login.isPending ? 'Entrando…' : 'Entrar'}
@@ -74,9 +80,10 @@ export default function LoginPage() {
             {DEMO_ACCOUNTS.map((acc) => (
               <button
                 key={acc.identifier}
-                className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2"
+                className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2 transition-opacity duration-150"
                 style={{ background: 'transparent', color: acc.color, borderColor: acc.color, opacity: login.isPending ? 0.5 : 1 }}
                 disabled={login.isPending}
+                aria-disabled={login.isPending}
                 onClick={() => handleDemo(acc)}
               >
                 {acc.label}

@@ -25,7 +25,7 @@ export default function Dashboard() {
                   <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Tarea{data!.totalInReview !== 1 ? 's' : ''} por revisar</div>
                   <div style={{ fontSize: '0.78rem', opacity: 0.85 }}>El niño espera tu aprobación</div>
                 </div>
-                <span style={styles.alertAction}>Revisar →</span>
+                <span aria-hidden="true" style={styles.alertAction}>Revisar →</span>
               </Link>
             )}
             {(data?.totalPendingRequests ?? 0) > 0 && (
@@ -35,7 +35,7 @@ export default function Dashboard() {
                   <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Solicitud{data!.totalPendingRequests !== 1 ? 'es' : ''} de recompensa</div>
                   <div style={{ fontSize: '0.78rem', opacity: 0.85 }}>Pendiente{data!.totalPendingRequests !== 1 ? 's' : ''} de aprobar o rechazar</div>
                 </div>
-                <span style={styles.alertAction}>Ver →</span>
+                <span aria-hidden="true" style={styles.alertAction}>Ver →</span>
               </Link>
             )}
           </div>
@@ -53,8 +53,8 @@ export default function Dashboard() {
           <p className="text-caption" style={{ gridColumn: '1/-1' }}>No hay hijos registrados todavía.</p>
         )}
         {data?.children.map((child) => (
-          <Link key={child.id} to={`/admin/children/${child.id}`} style={styles.childCard}>
-            <div style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>
+          <Link key={child.id} to={`/admin/children/${child.id}`} className="card-interactive" style={styles.childCard}>
+            <div aria-hidden="true" style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>
               {child.displayName.charAt(0).toUpperCase()}
             </div>
 
@@ -101,7 +101,7 @@ const styles: Record<string, React.CSSProperties> = {
   alertNum:    { fontSize: '2rem', fontWeight: 800, lineHeight: 1, flexShrink: 0 },
   alertAction: { marginLeft: 'auto', opacity: 0.85, fontSize: '0.85rem', flexShrink: 0 },
   grid:      { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' },
-  childCard: { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem', transition: 'box-shadow 0.15s' },
+  childCard: { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   avatar:    { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem' },
   childInfo: { display: 'flex', flexDirection: 'column' },
   childName: { fontSize: '1.05rem' },

@@ -29,7 +29,7 @@ export default function RewardShop() {
           <p className="text-caption" style={{ gridColumn: '1/-1' }}>Aún no hay recompensas disponibles.</p>
         )}
         {rewards.map((r) => (
-          <div key={r.id} style={{ ...styles.card, opacity: canAfford(r) ? 1 : 0.6 }}>
+          <div key={r.id} aria-disabled={!canAfford(r) || undefined} style={{ ...styles.card, opacity: canAfford(r) ? 1 : 0.6 }}>
             <div style={styles.cardTop}>
               <span className="font-bold">{r.name}</span>
               <span style={styles.cost}>🪙 {r.coinCost}</span>
@@ -70,7 +70,7 @@ export default function RewardShop() {
       )}
 
       {request.isError && (
-        <p style={{ color: c.danger, marginTop: '1rem' }}>
+        <p aria-live="polite" role="alert" style={{ color: c.danger, marginTop: '1rem' }}>
           {(request.error as any)?.response?.data?.message ?? 'Error al solicitar'}
         </p>
       )}

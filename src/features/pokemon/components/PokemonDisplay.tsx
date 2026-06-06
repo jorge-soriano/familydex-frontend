@@ -18,7 +18,7 @@ export default function PokemonDisplay({ data }: Props) {
 
       <div style={styles.info}>
         <div style={styles.nameRow}>
-          <h2 style={styles.name}>{p.name}</h2>
+          <h3 style={styles.name}>{p.name}</h3>
           <span style={styles.num}>#{String(p.pokedexNumber).padStart(3, '0')}</span>
         </div>
 

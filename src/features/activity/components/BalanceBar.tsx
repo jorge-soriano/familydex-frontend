@@ -22,12 +22,20 @@ export default function BalanceBar() {
       {(readyToEvolve || pending > 0) && (
         <div className="ml-auto flex gap-2 items-center">
           {readyToEvolve && (
-            <Link to="/child/pokemon" className={`${chipBase} bg-warning`}>
+            <Link
+              to="/child/pokemon"
+              aria-label={`${activeName} puede evolucionar`}
+              className={`${chipBase} bg-warning`}
+            >
               ⚡ {isNarrow ? '' : `${activeName} puede evolucionar`}
             </Link>
           )}
           {pending > 0 && (
-            <Link to="/child/pokemon?tab=capturar" className={`${chipBase} bg-warning`}>
+            <Link
+              to="/child/pokemon?tab=capturar"
+              aria-label={`${pending} Pokémon por capturar`}
+              className={`${chipBase} bg-warning`}
+            >
               🎯 {isNarrow ? pending : `${pending} Pokémon por capturar`}
             </Link>
           )}

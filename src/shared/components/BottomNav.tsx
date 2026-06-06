@@ -19,7 +19,8 @@ export default function BottomNav({ items }: BottomNavProps) {
       bottom: 0,
       left: 0,
       right: 0,
-      height: 60,
+      height: 'calc(60px + env(safe-area-inset-bottom, 0px))',
+      paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       background: c.navy,
       display: 'flex',
       zIndex: 50,
@@ -29,6 +30,7 @@ export default function BottomNav({ items }: BottomNavProps) {
         <NavLink
           key={to}
           to={to}
+          aria-label={badge ? `${label} (${badge} pendientes)` : label}
           style={({ isActive }) => ({
             flex: 1,
             display: 'flex',
@@ -45,10 +47,10 @@ export default function BottomNav({ items }: BottomNavProps) {
             paddingTop: 2,
           })}
         >
-          <span style={{ lineHeight: 1, display: 'flex' }}>{icon}</span>
-          <span>{label}</span>
+          <span aria-hidden="true" style={{ lineHeight: 1, display: 'flex' }}>{icon}</span>
+          <span aria-hidden="true">{label}</span>
           {badge != null && badge > 0 && (
-            <span style={{
+            <span aria-hidden="true" style={{
               position: 'absolute',
               top: 6,
               right: '50%',
