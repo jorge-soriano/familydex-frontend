@@ -9,18 +9,18 @@ interface BadgeProps {
 }
 
 const SOLID: Record<BadgeVariant, { background: string; color: string }> = {
-  success: { background: c.success,  color: c.surface },
-  warning: { background: c.warning,  color: c.surface },
-  danger:  { background: c.danger,   color: c.surface },
-  neutral: { background: c.caption,  color: c.surface },
-  info:    { background: c.primary,  color: c.surface },
+  success: { background: c.success,     color: c.surface    },
+  warning: { background: c.warning,     color: c.warningDeep }, // #78350f sobre #f59e0b ≈ 9:1
+  danger:  { background: c.danger,      color: c.surface    },
+  neutral: { background: c.caption,     color: c.surface    },
+  info:    { background: c.primary,     color: c.surface    },
 };
 
 const SUBTLE: Record<BadgeVariant, { background: string; color: string }> = {
   success: { background: c.successSubtle, color: c.successDark },
   warning: { background: c.warningSubtle, color: c.warningDark },
   danger:  { background: c.dangerSubtle,  color: c.dangerDark  },
-  neutral: { background: c.subtle,        color: c.body        },
+  neutral: { background: c.subtle,        color: c.heading     }, // heading sobre subtle ≈ 10:1
   info:    { background: c.primarySubtle, color: c.primaryDark },
 };
 
