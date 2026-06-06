@@ -29,7 +29,7 @@ export default function Dashboard() {
               </Link>
             )}
             {(data?.totalPendingRequests ?? 0) > 0 && (
-              <Link to="/admin/rewards" style={{ ...styles.alertCard, background: c.accent }}>
+              <Link to="/admin/rewards" style={{ ...styles.alertCard, background: 'linear-gradient(135deg, #a78bfa, #7c3aed)', boxShadow: '0 2px 8px rgba(139,92,246,0.35)' }}>
                 <span style={styles.alertNum}>{data!.totalPendingRequests}</span>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Solicitud{data!.totalPendingRequests !== 1 ? 'es' : ''} de recompensa</div>
@@ -91,17 +91,17 @@ export default function Dashboard() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  page:      { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
+  page:      { padding: 'clamp(1rem, 4vw, 1.5rem)', maxWidth: 1200, margin: '0 auto' },
   h2:        { fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' },
   h3:          { fontSize: '1.1rem', fontWeight: 700, margin: '0 0 0.75rem', color: c.body },
   alertSection:{ marginBottom: '1.5rem' },
   alertTitle:  { fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.06em', color: c.body, margin: '0 0 0.6rem' },
   alerts:      { display: 'flex', gap: '0.75rem', flexWrap: 'wrap' as const },
-  alertCard:   { display: 'flex', alignItems: 'center', gap: '1rem', background: c.warning, color: c.surface, padding: '0.9rem 1.25rem', borderRadius: 10, textDecoration: 'none', fontWeight: 600, flex: 1, minWidth: 220 },
+  alertCard:   { display: 'flex', alignItems: 'center', gap: '1rem', background: 'linear-gradient(135deg, #fbbf24, #d97706)', color: c.surface, padding: '0.9rem 1.25rem', borderRadius: 12, textDecoration: 'none', fontWeight: 600, flex: 1, minWidth: 220, boxShadow: '0 2px 8px rgba(245,158,11,0.35)' },
   alertNum:    { fontSize: '2rem', fontWeight: 800, lineHeight: 1, flexShrink: 0 },
   alertAction: { marginLeft: 'auto', opacity: 0.85, fontSize: '0.85rem', flexShrink: 0 },
   grid:      { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' },
-  childCard: { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  childCard: { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowCard, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   avatar:    { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem' },
   childInfo: { display: 'flex', flexDirection: 'column' },
   childName: { fontSize: '1.05rem' },

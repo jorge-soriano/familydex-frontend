@@ -57,12 +57,14 @@ const styles: Record<string, React.CSSProperties> = {
   card: {
     display: 'flex', gap: '1.5rem', alignItems: 'center',
     background: c.surface, borderRadius: 10, padding: '1.5rem',
-    boxShadow: c.shadowMd,
+    boxShadow: c.shadowCard,
   },
   spriteWrap: {
-    background: c.page, borderRadius: 12, padding: '0.75rem',
+    background: `radial-gradient(circle at 55% 65%, ${c.primarySubtle}, ${c.subtle} 75%)`,
+    borderRadius: 16, padding: '1rem',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     minWidth: 140, minHeight: 140,
+    boxShadow: `inset 0 2px 8px rgba(0,0,0,0.05), 0 0 0 1px ${c.stroke}`,
   },
   info: { flex: 1 },
   nameRow: { display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' },

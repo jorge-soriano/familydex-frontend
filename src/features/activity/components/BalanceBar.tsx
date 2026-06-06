@@ -16,8 +16,13 @@ export default function BalanceBar() {
   return (
     <div
       className={`flex items-center bg-night text-white shrink-0 ${isNarrow ? 'gap-3 px-4 py-[0.4rem] text-[0.82rem]' : 'gap-6 px-6 py-2 text-[0.9rem]'}`}>
-      <span>🪙 <strong>{balance?.coins ?? '—'}</strong></span>
-      <span>⭐ <strong>{balance?.xp ?? '—'}</strong> XP</span>
+      <span className={`bg-white/10 rounded-full flex items-center gap-1 ${isNarrow ? 'px-2 py-[0.15rem]' : 'px-3 py-1'}`}>
+        🪙 <span className="font-black">{balance?.coins ?? '—'}</span>
+      </span>
+      <span className={`bg-white/10 rounded-full flex items-center gap-1 ${isNarrow ? 'px-2 py-[0.15rem]' : 'px-3 py-1'}`}>
+        ⭐ <span className="font-black">{balance?.xp ?? '—'}</span>
+        {!isNarrow && <span className="opacity-60 text-[0.72rem]">XP</span>}
+      </span>
 
       {(readyToEvolve || pending > 0) && (
         <div className="ml-auto flex gap-2 items-center">
