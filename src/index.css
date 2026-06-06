@@ -61,6 +61,7 @@ button {
 input, textarea, select {
   font-family: inherit;
   font-size: inherit;
+  outline: none; /* manejamos el foco via :focus-visible */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -70,4 +71,34 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   margin: 0;
+}
+
+/* ── Accessibility: focus-visible ────────────────────────────────────── */
+/* Anillo de foco visible para navegación por teclado */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Inputs: highlight de borde + glow en lugar de outline exterior */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
+/* Touch: elimina el delay de doble tap y el highlight nativo */
+button, a, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover en cards interactivas */
+.card-interactive {
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.card-interactive:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
 }

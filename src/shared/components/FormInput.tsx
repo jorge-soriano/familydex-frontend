@@ -25,7 +25,6 @@ const inputBase: React.CSSProperties = {
   background: c.surface,
   width: '100%',
   boxSizing: 'border-box',
-  outline: 'none',
 };
 
 const labelBase: React.CSSProperties = {

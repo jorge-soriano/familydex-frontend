@@ -22,10 +22,18 @@ const SIZE_STYLES: Record<ButtonSize, React.CSSProperties> = {
   md: { padding: '0.5rem 1.25rem',  fontSize: '0.875rem', borderRadius: 8 },
 };
 
-export function Button({ variant = 'primary', size = 'md', children, style, disabled, ...props }: ButtonProps) {
+export function Button({ variant = 'primary', size = 'md', children, style, disabled, className, ...props }: ButtonProps) {
+  const hoverCls = !disabled
+    ? variant === 'ghost' ? 'hover:bg-subtle' : 'hover:brightness-90'
+    : '';
+  const activeCls = !disabled ? 'active:scale-[0.97]' : '';
+  const finalCls = ['transition-[filter,transform,background-color] duration-150', hoverCls, activeCls, className]
+    .filter(Boolean).join(' ');
+
   return (
     <button
       disabled={disabled}
+      className={finalCls}
       style={{
         ...VARIANT_STYLES[variant],
         ...SIZE_STYLES[size],
