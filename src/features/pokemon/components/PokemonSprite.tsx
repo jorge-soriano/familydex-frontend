@@ -16,7 +16,7 @@ export default function PokemonSprite({ pokedexNumber, size = 96, alt = '' }: Pr
       alt={alt}
       width={size}
       height={size}
-      style={{ imageRendering: 'pixelated', objectFit: 'contain' }}
+      style={{ objectFit: 'contain' }}
       onError={() => setFailed(true)}
     />
   );

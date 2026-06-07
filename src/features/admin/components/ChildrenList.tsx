@@ -70,7 +70,7 @@ export default function ChildrenList() {
                     <div style={styles.pokemon}>
                       {child.activePokemon ? (
                         <>
-                          <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={32} height={32} style={{ imageRendering: 'pixelated' }} />
+                          <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={32} height={32} style={{  }} />
                           <span style={{ fontSize: '0.8rem' }}>{child.activePokemon.name} Nv.{child.activePokemon.level}</span>
                         </>
                       ) : <span style={{ color: c.caption }}>—</span>}
@@ -122,7 +122,7 @@ export default function ChildrenList() {
               </div>
               {child.activePokemon && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: c.body, marginBottom: '0.4rem' }}>
-                  <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={26} height={26} style={{ imageRendering: 'pixelated' }} />
+                  <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={26} height={26} style={{  }} />
                   <span>{child.activePokemon.name} Nv.{child.activePokemon.level}</span>
                 </div>
               )}

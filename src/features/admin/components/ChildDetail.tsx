@@ -83,7 +83,7 @@ export default function ChildDetail() {
 
           {child.activePokemon && (
             <div style={{ ...styles.statCard, flexDirection: 'row', gap: '1rem', gridColumn: '1/-1', alignItems: 'center' }}>
-              <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={64} height={64} style={{ imageRendering: 'pixelated' }} />
+              <img src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)} alt={child.activePokemon.name} width={64} height={64} style={{  }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={styles.statLabel}>Pokémon activo</p>
                 <p style={{ ...styles.statValue, fontSize: '1.25rem' }}>{child.activePokemon.name}</p>
@@ -127,7 +127,7 @@ export default function ChildDetail() {
           )}
           {pokemonData?.collection.map((item) => (
             <div key={item.id} style={{ ...styles.pokeCard, border: item.isActive ? `3px solid ${c.primary}` : '3px solid transparent' }}>
-              <img src={SPRITE_STATIC_URL(item.pokemon.pokedexNumber)} alt={item.pokemon.name} width={64} height={64} style={{ imageRendering: 'pixelated' }} />
+              <img src={SPRITE_STATIC_URL(item.pokemon.pokedexNumber)} alt={item.pokemon.name} width={64} height={64} style={{  }} />
               <strong style={{ fontSize: '0.9rem' }}>{item.pokemon.name}</strong>
               <span className="text-body text-[0.8rem]">Nv. {item.level}</span>
               {item.isActive && <span style={{ fontSize: '0.72rem', color: c.primary, fontWeight: 700 }}>Activo ✓</span>}
