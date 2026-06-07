@@ -6,9 +6,9 @@ import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
 
 const DEMO_ACCOUNTS = [
-  { label: '👨‍👩‍👧‍👦 Padre (admin)',     identifier: 'padre@demo.com', password: 'Demo1234',  color: c.primaryDark },
-  { label: '🎮 Lucas (8 años)',        identifier: 'lucas',          password: 'lucas123',  color: c.primary },
-  { label: '🌸 Sofía (5 años)',        identifier: 'sofia',          password: 'sofia123',  color: '#ec4899' },
+  { name: 'Padre',  role: 'Administrador',    identifier: 'padre@demo.com', password: 'Demo1234', color: c.primaryDark, emoji: '👨‍👩‍👧‍👦' },
+  { name: 'Lucas',  role: '8 años · Hijo',     identifier: 'lucas',          password: 'lucas123',  color: c.primary,    emoji: '🎮' },
+  { name: 'Sofía',  role: '5 años · Hija',     identifier: 'sofia',          password: 'sofia123',  color: '#ec4899',    emoji: '🌸' },
 ];
 
 export default function LoginPage() {
@@ -34,10 +34,10 @@ export default function LoginPage() {
       {/* Logo — fuera de la card, sobre fondo oscuro */}
       <div className="text-center mb-6">
         <h1 className="m-0 text-[2.4rem] font-extrabold text-white tracking-tight">
-          FamilyDex ⚡
+          FamilyDex
         </h1>
         <p className="mt-1 mb-0 text-slate-400 text-[0.875rem]">
-          Gestión familiar con temática Pokémon
+          Gestión familiar de tareas
         </p>
       </div>
 
@@ -82,6 +82,14 @@ export default function LoginPage() {
           </Button>
         </form>
 
+        {/* Enlace de registro — antes del separador */}
+        <p className="text-center mt-4 mb-0 text-[0.85rem] text-body">
+          ¿Primera vez?{' '}
+          <Link to="/register" style={{ color: c.primary, fontWeight: 600 }}>
+            Crear cuenta de administrador
+          </Link>
+        </p>
+
         {/* Separador */}
         <div className="flex items-center gap-3 my-5">
           <hr className="flex-1 border-0 border-t border-stroke m-0" />
@@ -91,27 +99,45 @@ export default function LoginPage() {
           <hr className="flex-1 border-0 border-t border-stroke m-0" />
         </div>
 
-        {/* Botones demo debajo del formulario */}
+        {/* Botones demo estilo tarjeta de perfil */}
         <div className="flex flex-col gap-2">
           {DEMO_ACCOUNTS.map((acc) => (
             <button
               key={acc.identifier}
-              className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2 transition-opacity duration-150"
-              style={{ background: 'transparent', color: acc.color, borderColor: acc.color, opacity: login.isPending ? 0.5 : 1 }}
               disabled={login.isPending}
-              aria-disabled={login.isPending}
               onClick={() => handleDemo(acc)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.75rem',
+                padding: '0.6rem 0.75rem', borderRadius: 10, width: '100%',
+                background: c.subtle, border: `1.5px solid ${c.stroke}`,
+                cursor: login.isPending ? 'not-allowed' : 'pointer',
+                opacity: login.isPending ? 0.5 : 1,
+                transition: 'background 0.15s',
+                textAlign: 'left',
+              }}
             >
-              {acc.label}
+              <div style={{
+                width: 38, height: 38, borderRadius: 8, flexShrink: 0,
+                background: acc.color,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '1.15rem',
+              }}>
+                {acc.emoji}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: c.heading }}>
+                  {acc.name}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: c.caption }}>
+                  {acc.role}
+                </div>
+              </div>
             </button>
           ))}
         </div>
+
         <p className="text-[0.75rem] text-caption mt-[0.6rem] mb-0 text-center">
           Un clic carga una cuenta con datos de ejemplo ya cargados.
-        </p>
-
-        <p className="text-center mt-4 text-[0.85rem] text-body">
-          ¿Primera vez? <Link to="/register">Crear cuenta de administrador</Link>
         </p>
       </div>
     </div>
