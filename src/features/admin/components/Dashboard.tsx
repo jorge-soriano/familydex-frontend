@@ -16,9 +16,7 @@ export default function Dashboard() {
   const children: ChildSummary[] = data?.children ?? [];
   const totalInReview        = data?.totalInReview ?? 0;
   const totalPendingRequests = data?.totalPendingRequests ?? 0;
-  const hasActions = totalInReview + totalPendingRequests > 0;
-
-  const childrenInReview          = children.filter((ch) => ch.pendingReviewCount > 0);
+  const childrenInReview           = children.filter((ch) => ch.pendingReviewCount > 0);
   const childrenWithRewardRequests = children.filter((ch) => ch.pendingRewardRequestCount > 0);
 
   return (
@@ -27,14 +25,14 @@ export default function Dashboard() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: isDesktop ? '300px 1fr' : '1fr',
+        gridTemplateColumns: isDesktop ? '280px 1fr' : '1fr',
         gap: '1.5rem',
       }}>
 
         {/* ── Columna 1: Acciones requeridas ──────────────────────────── */}
         <div style={styles.card}>
           <div style={styles.colHeader}>
-            {hasActions ? (
+            {totalInReview > 0 || totalPendingRequests > 0 ? (
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: c.danger, display: 'inline-block', flexShrink: 0 }} />
                 Acciones requeridas
@@ -44,7 +42,7 @@ export default function Dashboard() {
             )}
           </div>
 
-          {!hasActions ? (
+          {totalInReview === 0 && totalPendingRequests === 0 ? (
             <div style={styles.allGood}>
               Sin pendientes. ¡El equipo está al día!
             </div>
@@ -64,13 +62,12 @@ export default function Dashboard() {
               ))}
 
               {childrenWithRewardRequests.map((child) => (
-                <Link key={`reward-${child.id}`} to="/admin/rewards"
-                  style={{ ...styles.actionRow, borderLeftColor: c.accent }}>
+                <Link key={`reward-${child.id}`} to="/admin/rewards" style={{ ...styles.actionRow, borderLeft: `3px solid ${c.accent}` }}>
                   <ChildAvatar displayName={child.displayName} avatarColor={child.avatarColor} size={32} />
                   <div style={styles.actionInfo}>
                     <span style={{ fontWeight: 700, fontSize: '0.88rem' }}>{child.displayName}</span>
                     <span style={{ fontSize: '0.75rem', color: c.body }}>
-                      {child.pendingRewardRequestCount} solicitud{child.pendingRewardRequestCount !== 1 ? 'es' : ''} de premio
+                      {child.pendingRewardRequestCount} solicitud{child.pendingRewardRequestCount !== 1 ? 'es' : ''} de recompensa
                     </span>
                   </div>
                   <span style={{ ...styles.actionCta, color: c.accent }}>Ver →</span>
@@ -85,7 +82,7 @@ export default function Dashboard() {
           <div style={styles.colHeader}>Hijos</div>
 
           {children.length === 0 ? (
-            <p style={{ color: c.caption, fontSize: '0.875rem', margin: 0 }}>
+            <p style={{ color: c.caption, fontSize: '0.875rem', margin: 0, padding: '1rem 0' }}>
               No hay hijos registrados todavía.
             </p>
           ) : (
@@ -94,9 +91,9 @@ export default function Dashboard() {
                 <thead>
                   <tr>
                     <th style={styles.th}>Nombre</th>
-                    <th style={{ ...styles.th, textAlign: 'right', width: 1, whiteSpace: 'nowrap' }}>🪙</th>
-                    <th style={{ ...styles.th, textAlign: 'right', width: 1, whiteSpace: 'nowrap' }}>⭐ XP</th>
-                    <th style={{ ...styles.th, width: 1 }}>{/* sprite */}</th>
+                    <th style={{ ...styles.th, width: 1, textAlign: 'right', whiteSpace: 'nowrap' }}>🪙</th>
+                    <th style={{ ...styles.th, width: 1, textAlign: 'right', whiteSpace: 'nowrap' }}>⭐ XP</th>
+                    <th style={{ ...styles.th, width: 1, padding: '0.5rem 0 0.5rem 0.5rem' }}>{/* sprite */}</th>
                     <th style={{ ...styles.th, width: 1, whiteSpace: 'nowrap' }}>Pokémon</th>
                   </tr>
                 </thead>
@@ -107,7 +104,6 @@ export default function Dashboard() {
                       style={styles.tr}
                       onClick={() => navigate(`/admin/children/${child.id}`)}
                     >
-                      {/* Nombre */}
                       <td style={styles.td}>
                         <Link
                           to={`/admin/children/${child.id}`}
@@ -121,37 +117,31 @@ export default function Dashboard() {
                           </div>
                         </Link>
                       </td>
-
-                      {/* Monedas */}
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.warningMid, whiteSpace: 'nowrap' }}>
+                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap', color: c.warningMid }}>
                         {child.coins}
                       </td>
-
-                      {/* XP */}
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.primary, whiteSpace: 'nowrap' }}>
+                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap', color: c.primary }}>
                         {child.xp}
                       </td>
-
-                      {/* Sprite — columna muda */}
-                      <td style={{ ...styles.td, whiteSpace: 'nowrap', paddingRight: 0 }}>
-                        {child.activePokemon ? (
-                          <img
-                            src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
-                            alt=""
-                            width={32}
-                            height={32}
-                            style={{ imageRendering: 'pixelated', display: 'block' }}
-                          />
-                        ) : null}
+                      {/* sprite — columna estrecha sin padding derecho */}
+                      <td style={{ ...styles.td, padding: '0.6rem 0 0.6rem 0.5rem' }}>
+                        {child.activePokemon && (
+                          <div style={{ width: 40, height: 40, flexShrink: 0 }}>
+                            <img
+                              src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
+                              alt=""
+                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            />
+                          </div>
+                        )}
                       </td>
-
-                      {/* Nombre Pokémon */}
-                      <td style={{ ...styles.td, whiteSpace: 'nowrap', paddingLeft: '0.3rem' }}>
+                      {/* nombre + nivel — sin padding izquierdo para pegarse al sprite */}
+                      <td style={{ ...styles.td, padding: '0.6rem 0.5rem 0.6rem 0.3rem' }}>
                         {child.activePokemon ? (
-                          <div>
+                          <>
                             <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>{child.activePokemon.name}</div>
                             <div style={{ fontSize: '0.7rem', color: c.caption }}>Nv. {child.activePokemon.level}</div>
-                          </div>
+                          </>
                         ) : (
                           <span style={{ color: c.caption, fontSize: '0.75rem' }}>—</span>
                         )}
@@ -184,7 +174,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   colHeader: {
-    fontSize: '0.85rem',
+    fontSize: '0.82rem',
     fontWeight: 700,
     color: c.heading,
     paddingBottom: '0.5rem',
@@ -207,13 +197,13 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.65rem',
-    padding: '0.65rem 0.75rem',
-    minHeight: 58,
+    padding: '0.6rem 0.75rem',
     background: c.subtle,
     borderRadius: 8,
     textDecoration: 'none',
     color: 'inherit',
     borderLeft: `3px solid ${c.warning}`,
+    cursor: 'pointer',
   },
 
   actionInfo: { display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 },
@@ -232,9 +222,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   th: {
-    padding: '0.5rem',
+    padding: '0.5rem 0.5rem',
     fontWeight: 700,
-    fontSize: '0.75rem',
+    fontSize: '0.72rem',
     color: c.caption,
     textAlign: 'left' as const,
     borderBottom: `1px solid ${c.stroke}`,
@@ -250,4 +240,5 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0.6rem 0.5rem',
     verticalAlign: 'middle' as const,
   },
+
 };
