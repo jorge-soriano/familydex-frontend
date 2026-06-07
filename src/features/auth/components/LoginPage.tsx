@@ -7,8 +7,8 @@ import { FormInput } from '../../../shared/components/FormInput';
 
 const DEMO_ACCOUNTS = [
   { name: 'Padre',  role: 'Admin',    identifier: 'padre@demo.com', password: 'Demo1234', color: c.primary,    borderColor: c.primaryLight, emoji: '👨‍👩‍👧‍👦' },
-  { name: 'Lucas',  role: 'Jugador',  identifier: 'lucas',          password: 'lucas123',  color: '#10b981',    borderColor: '#6ee7b7',      emoji: '🎮' },
-  { name: 'Sofía',  role: 'Jugador',  identifier: 'sofia',          password: 'sofia123',  color: '#ec4899',    borderColor: '#f9a8d4',      emoji: '🌸' },
+  { name: 'Lucas',  role: 'Niño',     identifier: 'lucas',          password: 'lucas123',  color: '#10b981',    borderColor: '#6ee7b7',      emoji: '🎮' },
+  { name: 'Sofía',  role: 'Niña',     identifier: 'sofia',          password: 'sofia123',  color: '#ec4899',    borderColor: '#f9a8d4',      emoji: '🌸' },
 ];
 
 export default function LoginPage() {
