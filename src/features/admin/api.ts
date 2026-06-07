@@ -16,6 +16,7 @@ export interface ChildSummary {
   xp: number;
   activePokemon: ActivePokemonSummary | null;
   pendingReviewCount: number;
+  pendingRewardRequestCount: number;
 }
 
 export interface DashboardData {
