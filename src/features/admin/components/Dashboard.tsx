@@ -97,7 +97,7 @@ export default function Dashboard() {
                     <th style={styles.th}>Nombre</th>
                     <th style={{ ...styles.th, textAlign: 'right' }}>🪙</th>
                     <th style={{ ...styles.th, textAlign: 'right' }}>⭐ XP</th>
-                    <th style={{ ...styles.th, textAlign: 'center' }}>Pokémon activo</th>
+                    <th style={styles.th}>Pokémon activo</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,9 +129,9 @@ export default function Dashboard() {
                         {child.xp}
                       </td>
 
-                      <td style={{ ...styles.td, textAlign: 'center' }}>
+                      <td style={styles.td}>
                         {child.activePokemon ? (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                             <img
                               src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
                               alt={child.activePokemon.name}
@@ -199,7 +199,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.65rem',
-    padding: '0.6rem 0.75rem',
+    padding: '0.65rem 0.75rem',
+    minHeight: 58,
     background: c.subtle,
     borderRadius: 8,
     textDecoration: 'none',
