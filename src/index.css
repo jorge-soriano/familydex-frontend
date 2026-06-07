@@ -16,7 +16,7 @@
   /* Tema claro forzado — la app no implementa modo oscuro */
   color-scheme: light;
   color: #1a1a2e;
-  background-color: #eef2f7;
+  background-color: #e2eaf3;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,7 +28,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #eef2f7;
+  background-color: #e2eaf3;
 }
 
 /* El root ocupa toda la pantalla — los layouts internos se centran solos */
@@ -96,11 +96,26 @@ button, a, [role="button"] {
 
 /* Hover en cards interactivas */
 .card-interactive {
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 0.18s, transform 0.18s;
 }
 .card-interactive:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Botón primary: sombra azul + hover con lift */
+.btn-primary {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.30);
+}
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(0.87);
   transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(59, 130, 246, 0.42);
+}
+.btn-primary:active:not(:disabled) {
+  filter: brightness(0.82);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
 /* Animación de entrada de modales */

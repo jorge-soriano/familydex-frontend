@@ -23,11 +23,15 @@ const SIZE_STYLES: Record<ButtonSize, React.CSSProperties> = {
 };
 
 export function Button({ variant = 'primary', size = 'md', children, style, disabled, className, ...props }: ButtonProps) {
+  const isPrimary = variant === 'primary';
   const hoverCls = !disabled
-    ? variant === 'ghost' ? 'hover:bg-subtle' : 'hover:brightness-90'
+    ? variant === 'ghost' ? 'hover:bg-subtle'
+    : !isPrimary       ? 'hover:brightness-90'
+    : ''
     : '';
-  const activeCls = !disabled ? 'active:scale-[0.97]' : '';
-  const finalCls = ['transition-[filter,transform,background-color] duration-150', hoverCls, activeCls, className]
+  const activeCls = !disabled && !isPrimary ? 'active:scale-[0.97]' : '';
+  const variantCls = !disabled && isPrimary ? 'btn-primary' : '';
+  const finalCls = ['transition-[filter,transform,background-color,box-shadow] duration-150', hoverCls, activeCls, variantCls, className]
     .filter(Boolean).join(' ');
 
   return (
