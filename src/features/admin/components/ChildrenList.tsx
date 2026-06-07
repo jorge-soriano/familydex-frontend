@@ -20,7 +20,7 @@ export default function ChildrenList() {
   if (isLoading) return <p className="p-8">Cargando…</p>;
 
   const TH = (label: string, align: 'left' | 'center' | 'right' = 'left', w?: string) => (
-    <th style={{ padding: '0.6rem 0.75rem', textAlign: align, width: w, fontSize: '0.72rem', fontWeight: 700, color: c.body, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: `2px solid ${c.stroke}`, background: c.page, whiteSpace: 'nowrap' }}>
+    <th style={{ padding: '0.65rem 0.75rem', textAlign: align, width: w, fontSize: '0.72rem', fontWeight: 700, color: c.body, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #b8cad9', background: '#dce7f2', whiteSpace: 'nowrap' }}>
       {label}
     </th>
   );
@@ -54,7 +54,7 @@ export default function ChildrenList() {
                 <tr><td colSpan={7} style={{ padding: '2rem', textAlign: 'center', color: c.caption }}>No hay hijos registrados.</td></tr>
               )}
               {children.map((child) => (
-                <tr key={child.id} className="hover:bg-subtle transition-colors duration-100" style={{ borderBottom: `1px solid ${c.stroke}`, opacity: child.isActive ? 1 : 0.55, background: child.isActive ? undefined : c.surface }}>
+                <tr key={child.id} className="hover:bg-[#e4edf6] transition-colors duration-100" style={{ borderBottom: '1px solid #c8d6e4', opacity: child.isActive ? 1 : 0.55, background: child.isActive ? undefined : c.surface }}>
                   <td style={{ padding: '0.6rem 0.75rem' }}>
                     <Link to={`/admin/children/${child.id}`} style={styles.nameCell}>
                       <div style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>

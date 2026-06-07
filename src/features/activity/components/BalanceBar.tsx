@@ -15,13 +15,19 @@ export default function BalanceBar() {
 
   return (
     <div
-      className={`flex items-center bg-night text-white shrink-0 ${isNarrow ? 'gap-3 px-4 py-[0.4rem] text-[0.82rem]' : 'gap-6 px-6 py-2 text-[0.9rem]'}`}>
-      <span className={`bg-white/10 rounded-full flex items-center gap-1 ${isNarrow ? 'px-2 py-[0.15rem]' : 'px-3 py-1'}`}>
-        🪙 <span className="font-black">{balance?.coins ?? '—'}</span>
+      className={`flex items-center bg-night text-white shrink-0 ${isNarrow ? 'gap-2 px-4 py-[0.5rem]' : 'gap-3 px-6 py-[0.45rem]'}`}>
+
+      <span className={`bg-white/20 border border-white/25 rounded-full flex items-center gap-[0.35rem] ${isNarrow ? 'px-[0.5rem] py-[0.2rem]' : 'px-[0.75rem] py-[0.3rem]'}`}>
+        <span className={isNarrow ? 'text-[0.85rem]' : 'text-[0.9rem]'}>🪙</span>
+        <span className={`font-black leading-none ${isNarrow ? 'text-[1rem]' : 'text-[1.2rem]'}`}>{balance?.coins ?? '—'}</span>
       </span>
-      <span className={`bg-white/10 rounded-full flex items-center gap-1 ${isNarrow ? 'px-2 py-[0.15rem]' : 'px-3 py-1'}`}>
-        ⭐ <span className="font-black">{balance?.xp ?? '—'}</span>
-        {!isNarrow && <span className="opacity-60 text-[0.72rem]">XP</span>}
+
+      <span className="w-px h-5 bg-white/25 self-center shrink-0" />
+
+      <span className={`bg-white/20 border border-white/25 rounded-full flex items-center gap-[0.35rem] ${isNarrow ? 'px-[0.5rem] py-[0.2rem]' : 'px-[0.75rem] py-[0.3rem]'}`}>
+        <span className={isNarrow ? 'text-[0.85rem]' : 'text-[0.9rem]'}>⭐</span>
+        <span className={`font-black leading-none ${isNarrow ? 'text-[1rem]' : 'text-[1.2rem]'}`}>{balance?.xp ?? '—'}</span>
+        {!isNarrow && <span className="opacity-50 font-medium text-[0.7rem]">XP</span>}
       </span>
 
       {(readyToEvolve || pending > 0) && (
