@@ -29,7 +29,6 @@ export default function Dashboard() {
         display: 'grid',
         gridTemplateColumns: isDesktop ? '300px 1fr' : '1fr',
         gap: '1.5rem',
-        alignItems: 'start',
       }}>
 
         {/* ── Columna 1: Acciones requeridas ──────────────────────────── */}
@@ -95,9 +94,9 @@ export default function Dashboard() {
                 <thead>
                   <tr>
                     <th style={styles.th}>Nombre</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>🪙</th>
-                    <th style={{ ...styles.th, textAlign: 'right' }}>⭐ XP</th>
-                    <th style={styles.th}>Pokémon activo</th>
+                    <th style={{ ...styles.th, textAlign: 'right', width: 60 }}>🪙</th>
+                    <th style={{ ...styles.th, textAlign: 'right', width: 80 }}>⭐ XP</th>
+                    <th style={{ ...styles.th, width: 170 }}>Pokémon activo</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -121,11 +120,11 @@ export default function Dashboard() {
                         </Link>
                       </td>
 
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.warningMid }}>
+                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.warningMid, whiteSpace: 'nowrap' }}>
                         {child.coins}
                       </td>
 
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.primary }}>
+                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.primary, whiteSpace: 'nowrap' }}>
                         {child.xp}
                       </td>
 
