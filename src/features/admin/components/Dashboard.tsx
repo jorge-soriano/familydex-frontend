@@ -14,11 +14,11 @@ export default function Dashboard() {
   if (isLoading) return <p className="p-8">Cargando dashboard…</p>;
 
   const children: ChildSummary[] = data?.children ?? [];
-  const totalInReview       = data?.totalInReview ?? 0;
+  const totalInReview        = data?.totalInReview ?? 0;
   const totalPendingRequests = data?.totalPendingRequests ?? 0;
   const hasActions = totalInReview + totalPendingRequests > 0;
 
-  const childrenInReview  = children.filter((ch) => ch.pendingReviewCount > 0);
+  const childrenInReview          = children.filter((ch) => ch.pendingReviewCount > 0);
   const childrenWithRewardRequests = children.filter((ch) => ch.pendingRewardRequestCount > 0);
 
   return (
@@ -94,9 +94,10 @@ export default function Dashboard() {
                 <thead>
                   <tr>
                     <th style={styles.th}>Nombre</th>
-                    <th style={{ ...styles.th, textAlign: 'right', width: 60 }}>🪙</th>
-                    <th style={{ ...styles.th, textAlign: 'right', width: 80 }}>⭐ XP</th>
-                    <th style={{ ...styles.th, width: 170 }}>Pokémon activo</th>
+                    <th style={{ ...styles.th, textAlign: 'right', width: 1, whiteSpace: 'nowrap' }}>🪙</th>
+                    <th style={{ ...styles.th, textAlign: 'right', width: 1, whiteSpace: 'nowrap' }}>⭐ XP</th>
+                    <th style={{ ...styles.th, width: 1 }}>{/* sprite */}</th>
+                    <th style={{ ...styles.th, width: 1, whiteSpace: 'nowrap' }}>Pokémon</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -106,6 +107,7 @@ export default function Dashboard() {
                       style={styles.tr}
                       onClick={() => navigate(`/admin/children/${child.id}`)}
                     >
+                      {/* Nombre */}
                       <td style={styles.td}>
                         <Link
                           to={`/admin/children/${child.id}`}
@@ -120,28 +122,35 @@ export default function Dashboard() {
                         </Link>
                       </td>
 
+                      {/* Monedas */}
                       <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.warningMid, whiteSpace: 'nowrap' }}>
                         {child.coins}
                       </td>
 
+                      {/* XP */}
                       <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, color: c.primary, whiteSpace: 'nowrap' }}>
                         {child.xp}
                       </td>
 
-                      <td style={styles.td}>
+                      {/* Sprite — columna muda */}
+                      <td style={{ ...styles.td, whiteSpace: 'nowrap', paddingRight: 0 }}>
                         {child.activePokemon ? (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                            <img
-                              src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
-                              alt={child.activePokemon.name}
-                              width={32}
-                              height={32}
-                              style={{ imageRendering: 'pixelated' }}
-                            />
-                            <div style={{ textAlign: 'left' }}>
-                              <div style={{ fontSize: '0.8rem', fontWeight: 700 }}>{child.activePokemon.name}</div>
-                              <div style={{ fontSize: '0.7rem', color: c.caption }}>Nv. {child.activePokemon.level}</div>
-                            </div>
+                          <img
+                            src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
+                            alt=""
+                            width={32}
+                            height={32}
+                            style={{ imageRendering: 'pixelated', display: 'block' }}
+                          />
+                        ) : null}
+                      </td>
+
+                      {/* Nombre Pokémon */}
+                      <td style={{ ...styles.td, whiteSpace: 'nowrap', paddingLeft: '0.3rem' }}>
+                        {child.activePokemon ? (
+                          <div>
+                            <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>{child.activePokemon.name}</div>
+                            <div style={{ fontSize: '0.7rem', color: c.caption }}>Nv. {child.activePokemon.level}</div>
                           </div>
                         ) : (
                           <span style={{ color: c.caption, fontSize: '0.75rem' }}>—</span>
