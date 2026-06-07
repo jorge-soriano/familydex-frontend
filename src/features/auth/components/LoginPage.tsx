@@ -6,9 +6,9 @@ import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
 
 const DEMO_ACCOUNTS = [
-  { name: 'Padre',  role: 'Administrador',    identifier: 'padre@demo.com', password: 'Demo1234', color: c.primaryDark, emoji: '👨‍👩‍👧‍👦' },
-  { name: 'Lucas',  role: '8 años · Hijo',     identifier: 'lucas',          password: 'lucas123',  color: c.primary,    emoji: '🎮' },
-  { name: 'Sofía',  role: '5 años · Hija',     identifier: 'sofia',          password: 'sofia123',  color: '#ec4899',    emoji: '🌸' },
+  { name: 'Padre',  role: 'Admin',    identifier: 'padre@demo.com', password: 'Demo1234', color: c.primary,    borderColor: c.primaryLight, emoji: '👨‍👩‍👧‍👦' },
+  { name: 'Lucas',  role: 'Jugador',  identifier: 'lucas',          password: 'lucas123',  color: '#10b981',    borderColor: '#6ee7b7',      emoji: '🎮' },
+  { name: 'Sofía',  role: 'Jugador',  identifier: 'sofia',          password: 'sofia123',  color: '#ec4899',    borderColor: '#f9a8d4',      emoji: '🌸' },
 ];
 
 export default function LoginPage() {
@@ -99,39 +99,29 @@ export default function LoginPage() {
           <hr className="flex-1 border-0 border-t border-stroke m-0" />
         </div>
 
-        {/* Botones demo estilo tarjeta de perfil */}
-        <div className="flex flex-col gap-2">
+        {/* Botones demo — tarjetas verticales en fila */}
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           {DEMO_ACCOUNTS.map((acc) => (
             <button
               key={acc.identifier}
               disabled={login.isPending}
               onClick={() => handleDemo(acc)}
               style={{
-                display: 'flex', alignItems: 'center', gap: '0.75rem',
-                padding: '0.6rem 0.75rem', borderRadius: 10, width: '100%',
-                background: c.subtle, border: `1.5px solid ${c.stroke}`,
+                background: 'transparent',
+                border: `2px solid ${acc.borderColor}`,
+                borderRadius: 12,
                 cursor: login.isPending ? 'not-allowed' : 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                gap: '0.3rem',
+                padding: '0.75rem 1rem',
+                minWidth: 100, flex: '0 1 auto',
                 opacity: login.isPending ? 0.5 : 1,
-                transition: 'background 0.15s',
-                textAlign: 'left',
+                transition: 'opacity 0.15s',
               }}
             >
-              <div style={{
-                width: 38, height: 38, borderRadius: 8, flexShrink: 0,
-                background: acc.color,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.15rem',
-              }}>
-                {acc.emoji}
-              </div>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: c.heading }}>
-                  {acc.name}
-                </div>
-                <div style={{ fontSize: '0.75rem', color: c.caption }}>
-                  {acc.role}
-                </div>
-              </div>
+              <span style={{ fontSize: '1.75rem', lineHeight: 1 }}>{acc.emoji}</span>
+              <span style={{ fontWeight: 700, fontSize: '0.9rem', color: acc.color }}>{acc.name}</span>
+              <span style={{ fontSize: '0.72rem', color: c.caption }}>{acc.role}</span>
             </button>
           ))}
         </div>
