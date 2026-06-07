@@ -30,7 +30,6 @@ export default function PokedexTab() {
                   alt={owned ? p.name : '???'}
                   width={56} height={56}
                   style={{
-                    ,
                     filter: owned ? 'none' : 'grayscale(1) brightness(0.3)',
                   }}
                 />
