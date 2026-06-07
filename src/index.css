@@ -15,8 +15,8 @@
 
   /* Tema claro forzado — la app no implementa modo oscuro */
   color-scheme: light;
-  color: #1a1a2e;
-  background-color: #e2eaf3;
+  color: #0f172a;
+  background-color: #f0f4f8;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,7 +28,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #e2eaf3;
+  background-color: #f0f4f8;
 }
 
 /* El root ocupa toda la pantalla — los layouts internos se centran solos */
@@ -76,7 +76,7 @@ p {
 /* ── Accessibility: focus-visible ────────────────────────────────────── */
 /* Anillo de foco visible para navegación por teclado */
 :focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #1e40af;
   outline-offset: 2px;
 }
 
@@ -84,8 +84,8 @@ p {
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+  border-color: #1e40af !important;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.18);
 }
 
 /* Touch: elimina el delay de doble tap y el highlight nativo */
@@ -105,17 +105,17 @@ button, a, [role="button"] {
 
 /* Botón primary: sombra azul + hover con lift */
 .btn-primary {
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.30);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.30);
 }
 .btn-primary:hover:not(:disabled) {
   filter: brightness(0.87);
   transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(59, 130, 246, 0.42);
+  box-shadow: 0 5px 16px rgba(30, 64, 175, 0.42);
 }
 .btn-primary:active:not(:disabled) {
   filter: brightness(0.82);
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
 }
 
 /* Animación de entrada de modales */

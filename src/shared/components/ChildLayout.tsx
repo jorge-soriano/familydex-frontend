@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { ClipboardList, Sword, ShoppingBag, BarChart2 } from 'lucide-react';
+import { ClipboardList, Sword, ShoppingBag, BarChart2, LogOut } from 'lucide-react';
 import BalanceBar from '../../features/activity/components/BalanceBar';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
@@ -51,8 +51,11 @@ export default function ChildLayout() {
 
         <div className="ml-auto flex items-center gap-2">
           <button
-            className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
-            onClick={handleLogout}>Salir</button>
+            className="flex items-center gap-[0.4rem] py-[0.3rem] px-3 bg-transparent text-slate-300 border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
+            onClick={handleLogout}>
+            <LogOut size={13} />
+            Cerrar sesión
+          </button>
         </div>
       </nav>
 

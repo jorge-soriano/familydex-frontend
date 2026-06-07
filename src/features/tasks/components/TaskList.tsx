@@ -19,7 +19,7 @@ export default function TaskList() {
   return (
     <div className="px-5 py-5 max-w-[1200px] mx-auto">
       <div className="flex items-center gap-3 mb-6">
-        <h2 className="m-0 text-[1.5rem] font-extrabold">Mis tareas</h2>
+        <h2 className="m-0 text-[1.5rem] font-extrabold">Misiones activas</h2>
         {activeTasks.length > 0 && (
           <span className="bg-subtle text-body text-[0.8rem] font-bold py-[3px] px-[10px] rounded-xl">
             {activeTasks.length}
@@ -43,7 +43,7 @@ export default function TaskList() {
             <h3 className="text-[0.82rem] font-bold text-body uppercase tracking-[0.06em] mb-3 flex items-center gap-[0.4rem]">
               {emoji} {label} ({group.length})
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '0.75rem' }}>
               {group.map((t) => <TaskCard key={t.id} task={t} variant="child" />)}
             </div>
           </section>

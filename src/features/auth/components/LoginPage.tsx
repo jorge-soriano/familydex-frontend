@@ -6,8 +6,8 @@ import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
 
 const DEMO_ACCOUNTS = [
-  { label: '👨‍👩‍👧‍👦 Padre (admin)',     identifier: 'padre@demo.com', password: 'Demo1234',  color: '#1e3a5f' },
-  { label: '🎮 Lucas (8 años)',        identifier: 'lucas',          password: 'lucas123',  color: '#3b82f6' },
+  { label: '👨‍👩‍👧‍👦 Padre (admin)',     identifier: 'padre@demo.com', password: 'Demo1234',  color: c.primaryDark },
+  { label: '🎮 Lucas (8 años)',        identifier: 'lucas',          password: 'lucas123',  color: c.primary },
   { label: '🌸 Sofía (5 años)',        identifier: 'sofia',          password: 'sofia123',  color: '#ec4899' },
 ];
 
@@ -29,12 +29,23 @@ export default function LoginPage() {
     (login.error as any)?.response?.data?.message ?? 'Error al iniciar sesión';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-night p-4">
-      <div className="bg-surface rounded-xl p-8 w-full max-w-[400px]"
-        style={{ boxShadow: c.shadowLg }}>
-        <h1 className="m-0 text-[2rem] font-extrabold text-night text-center">FamilyDex</h1>
-        <p className="mt-1 mb-6 text-body text-center text-[0.9rem]">Gestión familiar de tareas</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-night p-4">
 
+      {/* Logo — fuera de la card, sobre fondo oscuro */}
+      <div className="text-center mb-6">
+        <h1 className="m-0 text-[2.4rem] font-extrabold text-white tracking-tight">
+          FamilyDex ⚡
+        </h1>
+        <p className="mt-1 mb-0 text-slate-400 text-[0.875rem]">
+          Gestión familiar con temática Pokémon
+        </p>
+      </div>
+
+      {/* Card */}
+      <div className="bg-surface rounded-xl p-8 w-full max-w-[400px]"
+        style={{ boxShadow: c.shadowFloat }}>
+
+        {/* Formulario siempre visible */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <FormInput
             label="Email / Usuario"
@@ -63,37 +74,41 @@ export default function LoginPage() {
             </p>
           )}
 
-          <Button type="submit" disabled={login.isPending} style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.5rem' }}>
+          <Button
+            type="submit"
+            disabled={login.isPending}
+            style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.25rem' }}>
             {login.isPending ? 'Entrando…' : 'Entrar'}
           </Button>
         </form>
 
-        {/* Acceso demo ─────────────────────────────────────────────────── */}
-        <div className="mt-6">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="bg-subtle text-body text-[0.75rem] font-bold py-[2px] px-[10px] rounded-[10px] whitespace-nowrap border border-stroke"
-              style={{ boxShadow: `0 0 0 1px ${c.stroke}` }}>
-              Acceso demo
-            </span>
-          </div>
-          <div className="flex flex-col gap-2">
-            {DEMO_ACCOUNTS.map((acc) => (
-              <button
-                key={acc.identifier}
-                className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2 transition-opacity duration-150"
-                style={{ background: 'transparent', color: acc.color, borderColor: acc.color, opacity: login.isPending ? 0.5 : 1 }}
-                disabled={login.isPending}
-                aria-disabled={login.isPending}
-                onClick={() => handleDemo(acc)}
-              >
-                {acc.label}
-              </button>
-            ))}
-          </div>
-          <p className="text-[0.75rem] text-caption mt-[0.6rem] mb-0 text-center">
-            Un clic carga una cuenta con datos de ejemplo ya cargados.
-          </p>
+        {/* Separador */}
+        <div className="flex items-center gap-3 my-5">
+          <hr className="flex-1 border-0 border-t border-stroke m-0" />
+          <span className="text-caption text-[0.72rem] font-bold bg-subtle px-[0.6rem] py-[2px] rounded-full border border-stroke whitespace-nowrap">
+            Acceso demo
+          </span>
+          <hr className="flex-1 border-0 border-t border-stroke m-0" />
         </div>
+
+        {/* Botones demo debajo del formulario */}
+        <div className="flex flex-col gap-2">
+          {DEMO_ACCOUNTS.map((acc) => (
+            <button
+              key={acc.identifier}
+              className="py-[0.45rem] px-4 rounded-lg text-[0.85rem] font-semibold cursor-pointer text-left border-2 transition-opacity duration-150"
+              style={{ background: 'transparent', color: acc.color, borderColor: acc.color, opacity: login.isPending ? 0.5 : 1 }}
+              disabled={login.isPending}
+              aria-disabled={login.isPending}
+              onClick={() => handleDemo(acc)}
+            >
+              {acc.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[0.75rem] text-caption mt-[0.6rem] mb-0 text-center">
+          Un clic carga una cuenta con datos de ejemplo ya cargados.
+        </p>
 
         <p className="text-center mt-4 text-[0.85rem] text-body">
           ¿Primera vez? <Link to="/register">Crear cuenta de administrador</Link>

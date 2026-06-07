@@ -8,26 +8,27 @@ export default {
     extend: {
       colors: {
         // Semánticos / interactivos
-        primary: { DEFAULT: '#3b82f6', dark: '#1d4ed8', subtle: '#eff6ff' },
-        success: { DEFAULT: '#22c55e', dark: '#16a34a', subtle: '#f0fdf4' },
-        danger:  { DEFAULT: '#ef4444', dark: '#dc2626', subtle: '#fef2f2' },
-        warning: { DEFAULT: '#f59e0b', dark: '#92400e', subtle: '#fef3c7' },
-        accent:  { DEFAULT: '#8b5cf6', subtle: '#f5f3ff' }, // XP, recompensas
+        primary: { DEFAULT: '#1e40af', dark: '#1e3a8a', subtle: '#dbeafe', light: '#93c5fd' },
+        success: { DEFAULT: '#059669', dark: '#047857', subtle: '#d1fae5' },
+        danger:  { DEFAULT: '#dc2626', dark: '#b91c1c', subtle: '#fee2e2' },
+        warning: { DEFAULT: '#d97706', mid: '#b45309', dark: '#92400e', deep: '#78350f', subtle: '#fef3c7', pale: '#fef9c3' },
+        accent:  { DEFAULT: '#7c3aed', subtle: '#ede9fe' },
 
         // Superficies
-        page:    '#e2eaf3',  // fondo de página
-        surface: '#ffffff',  // tarjetas, modales
-        subtle:  '#f1f5f9',  // fondos secundarios, botones inactivos
-        stroke:  '#e2e8f0',  // bordes
+        page:    '#f0f4f8',
+        surface: '#ffffff',
+        subtle:  '#eef2f7',
+        stroke:  '#d1dce8',
 
         // Tipografía
-        heading: '#1e293b',  // títulos
-        body:    '#64748b',  // texto secundario
-        caption: '#94a3b8',  // placeholders, hints
+        heading:      '#0f172a',
+        body:         '#475569',
+        caption:      '#64748b',
+        captionLight: '#94a3b8',
 
         // Fondos de navegación oscuros
-        navy:  { DEFAULT: '#1e3a5f', dark: '#162d4a' }, // nav admin
-        night: '#1a1a2e',  // nav child + BalanceBar
+        navy:  { DEFAULT: '#0f172a', dark: '#080f1e' },
+        night: '#0f172a',
       },
     },
   },

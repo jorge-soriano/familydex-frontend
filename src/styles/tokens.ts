@@ -4,51 +4,51 @@
  * Para nuevos componentes, usar clases Tailwind directamente.
  */
 export const c = {
-  primary:       '#3b82f6',
-  primaryDark:   '#1d4ed8',
-  primarySubtle: '#eff6ff',
-  primaryLight:  '#bfdbfe',
+  primary:       '#1e40af',
+  primaryDark:   '#1e3a8a',
+  primarySubtle: '#dbeafe',
+  primaryLight:  '#93c5fd',
 
-  success:       '#22c55e',
-  successDark:   '#16a34a',
-  successSubtle: '#f0fdf4',
+  success:       '#059669',
+  successDark:   '#047857',
+  successSubtle: '#d1fae5',
 
-  danger:        '#ef4444',
-  dangerDark:    '#dc2626',
-  dangerSubtle:  '#fef2f2',
+  danger:        '#dc2626',
+  dangerDark:    '#b91c1c',
+  dangerSubtle:  '#fee2e2',
 
-  warning:       '#f59e0b',
-  warningMid:    '#d97706',
+  warning:       '#d97706',
+  warningMid:    '#b45309',
   warningDark:   '#92400e',
   warningDeep:   '#78350f',
   warningSubtle: '#fef3c7',
   warningPale:   '#fef9c3',
 
-  accent:        '#8b5cf6',
-  accentSubtle:  '#f5f3ff',
+  accent:        '#7c3aed',
+  accentSubtle:  '#ede9fe',
 
-  page:          '#e2eaf3',
+  page:          '#f0f4f8',
   surface:       '#ffffff',
-  subtle:        '#f1f5f9',
-  stroke:        '#e2e8f0',
+  subtle:        '#eef2f7',
+  stroke:        '#d1dce8',
 
-  heading:       '#1e293b',
-  body:          '#64748b',
-  caption:       '#94a3b8',
-  captionLight:  '#cbd5e1',
+  heading:       '#0f172a',
+  body:          '#475569',
+  caption:       '#64748b',
+  captionLight:  '#94a3b8',
 
-  navy:          '#1e3a5f',
-  navyDark:      '#162d4a',
-  night:         '#1a1a2e',
+  navy:          '#0f172a',
+  navyDark:      '#080f1e',
+  night:         '#0f172a',
 
   // Overlays (fondos de modales)
-  overlay:       'rgba(0,0,0,0.5)',
-  overlayDark:   'rgba(0,0,0,0.65)',
+  overlay:       'rgba(15,23,42,0.55)',
+  overlayDark:   'rgba(15,23,42,0.78)',
 
   // Sombras estandarizadas
-  shadowSm:      '0 2px 8px rgba(15,23,42,0.06), 0 0 0 1px rgba(15,23,42,0.07)',
-  shadowMd:      '0 4px 12px rgba(15,23,42,0.08), 0 0 0 1px rgba(15,23,42,0.07)',
-  shadowCard:    '0 6px 20px rgba(15,23,42,0.10), 0 2px 6px rgba(15,23,42,0.06), 0 0 0 1px rgba(15,23,42,0.08)',
-  shadowFloat:   '0 14px 32px rgba(15,23,42,0.14), 0 0 0 1px rgba(15,23,42,0.08)',
-  shadowLg:      '0 8px 32px rgba(0,0,0,0.28)',
+  shadowSm:      '0 2px 8px rgba(30,64,175,0.08), 0 0 0 1px rgba(30,64,175,0.07)',
+  shadowMd:      '0 4px 14px rgba(30,64,175,0.10), 0 0 0 1px rgba(30,64,175,0.08)',
+  shadowCard:    '0 6px 22px rgba(30,64,175,0.12), 0 2px 6px rgba(30,64,175,0.07), 0 0 0 1px rgba(30,64,175,0.09)',
+  shadowFloat:   '0 14px 36px rgba(30,64,175,0.18), 0 0 0 1px rgba(30,64,175,0.10)',
+  shadowLg:      '0 8px 32px rgba(30,64,175,0.25)',
 } as const;

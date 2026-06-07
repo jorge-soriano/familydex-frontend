@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ClipboardList, BarChart2, ShoppingBag, Users } from 'lucide-react';
+import { LayoutDashboard, ClipboardList, BarChart2, ShoppingBag, Users, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useNotifications } from '../../features/admin/hooks/useAdmin';
@@ -69,8 +69,11 @@ export default function AdminLayout() {
 
         <div className="ml-auto flex items-center gap-2">
           <button
-            className="py-[0.3rem] px-3 bg-transparent text-caption border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
-            onClick={handleLogout}>Salir</button>
+            className="flex items-center gap-[0.4rem] py-[0.3rem] px-3 bg-transparent text-slate-300 border border-slate-600 rounded-md cursor-pointer text-[0.85rem]"
+            onClick={handleLogout}>
+            <LogOut size={13} />
+            Cerrar sesión
+          </button>
         </div>
       </nav>
 
