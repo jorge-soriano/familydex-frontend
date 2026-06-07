@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDashboard } from '../hooks/useAdmin';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import { c } from '../../../styles/tokens';
@@ -8,7 +8,6 @@ import type { ChildSummary } from '../api';
 
 export default function Dashboard() {
   const { data, isLoading } = useDashboard();
-  const navigate = useNavigate();
   const isDesktop = useWindowWidth() >= 1024;
 
   if (isLoading) return <p className="p-8">Cargando dashboard…</p>;
@@ -82,74 +81,54 @@ export default function Dashboard() {
           <div style={styles.colHeader}>Hijos</div>
 
           {children.length === 0 ? (
-            <p style={{ color: c.caption, fontSize: '0.875rem', margin: 0, padding: '1rem 0' }}>
+            <p style={{ color: c.caption, fontSize: '0.875rem', margin: 0 }}>
               No hay hijos registrados todavía.
             </p>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Nombre</th>
-                    <th style={{ ...styles.th, width: 1, textAlign: 'right', whiteSpace: 'nowrap' }}>🪙</th>
-                    <th style={{ ...styles.th, width: 1, textAlign: 'right', whiteSpace: 'nowrap' }}>⭐ XP</th>
-                    <th style={{ ...styles.th, width: 1, padding: '0.5rem 0 0.5rem 0.5rem' }}>{/* sprite */}</th>
-                    <th style={{ ...styles.th, width: 1, whiteSpace: 'nowrap' }}>Pokémon</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {children.map((child) => (
-                    <tr
-                      key={child.id}
-                      style={styles.tr}
-                      onClick={() => navigate(`/admin/children/${child.id}`)}
-                    >
-                      <td style={styles.td}>
-                        <Link
-                          to={`/admin/children/${child.id}`}
-                          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ChildAvatar displayName={child.displayName} avatarColor={child.avatarColor} size={28} />
-                          <div>
-                            <div style={{ fontWeight: 700, fontSize: '0.875rem' }}>{child.displayName}</div>
-                            <div style={{ fontSize: '0.72rem', color: c.caption }}>@{child.username}</div>
-                          </div>
-                        </Link>
-                      </td>
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap', color: c.warningMid }}>
-                        {child.coins}
-                      </td>
-                      <td style={{ ...styles.td, textAlign: 'right', fontWeight: 700, whiteSpace: 'nowrap', color: c.primary }}>
-                        {child.xp}
-                      </td>
-                      {/* sprite — columna estrecha sin padding derecho */}
-                      <td style={{ ...styles.td, padding: '0.6rem 0 0.6rem 0.5rem' }}>
-                        {child.activePokemon && (
-                          <div style={{ width: 40, height: 40, flexShrink: 0 }}>
-                            <img
-                              src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
-                              alt=""
-                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                            />
-                          </div>
-                        )}
-                      </td>
-                      {/* nombre + nivel — sin padding izquierdo para pegarse al sprite */}
-                      <td style={{ ...styles.td, padding: '0.6rem 0.5rem 0.6rem 0.3rem' }}>
-                        {child.activePokemon ? (
-                          <>
-                            <div style={{ fontSize: '0.82rem', fontWeight: 700 }}>{child.activePokemon.name}</div>
-                            <div style={{ fontSize: '0.7rem', color: c.caption }}>Nv. {child.activePokemon.level}</div>
-                          </>
-                        ) : (
-                          <span style={{ color: c.caption, fontSize: '0.75rem' }}>—</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div style={styles.childGrid}>
+              {children.map((child) => (
+                <Link
+                  key={child.id}
+                  to={`/admin/children/${child.id}`}
+                  className="card-interactive"
+                  style={{ ...styles.childCard, borderLeft: `4px solid ${child.avatarColor ?? c.accent}` }}
+                >
+                  {/* Avatar + nombre + login */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <ChildAvatar displayName={child.displayName} avatarColor={child.avatarColor} size={40} />
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: '1rem', color: c.heading }}>{child.displayName}</div>
+                      <div style={{ fontSize: '0.78rem', color: c.caption }}>@{child.username}</div>
+                    </div>
+                  </div>
+
+                  {/* Monedas + XP */}
+                  <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem', color: c.body }}>
+                    <span>🪙 {child.coins}</span>
+                    <span>⭐ {child.xp} XP</span>
+                  </div>
+
+                  {/* Pokémon */}
+                  {child.activePokemon ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ width: 40, height: 40, flexShrink: 0 }}>
+                        <img
+                          src={SPRITE_STATIC_URL(child.activePokemon.pokedexNumber)}
+                          alt=""
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                        />
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', color: c.heading }}>{child.activePokemon.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: c.body }}>Nv. {child.activePokemon.level}</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: '0.8rem', color: c.caption }}>Sin Pokémon activo</div>
+                  )}
+
+                </Link>
+              ))}
             </div>
           )}
         </div>
@@ -215,30 +194,22 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
 
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
-    fontSize: '0.875rem',
+  childGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '0.75rem',
   },
 
-  th: {
-    padding: '0.5rem 0.5rem',
-    fontWeight: 700,
-    fontSize: '0.72rem',
-    color: c.caption,
-    textAlign: 'left' as const,
-    borderBottom: `1px solid ${c.stroke}`,
-  },
-
-  tr: {
-    cursor: 'pointer',
-    borderBottom: `1px solid ${c.subtle}`,
-    transition: 'background 0.1s',
-  },
-
-  td: {
-    padding: '0.6rem 0.5rem',
-    verticalAlign: 'middle' as const,
+  childCard: {
+    background: c.surface,
+    borderRadius: 10,
+    padding: '1rem',
+    boxShadow: c.shadowCard,
+    textDecoration: 'none',
+    color: 'inherit',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.65rem',
   },
 
 };
