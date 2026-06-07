@@ -1,6 +1,9 @@
 # Dependencias
 node_modules/
 
+#Claude Code
+.claude/
+
 # Build
 dist/
 dist-ssr/
