@@ -73,7 +73,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
             <div style={spriteWrap}>
               <div className={phase === 'flashing' ? 'evo-flashing' : undefined}>
-                <PokemonSprite pokedexNumber={p.pokedexNumber} size={140} alt={p.name} />
+                <PokemonSprite pokedexNumber={p.pokedexNumber} size={140} alt={p.name} pixelated />
               </div>
             </div>
 
@@ -109,7 +109,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
             <div style={spriteWrap}>
               <div className={phase === 'revealing' ? 'evo-reveal' : undefined}>
-                <PokemonSprite pokedexNumber={evolvedPokemon.pokedexNumber} size={140} alt={evolvedPokemon.name} />
+                <PokemonSprite pokedexNumber={evolvedPokemon.pokedexNumber} size={140} alt={evolvedPokemon.name} pixelated />
               </div>
             </div>
 

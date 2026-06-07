@@ -5,9 +5,10 @@ interface Props {
   pokedexNumber: number;
   size?: number;
   alt?: string;
+  pixelated?: boolean;
 }
 
-export default function PokemonSprite({ pokedexNumber, size = 96, alt = '' }: Props) {
+export default function PokemonSprite({ pokedexNumber, size = 96, alt = '', pixelated }: Props) {
   const [failed, setFailed] = useState(false);
 
   return (
@@ -16,7 +17,7 @@ export default function PokemonSprite({ pokedexNumber, size = 96, alt = '' }: Pr
       alt={alt}
       width={size}
       height={size}
-      style={{ objectFit: 'contain' }}
+      style={{ objectFit: 'contain', ...(pixelated ? { imageRendering: 'pixelated' } : {}) }}
       onError={() => setFailed(true)}
     />
   );
