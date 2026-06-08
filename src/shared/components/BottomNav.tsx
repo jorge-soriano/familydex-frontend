@@ -24,7 +24,7 @@ export default function BottomNav({ items }: BottomNavProps) {
       background: c.navy,
       display: 'flex',
       zIndex: 50,
-      borderTop: `1px solid rgba(255,255,255,0.08)`,
+      borderTop: `1px solid ${c.navBorder}`,
     }}>
       {items.map(({ to, icon, label, badge }) => (
         <NavLink
@@ -39,12 +39,12 @@ export default function BottomNav({ items }: BottomNavProps) {
             justifyContent: 'center',
             gap: 2,
             textDecoration: 'none',
-            color: isActive ? c.surface : 'rgba(255,255,255,0.45)',
+            color: isActive ? c.surface : c.navTextInactive,
             fontSize: '0.62rem',
             fontWeight: 700,
             position: 'relative',
             borderTop: isActive ? `2px solid ${c.primaryMid}` : '2px solid transparent',
-            background: isActive ? 'rgba(59,130,246,0.12)' : 'transparent',
+            background: isActive ? c.navActiveTabBg : 'transparent',
             paddingTop: 2,
           })}
         >

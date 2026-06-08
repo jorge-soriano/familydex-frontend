@@ -42,6 +42,12 @@ export const c = {
   navyDark:      '#080f1e',
   night:         '#0f172a',
 
+  // Navegación — valores sobre fondos oscuros
+  navActiveBg:      'rgba(59,130,246,0.18)',  // fondo link activo (nav superior)
+  navActiveTabBg:   'rgba(59,130,246,0.12)',  // fondo item activo (nav inferior)
+  navBorder:        'rgba(255,255,255,0.08)', // borde superior del BottomNav
+  navTextInactive:  'rgba(255,255,255,0.45)', // texto/icono inactivo sobre nav oscuro
+
   // Overlays (fondos de modales)
   overlay:       'rgba(15,23,42,0.55)',
   overlayDark:   'rgba(15,23,42,0.78)',

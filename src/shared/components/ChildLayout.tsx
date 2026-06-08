@@ -50,7 +50,7 @@ export default function ChildLayout() {
                   className="no-underline flex items-center gap-[0.35rem] h-full px-4 text-[0.875rem] font-semibold transition-colors duration-100 whitespace-nowrap"
                   style={{
                     color: isActive ? c.surface : c.captionLight,
-                    background: isActive ? 'rgba(59,130,246,0.18)' : 'transparent',
+                    background: isActive ? c.navActiveBg : 'transparent',
                     borderBottom: isActive ? `2px solid ${c.primaryMid}` : '2px solid transparent',
                   }}>
                   <Icon size={14} />{label}
