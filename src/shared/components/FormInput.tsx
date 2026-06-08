@@ -14,6 +14,7 @@ interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> 
 interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
+  helper?: string;
 }
 
 const inputBase: React.CSSProperties = {
@@ -58,12 +59,13 @@ export function FormSelect({ label, children, style, ...props }: FormSelectProps
   );
 }
 
-export function FormTextarea({ label, error, style, ...props }: FormTextareaProps) {
+export function FormTextarea({ label, error, helper, style, ...props }: FormTextareaProps) {
   return (
     <label style={labelBase}>
       {label}
       <textarea style={{ ...inputBase, minHeight: 80, resize: 'vertical', ...(error ? { borderColor: c.danger } : {}), ...style }} {...props} />
-      {error && <span style={{ fontSize: '0.78rem', color: c.danger }}>{error}</span>}
+      {error  && <span style={{ fontSize: '0.78rem', color: c.danger }}>{error}</span>}
+      {helper && <span style={{ fontSize: '0.78rem', color: c.body }}>{helper}</span>}
     </label>
   );
 }
