@@ -3,6 +3,7 @@ import ProtectedRoute from './shared/components/ProtectedRoute';
 import AdminLayout from './shared/components/AdminLayout';
 import ChildLayout from './shared/components/ChildLayout';
 
+import ChildIndexRedirect from './shared/components/ChildIndexRedirect';
 import LoginPage from './features/auth/components/LoginPage';
 import RegisterPage from './features/auth/components/RegisterPage';
 
@@ -51,7 +52,7 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true,       element: <Navigate to="tasks" replace /> },
+      { index: true,       element: <ChildIndexRedirect /> },
       { path: 'tasks',     element: <TaskList /> },
       { path: 'economy',   element: <ChildActivityPage /> },
       { path: 'pokemon',   element: <PokemonPage /> },
