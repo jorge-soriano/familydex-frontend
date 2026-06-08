@@ -9,6 +9,7 @@ interface Props { data: ActivePokemonResult }
 
 export default function PokemonDisplay({ data }: Props) {
   const { pokemon: p, level, pokemonXp, xpForNextLevel, progressPercent, isFinalForm, evolveLevel } = data;
+  const xpToNextLevel = xpForNextLevel - pokemonXp;
   const isNarrow = useWindowWidth() < 480;
 
   return (
@@ -34,7 +35,7 @@ export default function PokemonDisplay({ data }: Props) {
 
         <div style={styles.levelRow}>
           <span style={styles.levelLabel}>Nv. {level}</span>
-          <span style={styles.xpLabel}>{pokemonXp} / {xpForNextLevel} XP</span>
+          <span style={styles.xpLabel}>{xpToNextLevel} XP para el siguiente nivel</span>
         </div>
 
         <div style={styles.barBg}>
