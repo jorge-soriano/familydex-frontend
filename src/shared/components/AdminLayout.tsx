@@ -9,8 +9,8 @@ import BottomNav from './BottomNav';
 function NavBadge({ count }: { count: number }) {
   if (!count) return null;
   return (
-    <span className="bg-danger text-white font-extrabold rounded-[10px] ml-1 align-middle leading-[1.4]"
-      style={{ fontSize: '0.65rem', padding: '1px 5px' }}>
+    <span className="inline-flex items-center justify-center bg-danger text-white font-extrabold rounded-[10px]"
+      style={{ fontSize: '0.62rem', padding: '1px 6px', lineHeight: 1.4, marginLeft: '0.2rem' }}>
       {count}
     </span>
   );

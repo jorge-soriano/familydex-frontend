@@ -22,7 +22,7 @@ export default function TaskList() {
       <div className="flex items-center gap-3 mb-6">
         <h2 className="m-0 text-[1.5rem] font-extrabold">Misiones activas</h2>
         {activeTasks.length > 0 && (
-          <span className="bg-subtle text-body text-[0.8rem] font-bold py-[3px] px-[10px] rounded-xl">
+          <span className="text-[0.8rem] font-bold py-[3px] px-[10px] rounded-xl" style={{ background: '#dde5ee', color: '#334155' }}>
             {activeTasks.length}
           </span>
         )}

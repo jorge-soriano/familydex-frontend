@@ -27,8 +27,8 @@ export default function AdminMissionsPage() {
   if (isLoading) return <p className="p-8 text-caption">Cargando…</p>;
 
   const TABS = [
-    { key: 'inbox' as Tab, label: 'Bandeja', Icon: Inbox, badge: inReviewCount },
-    { key: 'tasks' as Tab, label: 'Tareas',  Icon: List,  badge: undefined     },
+    { key: 'inbox' as Tab, label: inReviewCount > 0 ? `Bandeja (${inReviewCount})` : 'Bandeja', Icon: Inbox },
+    { key: 'tasks' as Tab, label: 'Tareas', Icon: List },
   ];
 
   return (
@@ -36,7 +36,7 @@ export default function AdminMissionsPage() {
       <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.25rem' }}>Tareas</h2>
 
       <div role="tablist" style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' }}>
-        {TABS.map(({ key, label, Icon, badge }) => (
+        {TABS.map(({ key, label, Icon }) => (
           <button key={key} role="tab" aria-selected={tab === key} aria-controls={`tab-panel-${key}`} id={`tab-${key}`}
             onClick={() => setTab(key)} style={{
               padding: '0.5rem 1rem', border: 'none', cursor: 'pointer',
@@ -47,11 +47,6 @@ export default function AdminMissionsPage() {
               display: 'flex', alignItems: 'center', gap: '0.4rem',
             }}>
             <Icon size={14} />{label}
-            {badge != null && badge > 0 && (
-              <span aria-hidden="true" style={{ background: c.warning, color: c.surface, fontSize: '0.65rem', fontWeight: 800, padding: '1px 6px', borderRadius: 10 }}>
-                {badge}
-              </span>
-            )}
           </button>
         ))}
       </div>
