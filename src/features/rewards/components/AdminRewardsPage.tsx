@@ -159,9 +159,9 @@ const styles: Record<string, React.CSSProperties> = {
   approveBtnSm:  { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   rejectBtnSm:   { width: 34, height: 34, background: c.danger,  color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   grid:          { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' },
-  rewardCard:    { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd },
+  rewardCard:    { background: c.surface, borderRadius: 10, padding: '1.25rem', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column' },
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
-  desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
-  cardFooter:    { display: 'flex', gap: '0.5rem' },
+  desc:          { fontSize: '0.85rem', color: c.body, margin: '0', flex: 1 },
+  cardFooter:    { display: 'flex', gap: '0.5rem', marginTop: 'auto', paddingTop: '0.75rem' },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
 };
