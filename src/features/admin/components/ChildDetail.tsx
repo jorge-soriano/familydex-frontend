@@ -7,6 +7,7 @@ import { useTasks } from '../../tasks/hooks/useTasks';
 import { usePokemonCollection } from '../../pokemon/hooks/usePokemon';
 import { useRewardRequests } from '../../rewards/hooks/useRewards';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
+import PokemonCard from '../../pokemon/components/PokemonCard';
 import HistoryList from '../../activity/components/HistoryList';
 import TaskCard from '../../tasks/components/TaskCard';
 import { c } from '../../../styles/tokens';
@@ -128,12 +129,16 @@ export default function ChildDetail() {
             <p className="text-caption py-4">No ha elegido su Pokémon inicial todavía.</p>
           )}
           {pokemonData?.collection.map((item) => (
-            <div key={item.id} style={{ ...styles.pokeCard, border: item.isActive ? `3px solid ${c.primary}` : '3px solid transparent' }}>
-              <img src={SPRITE_STATIC_URL(item.pokemon.pokedexNumber)} alt={item.pokemon.name} width={64} height={64} style={{  }} />
-              <strong style={{ fontSize: '0.9rem' }}>{item.pokemon.name}</strong>
-              <span className="text-body text-[0.8rem]">Nv. {item.level}</span>
-              {item.isActive && <span style={{ fontSize: '0.72rem', color: c.primary, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Activo <Check size={11} /></span>}
-            </div>
+            <PokemonCard
+              key={item.id}
+              pokedexNumber={item.pokemon.pokedexNumber}
+              name={item.pokemon.name}
+              type1={item.pokemon.type1}
+              type2={item.pokemon.type2}
+              isActive={item.isActive}
+              infoSlot={<>Nv. {item.level}</>}
+              actionSlot={item.isActive ? <span style={styles.activeBadge}><Check size={11} /> Activo</span> : undefined}
+            />
           ))}
         </div>
       )}
@@ -170,6 +175,6 @@ const styles: Record<string, React.CSSProperties> = {
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },
   statValue:   { margin: 0, fontSize: '1.6rem', fontWeight: 800 },
   pokeGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
-  pokeCard:    { background: c.surface, borderRadius: 10, padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem', boxShadow: c.shadowSm },
+  activeBadge: { fontSize: '0.72rem', color: c.primary, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' },
   reqRow:      { display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.65rem 1rem' },
 };

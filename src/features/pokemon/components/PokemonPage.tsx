@@ -6,10 +6,9 @@ import { usePokemonCollection, useSetActive } from '../hooks/usePokemon';
 import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonOnboarding from './PokemonOnboarding';
 import PokemonDisplay from './PokemonDisplay';
-import PokemonSprite from './PokemonSprite';
+import PokemonCard from './PokemonCard';
 import CaptureScreen from './CaptureScreen';
 import PokedexTab from './PokedexTab';
-import TypeBadge from './TypeBadge';
 import EvolutionModal from './EvolutionModal';
 import type { CaughtPokemonItem } from '../api';
 import { Button } from '../../../shared/components/Button';
@@ -99,38 +98,22 @@ export default function PokemonPage() {
       {/* ── Caja — solo formas actuales, sin Pokémon que ya han evolucionado */}
       {tab === 'caja' && (
         <div style={styles.grid}>
-          {boxItems.map((item) => {
-            const isActive = item.isActive;
-
-            return (
-              <div key={item.id}
-                style={{
-                  ...styles.card,
-                  border: isActive ? `3px solid ${c.primary}` : '3px solid transparent',
-                }}>
-                <PokemonSprite pokedexNumber={item.pokemon.pokedexNumber} size={72} alt={item.pokemon.name} />
-                <strong style={{ fontSize: '0.85rem' }}>{item.pokemon.name}</strong>
-                <div style={styles.types}>
-                  <TypeBadge type={item.pokemon.type1} />
-                  {item.pokemon.type2 && <TypeBadge type={item.pokemon.type2} />}
-                </div>
-                <span style={{ fontSize: '0.78rem', color: c.body }}>Nv. {item.level}</span>
-
-                {isActive ? (
-                  <span style={{ ...styles.activeBadge, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Activo <Check size={11} /></span>
-                ) : (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setActive.mutate(item.id)}
-                    disabled={setActive.isPending}
-                  >
-                    Activar
-                  </Button>
-                )}
-              </div>
-            );
-          })}
+          {boxItems.map((item) => (
+            <PokemonCard
+              key={item.id}
+              pokedexNumber={item.pokemon.pokedexNumber}
+              name={item.pokemon.name}
+              type1={item.pokemon.type1}
+              type2={item.pokemon.type2}
+              isActive={item.isActive}
+              infoSlot={<>Nv. {item.level}</>}
+              actionSlot={
+                item.isActive
+                  ? <span style={styles.activeBadge}><Check size={11} /> Activo</span>
+                  : <Button variant="secondary" size="sm" onClick={() => setActive.mutate(item.id)} disabled={setActive.isPending}>Activar</Button>
+              }
+            />
+          ))}
         </div>
       )}
 
@@ -155,16 +138,6 @@ const styles: Record<string, React.CSSProperties> = {
   tabs: { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
   tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px', display: 'flex', alignItems: 'center', gap: '0.35rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
-  card: {
-    background: c.surface, borderRadius: 10, padding: '1.25rem',
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
-    boxShadow: c.shadowMd,
-  },
-  types: { display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' },
-  activeBadge: { fontSize: '0.72rem', color: c.primary, fontWeight: 700 },
-  evolvedBadge: {
-    fontSize: '0.7rem', color: c.warning, fontWeight: 700,
-    background: c.warningSubtle, padding: '2px 8px', borderRadius: 8,
-  },
+  activeBadge: { fontSize: '0.72rem', color: c.primary, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' },
   empty: { color: c.caption, textAlign: 'center', padding: '2rem' },
 };

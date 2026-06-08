@@ -1,6 +1,5 @@
 import { usePokemonCatalog, usePokemonCollection } from '../hooks/usePokemon';
-import { SPRITE_STATIC_URL } from '../api';
-import TypeBadge from './TypeBadge';
+import PokemonCard from './PokemonCard';
 import { c } from '../../../styles/tokens';
 
 export default function PokedexTab() {
@@ -8,7 +7,6 @@ export default function PokedexTab() {
   const { data: colData          } = usePokemonCollection();
   const collection = colData?.collection ?? [];
 
-  // Pokedex numbers the child owns (any CaughtPokemon, active or not)
   const ownedNumbers = new Set(collection.map((c) => c.pokemon.pokedexNumber));
 
   return (
@@ -22,32 +20,23 @@ export default function PokedexTab() {
           const owned = ownedNumbers.has(p.pokedexNumber);
 
           return (
-            <div key={p.id} style={{ ...styles.card, opacity: owned ? 1 : 0.55 }}>
-              <span style={styles.num}>#{String(p.pokedexNumber).padStart(3, '0')}</span>
-              <div style={styles.spriteWrap}>
-                <img
-                  src={SPRITE_STATIC_URL(p.pokedexNumber)}
-                  alt={owned ? p.name : '???'}
-                  width={56} height={56}
-                  style={{
-                    filter: owned ? 'none' : 'grayscale(1) brightness(0.3)',
-                  }}
-                />
-              </div>
-              <strong style={styles.name}>{owned ? p.name : '???'}</strong>
-
-              {owned ? (
-                <div style={styles.types}>
-                  <TypeBadge type={p.type1} />
-                  {p.type2 && <TypeBadge type={p.type2} />}
-                </div>
-              ) : (
+            <PokemonCard
+              key={p.id}
+              pokedexNumber={p.pokedexNumber}
+              name={owned ? p.name : '???'}
+              type1={owned ? p.type1 : undefined}
+              type2={owned ? p.type2 : undefined}
+              spriteSize={56}
+              staticSprite
+              spriteFilter={owned ? undefined : 'grayscale(1) brightness(0.3)'}
+              dimmed={!owned}
+              topBadge={`#${String(p.pokedexNumber).padStart(3, '0')}`}
+              infoSlot={!owned ? (
                 <span style={styles.locked}>
                   {p.unlockXp > 0 ? `🔒 ${p.unlockXp.toLocaleString()} XP` : '🔒'}
                 </span>
-              )}
-
-            </div>
+              ) : undefined}
+            />
           );
         })}
       </div>
@@ -60,20 +49,8 @@ const styles: Record<string, React.CSSProperties> = {
   counter: { fontSize: '0.85rem', color: c.body, marginBottom: '1rem', fontWeight: 600 },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
     gap: '0.75rem',
   },
-  card: {
-    background: c.surface, borderRadius: 10,
-    padding: '0.75rem 0.5rem',
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem',
-    boxShadow: c.shadowSm,
-    transition: 'opacity 0.2s',
-  },
-  num: { fontSize: '0.7rem', color: c.caption, fontWeight: 700 },
-  spriteWrap: { width: 56, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center' },
-  name: { fontSize: '0.8rem', textAlign: 'center' },
-  types: { display: 'flex', gap: '0.25rem', flexWrap: 'wrap', justifyContent: 'center' },
   locked: { fontSize: '0.7rem', color: c.caption },
-  level: { fontSize: '0.72rem', color: c.primary, fontWeight: 700 },
 };
