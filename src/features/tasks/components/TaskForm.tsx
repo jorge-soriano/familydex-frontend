@@ -1,4 +1,5 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
+import { Trash2 } from 'lucide-react';
 import { Button } from '../../../shared/components/Button';
 import { FormInput, FormSelect, FormTextarea } from '../../../shared/components/FormInput';
 import Modal from '../../../shared/components/Modal';
@@ -126,7 +127,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
             }}>
             <option value="">— Rellenar manualmente —</option>
             {suggestions.map((t) => (
-              <option key={t.id} value={t.id}>{t.title} · 🪙{t.coinsReward} ⭐{t.xpReward}</option>
+              <option key={t.id} value={t.id}>{t.title} · {t.coinsReward} monedas / {t.xpReward} XP</option>
             ))}
           </FormSelect>
         )}
@@ -191,10 +192,10 @@ export default function TaskForm({ task, children, onClose }: Props) {
 
         <div style={{ display: 'flex', gap: '1rem' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <FormInput label="Monedas 🪙" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} />
+            <FormInput label="Monedas" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <FormInput label="XP ⭐" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} />
+            <FormInput label="XP" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} />
           </div>
         </div>
 
@@ -245,7 +246,7 @@ export default function TaskForm({ task, children, onClose }: Props) {
                 <Button type="button" variant="ghost"
                   style={{ color: c.danger, boxShadow: 'none' }}
                   onClick={() => setConfirmDel(true)}>
-                  🗑 Eliminar
+                  <Trash2 size={14} /> Eliminar
                 </Button>
               ) : (
                 <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>

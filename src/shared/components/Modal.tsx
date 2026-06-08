@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { X } from 'lucide-react';
 import { c } from '../../styles/tokens';
 
 interface Props {
@@ -35,7 +36,7 @@ export default function Modal({ onClose, title, maxWidth = 480, children }: Prop
               aria-label="Cerrar"
               style={{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' }}
               onClick={onClose}
-            >✕</button>
+            ><X size={15} /></button>
           </div>
         )}
         {children}

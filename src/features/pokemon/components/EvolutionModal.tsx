@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Zap, Sparkles, PartyPopper } from 'lucide-react';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { useEvolveActive } from '../hooks/usePokemon';
@@ -63,8 +64,9 @@ export default function EvolutionModal({ active, onClose }: Props) {
           <>
             <h2 id="evo-modal-title" style={title}>
               {phase === 'idle'
-                ? `⚡ ¡${p.name} puede evolucionar!`
-                : `✨ ${p.name} está evolucionando…`}
+                ? <><Zap size={18} /> ¡{p.name} puede evolucionar!</>
+                : <><Sparkles size={18} /> {p.name} está evolucionando…</>
+            }
             </h2>
 
             {p.evolutionTrigger && phase === 'idle' && (
@@ -91,7 +93,7 @@ export default function EvolutionModal({ active, onClose }: Props) {
                 <>
                   <Button variant="secondary" style={{ padding: '0.55rem 1.25rem' }} onClick={onClose}>Ahora no</Button>
                   <Button style={{ background: c.warning, color: c.surface, padding: '0.55rem 1.5rem', fontSize: '1rem', fontWeight: 800 }} onClick={handleEvolve} disabled={evolve.isPending}>
-                    ⚡ Evolucionar
+                    <Zap size={16} /> Evolucionar
                   </Button>
                 </>
               )}
@@ -102,8 +104,8 @@ export default function EvolutionModal({ active, onClose }: Props) {
         {/* revealing / done: show evolved pokemon */}
         {(phase === 'revealing' || phase === 'done') && evolvedPokemon && (
           <>
-            <h2 id="evo-modal-title" style={{ ...title, color: c.warning }}>
-              ✨ ¡{p.name} ha evolucionado en {evolvedPokemon.name}!
+            <h2 id="evo-modal-title" style={{ ...title, color: c.warning, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+              <Sparkles size={18} /> ¡{p.name} ha evolucionado en {evolvedPokemon.name}!
             </h2>
             {trigger && <p style={triggerText}>{trigger}</p>}
 
@@ -124,7 +126,9 @@ export default function EvolutionModal({ active, onClose }: Props) {
 
             <div style={btns}>
               {phase === 'done' && (
-                <Button style={{ background: c.warning, color: c.surface, padding: '0.55rem 1.5rem', fontSize: '1rem', fontWeight: 800 }} onClick={onClose}>¡Genial! 🎉</Button>
+                <Button style={{ background: c.warning, color: c.surface, padding: '0.55rem 1.5rem', fontSize: '1rem', fontWeight: 800 }} onClick={onClose}>
+                  ¡Genial! <PartyPopper size={16} />
+                </Button>
               )}
             </div>
           </>

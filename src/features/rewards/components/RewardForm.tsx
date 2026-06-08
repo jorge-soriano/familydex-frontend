@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
 import { useCreateReward, useEditReward, useDeleteReward } from '../hooks/useRewards';
 import type { Reward } from '../api';
 import { Button } from '../../../shared/components/Button';
@@ -64,7 +65,7 @@ export default function RewardForm({ reward, onClose }: Props) {
         />
 
         <FormInput
-          label="Coste en monedas 🪙 *"
+          label="Coste en monedas *"
           type="number" min={1}
           value={form.coinCost}
           required
@@ -88,7 +89,7 @@ export default function RewardForm({ reward, onClose }: Props) {
                 <Button type="button" variant="ghost"
                   style={{ color: c.danger, boxShadow: 'none' }}
                   onClick={() => setConfirmDel(true)}>
-                  🗑 Eliminar
+                  <Trash2 size={14} /> Eliminar
                 </Button>
               ) : (
                 <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>

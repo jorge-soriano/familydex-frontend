@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { X } from 'lucide-react';
 import Modal from './Modal';
 import { Button } from './Button';
 import { FormTextarea } from './FormInput';
@@ -32,7 +33,7 @@ export default function RejectModal({
         <Button variant="secondary" onClick={onClose}>Cancelar</Button>
         <Button variant="danger" disabled={isPending}
           onClick={() => onConfirm(reason || undefined)}>
-          ✖ Rechazar
+          <X size={14} /> Rechazar
         </Button>
       </div>
     </Modal>
