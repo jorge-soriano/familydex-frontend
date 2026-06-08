@@ -85,8 +85,8 @@ export default function RewardForm({ reward, onClose }: Props) {
           {isEditing && reward ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
               {!confirmDel ? (
-                <Button type="button" size="sm" variant="ghost"
-                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}`, boxShadow: 'none' }}
+                <Button type="button" variant="ghost"
+                  style={{ color: c.danger, boxShadow: 'none' }}
                   onClick={() => setConfirmDel(true)}>
                   🗑 Eliminar
                 </Button>

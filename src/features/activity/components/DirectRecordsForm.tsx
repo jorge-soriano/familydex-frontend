@@ -116,7 +116,7 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 
         {/* Coins */}
         <div>
-          <p style={{ ...lbl, marginBottom: '0.35rem' }}>Monedas</p>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>Monedas 🪙</p>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
@@ -134,7 +134,7 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 
         {/* XP */}
         <div>
-          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP <span style={{ color: c.caption, fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
+          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP ⭐ <span style={{ color: c.caption, fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={xp}
               onChange={(e) => setXp(Math.max(0, +e.target.value))} />

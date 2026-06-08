@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRewards, useToggleReward, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
+import { useRewards, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import RewardForm from './RewardForm';
 import Modal from '../../../shared/components/Modal';
@@ -34,7 +34,6 @@ export default function AdminRewardsPage() {
   const { data: requests = [] } = useRewardRequests();
   const { data: children = [] } = useChildren();
   const childById = Object.fromEntries(children.map((ch) => [ch.id, ch]));
-  const toggle  = useToggleReward();
   const approve = useApproveRequest();
   const reject  = useRejectRequest();
 
@@ -115,11 +114,8 @@ export default function AdminRewardsPage() {
               </div>
               {r.description && <p style={styles.desc}>{r.description}</p>}
               <div style={styles.cardFooter}>
-                <Button variant="secondary" size="sm" onClick={() => { setEditReward(r); setShowForm(true); }}>Editar</Button>
-                <button style={{ ...styles.toggleBtn, color: r.isActive ? c.danger : c.primary }}
-                  onClick={() => toggle.mutate({ id: r.id, isActive: !r.isActive })}>
-                  {r.isActive ? 'Desactivar' : 'Activar'}
-                </button>
+                <button aria-label="Editar recompensa" style={styles.editBtnSm}
+                  onClick={() => { setEditReward(r); setShowForm(true); }}>✏️</button>
               </div>
             </div>
           ))}
@@ -167,6 +163,6 @@ const styles: Record<string, React.CSSProperties> = {
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
   cardFooter:    { display: 'flex', gap: '0.5rem' },
-  toggleBtn:     { padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
+  editBtnSm:     { width: 34, height: 34, background: c.subtle, color: c.body, border: `1px solid ${c.stroke}`, borderRadius: 6, cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
 };

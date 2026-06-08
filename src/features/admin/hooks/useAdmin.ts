@@ -33,7 +33,7 @@ export function useAdminChild(id: number) {
 export function useUpdateChild() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, dto }: { id: number; dto: { displayName?: string; password?: string } }) =>
+    mutationFn: ({ id, dto }: { id: number; dto: { displayName?: string; password?: string; avatarColor?: string } }) =>
       adminApi.updateChild(id, dto),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [ADMIN_CHILDREN_KEY] });

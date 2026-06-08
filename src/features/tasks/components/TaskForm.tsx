@@ -153,22 +153,26 @@ export default function TaskForm({ task, children, onClose }: Props) {
         <FormTextarea label="Descripción" value={form.description} onChange={(e) => set('description', e.target.value)} style={{ minHeight: 60 }} />
 
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <FormSelect label="Tipo" value={form.type} onChange={(e) => set('type', e.target.value)} style={{ flex: 1 }}>
-            {['hogar','deberes','comportamiento','responsabilidad'].map((t) => (
-              <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-            ))}
-          </FormSelect>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <FormSelect label="Tipo" value={form.type} onChange={(e) => set('type', e.target.value)}>
+              {['hogar','deberes','comportamiento','responsabilidad'].map((t) => (
+                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              ))}
+            </FormSelect>
+          </div>
 
           {!isEditing ? (
-            <FormSelect label="Frecuencia" value={form.frequency} onChange={(e) => set('frequency', e.target.value)} style={{ flex: 1 }}>
-              <option value="OneTime">Puntual</option>
-              <option value="Daily">Diaria</option>
-              <option value="Weekly">Semanal</option>
-            </FormSelect>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <FormSelect label="Frecuencia" value={form.frequency} onChange={(e) => set('frequency', e.target.value)}>
+                <option value="OneTime">Puntual</option>
+                <option value="Daily">Diaria</option>
+                <option value="Weekly">Semanal</option>
+              </FormSelect>
+            </div>
           ) : (
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading }}>Frecuencia</p>
-              <div style={{ padding: '0.5rem 0.75rem', background: c.subtle, borderRadius: 8, border: `1px solid ${c.stroke}`, fontSize: '0.9rem', color: c.body }}>
+              <div style={{ padding: '0.55rem 0.75rem', background: c.subtle, borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.95rem', color: c.body }}>
                 {FREQ_LABELS[editFreq] ?? editFreq}
               </div>
             </div>
@@ -176,8 +180,12 @@ export default function TaskForm({ task, children, onClose }: Props) {
         </div>
 
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <FormInput label="Monedas 🪙" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} style={{ flex: 1 }} />
-          <FormInput label="XP ⭐" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} style={{ flex: 1 }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <FormInput label="Monedas 🪙" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <FormInput label="XP ⭐" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} />
+          </div>
         </div>
 
         {!isEditing && form.frequency === 'Weekly' && (
@@ -209,8 +217,8 @@ export default function TaskForm({ task, children, onClose }: Props) {
           {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
               {!confirmDel ? (
-                <Button type="button" size="sm" variant="ghost"
-                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}`, boxShadow: 'none' }}
+                <Button type="button" variant="ghost"
+                  style={{ color: c.danger, boxShadow: 'none' }}
                   onClick={() => setConfirmDel(true)}>
                   🗑 Eliminar
                 </Button>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAdminChildren, useToggleChildStatus } from '../hooks/useAdmin';
+import { useAdminChildren } from '../hooks/useAdmin';
 import EditChildModal from './EditChildModal';
 import CreateChildModal from './CreateChildModal';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
@@ -12,7 +12,6 @@ import { Button } from '../../../shared/components/Button';
 
 export default function ChildrenList() {
   const { data: children = [], isLoading } = useAdminChildren();
-  const toggle = useToggleChildStatus();
   const [editing, setEditing] = useState<ChildSummary | null>(null);
   const [creating, setCreating] = useState(false);
   const isNarrow = useWindowWidth() < 700;
@@ -46,7 +45,7 @@ export default function ChildrenList() {
                 {TH('⭐ XP', 'center', '80px')}
                 {TH('Pokémon', 'left')}
                 {TH('Estado', 'center', '90px')}
-                {TH('Acciones', 'right', '150px')}
+                {TH('', 'right', '90px')}
               </tr>
             </thead>
             <tbody>
@@ -82,16 +81,7 @@ export default function ChildrenList() {
                     </Badge>
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                      <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>Editar</Button>
-                      <button
-                        style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.primary }}
-                        disabled={toggle.isPending}
-                        onClick={() => toggle.mutate({ id: child.id, isActive: !child.isActive })}
-                      >
-                        {child.isActive ? 'Desactivar' : 'Activar'}
-                      </button>
-                    </div>
+                    <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✏️ Editar</Button>
                   </td>
                 </tr>
               ))}
@@ -127,14 +117,7 @@ export default function ChildrenList() {
                 </div>
               )}
               <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>Editar</Button>
-                <button
-                  style={{ ...styles.toggleBtn, color: child.isActive ? c.danger : c.primary }}
-                  disabled={toggle.isPending}
-                  onClick={() => toggle.mutate({ id: child.id, isActive: !child.isActive })}
-                >
-                  {child.isActive ? 'Desactivar' : 'Activar'}
-                </button>
+                <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✏️ Editar</Button>
               </div>
             </div>
           ))}
@@ -153,5 +136,4 @@ const styles: Record<string, React.CSSProperties> = {
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },
-  toggleBtn:{ padding: '0.35rem 0.75rem', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 },
 };
