@@ -44,17 +44,18 @@ export default function PokemonCard({
         </span>
       )}
 
-      {staticSprite ? (
-        <img
-          src={SPRITE_STATIC_URL(pokedexNumber)}
-          alt={name}
-          width={spriteSize}
-          height={spriteSize}
-          style={{ objectFit: 'contain', filter: spriteFilter }}
-        />
-      ) : (
-        <PokemonSprite pokedexNumber={pokedexNumber} size={spriteSize} alt={name} />
-      )}
+      {/* Fixed sprite zone — CSS dimensions guarantee consistent height across GIF canvas sizes */}
+      <div style={{ width: spriteSize, height: spriteSize, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {staticSprite ? (
+          <img
+            src={SPRITE_STATIC_URL(pokedexNumber)}
+            alt={name}
+            style={{ width: spriteSize, height: spriteSize, objectFit: 'contain', filter: spriteFilter }}
+          />
+        ) : (
+          <PokemonSprite pokedexNumber={pokedexNumber} size={spriteSize} alt={name} />
+        )}
+      </div>
 
       <strong style={{ fontSize: '0.875rem', textAlign: 'center' }}>{name}</strong>
 
@@ -65,11 +66,10 @@ export default function PokemonCard({
         </div>
       )}
 
-      {infoSlot && (
-        <div style={{ fontSize: '0.78rem', color: c.body, textAlign: 'center', display: 'flex', alignItems: 'center', gap: '0.2rem', justifyContent: 'center' }}>
-          {infoSlot}
-        </div>
-      )}
+      {/* Info area always rendered — reserves consistent height so all cards in a row align */}
+      <div style={{ minHeight: '1.1em', fontSize: '0.78rem', color: c.body, textAlign: 'center', display: 'flex', alignItems: 'center', gap: '0.2rem', justifyContent: 'center' }}>
+        {infoSlot}
+      </div>
 
       {actionSlot && (
         <div style={{ marginTop: 'auto', paddingTop: '0.35rem', display: 'flex', justifyContent: 'center' }}>
