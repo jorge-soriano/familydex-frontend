@@ -3,14 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useRewards, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import RewardForm from './RewardForm';
-import Modal from '../../../shared/components/Modal';
+import RejectModal from '../../../shared/components/RejectModal';
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import apiClient from '../../../shared/api/apiClient';
 import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
 import { Button } from '../../../shared/components/Button';
-import { FormTextarea } from '../../../shared/components/FormInput';
 
 interface ChildInfo { id: number; displayName: string; avatarColor?: string | null }
 
@@ -28,7 +27,6 @@ export default function AdminRewardsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editReward, setEditReward] = useState<Reward | null>(null);
   const [rejectId, setRejectId] = useState<number | null>(null);
-  const [rejectReason, setRejectReason] = useState('');
 
   const { data: rewards = [] } = useRewards();
   const { data: requests = [] } = useRewardRequests();
@@ -83,9 +81,9 @@ export default function AdminRewardsPage() {
                       <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓ Aprobar</Button>
                     )}
                     {isNarrow ? (
-                      <button aria-label="Rechazar solicitud" style={styles.rejectBtnSm} onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗</button>
+                      <button aria-label="Rechazar solicitud" style={styles.rejectBtnSm} onClick={() => setRejectId(rr.id)}>✗</button>
                     ) : (
-                      <Button variant="danger" size="sm" onClick={() => { setRejectId(rr.id); setRejectReason(''); }}>✗ Rechazar</Button>
+                      <Button variant="danger" size="sm" onClick={() => setRejectId(rr.id)}>✗ Rechazar</Button>
                     )}
                   </>
                 ) : (
@@ -124,24 +122,13 @@ export default function AdminRewardsPage() {
         </div>
       )}
 
-      {/* Reject modal */}
       {rejectId !== null && (
-        <Modal title="Motivo del rechazo" maxWidth={420} onClose={() => setRejectId(null)}>
-          <FormTextarea
-            label="Motivo (opcional)"
-            helper="Se enviará al hijo al rechazar."
-            value={rejectReason}
-            onChange={(e) => setRejectReason(e.target.value)}
-            placeholder="Explica por qué se rechaza la solicitud…"
-          />
-          <div style={styles.rejectActions}>
-            <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
-            <Button variant="danger" disabled={reject.isPending}
-              onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-              ✖ Rechazar
-            </Button>
-          </div>
-        </Modal>
+        <RejectModal
+          placeholder="Explica por qué se rechaza la solicitud…"
+          isPending={reject.isPending}
+          onClose={() => setRejectId(null)}
+          onConfirm={(reason) => reject.mutate({ id: rejectId!, reason }, { onSuccess: () => setRejectId(null) })}
+        />
       )}
 
       {showForm && <RewardForm reward={editReward ?? undefined} onClose={() => { setShowForm(false); setEditReward(null); }} />}
@@ -163,5 +150,4 @@ const styles: Record<string, React.CSSProperties> = {
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0', flex: 1 },
   cardFooter:    { display: 'flex', gap: '0.5rem', marginTop: 'auto', paddingTop: '0.75rem' },
-  rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
 };

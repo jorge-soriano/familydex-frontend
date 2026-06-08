@@ -1,11 +1,10 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
-import Modal from '../../../shared/components/Modal';
+import RejectModal from '../../../shared/components/RejectModal';
 import { useState } from 'react';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
-import { FormTextarea } from '../../../shared/components/FormInput';
 
 interface Props { familyChildren: { id: number; username: string; displayName: string; avatarColor?: string | null }[] }
 
@@ -13,8 +12,7 @@ export default function InboxTab({ familyChildren }: Props) {
   const { data: tasks = [], isLoading } = useTasks({ status: 'InReview' });
   const approve = useApproveTask();
   const reject  = useRejectTask();
-  const [rejectId, setRejectId]         = useState<number | null>(null);
-  const [rejectReason, setRejectReason] = useState('');
+  const [rejectId, setRejectId] = useState<number | null>(null);
   const isNarrow = useWindowWidth() < 640;
 
   const childById = Object.fromEntries(familyChildren.map((ch) => [ch.id, ch]));
@@ -51,9 +49,9 @@ export default function InboxTab({ familyChildren }: Props) {
                 <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔ Aprobar</Button>
               )}
               {isNarrow ? (
-                <button aria-label="Rechazar tarea" style={smBtn(c.danger)} onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖</button>
+                <button aria-label="Rechazar tarea" style={smBtn(c.danger)} onClick={() => setRejectId(task.id)}>✖</button>
               ) : (
-                <Button variant="danger" size="sm" onClick={() => { setRejectId(task.id); setRejectReason(''); }}>✖ Rechazar</Button>
+                <Button variant="danger" size="sm" onClick={() => setRejectId(task.id)}>✖ Rechazar</Button>
               )}
             </div>
           </div>
@@ -61,23 +59,13 @@ export default function InboxTab({ familyChildren }: Props) {
       </div>
 
       {rejectId !== null && (
-        <Modal title="Motivo del rechazo" maxWidth={420} onClose={() => setRejectId(null)}>
-          <FormTextarea
-            label="Motivo (opcional)"
-            helper="Ayuda al niño a saber qué mejorar."
-            value={rejectReason}
-            onChange={(e) => setRejectReason(e.target.value)}
-            placeholder="Ej: Falta ordenar los juguetes…"
-            autoFocus
-          />
-          <div className="flex gap-2 justify-end">
-            <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
-            <Button variant="danger" disabled={reject.isPending}
-              onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-              ✖ Rechazar
-            </Button>
-          </div>
-        </Modal>
+        <RejectModal
+          helper="Ayuda al niño a saber qué mejorar."
+          placeholder="Ej: Falta ordenar los juguetes…"
+          isPending={reject.isPending}
+          onClose={() => setRejectId(null)}
+          onConfirm={(reason) => reject.mutate({ id: rejectId!, reason }, { onSuccess: () => setRejectId(null) })}
+        />
       )}
     </div>
   );

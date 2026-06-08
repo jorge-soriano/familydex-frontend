@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAdminChildren } from '../hooks/useAdmin';
-import EditChildModal from './EditChildModal';
-import CreateChildModal from './CreateChildModal';
+import ChildModal from './ChildModal';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import type { ChildSummary } from '../api';
@@ -124,8 +123,8 @@ export default function ChildrenList() {
         </div>
       )}
 
-      {editing  && <EditChildModal   child={editing} onClose={() => setEditing(null)} />}
-      {creating && <CreateChildModal onClose={() => setCreating(false)} />}
+      {editing  && <ChildModal child={editing} onClose={() => setEditing(null)} />}
+      {creating && <ChildModal onClose={() => setCreating(false)} />}
     </div>
   );
 }
