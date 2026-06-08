@@ -97,7 +97,7 @@ export default function ChildDetail() {
                       <div style={{ height: '100%', width: `${pokemonData.active.progressPercent}%`, background: c.primary, borderRadius: 3, transition: 'width 0.3s' }} />
                     </div>
                     <p style={{ margin: '0.15rem 0 0', fontSize: '0.72rem', color: c.caption }}>
-                      {pokemonData.active.pokemonXp} / {pokemonData.active.pokemonXp + pokemonData.active.xpForNextLevel} XP
+                      {pokemonData.active.xpForNextLevel - pokemonData.active.pokemonXp} XP para el siguiente nivel
                     </p>
                   </div>
                 )}
