@@ -59,12 +59,11 @@ export default function PokemonCard({
 
       <strong style={{ fontSize: '0.875rem', textAlign: 'center' }}>{name}</strong>
 
-      {(type1 || type2) && (
-        <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {type1 && <TypeBadge type={type1} />}
-          {type2 && <TypeBadge type={type2} />}
-        </div>
-      )}
+      {/* Types area always rendered — prevents height mismatch between owned/unowned cards in same row */}
+      <div style={{ minHeight: '1.4rem', display: 'flex', gap: '0.3rem', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+        {type1 && <TypeBadge type={type1} />}
+        {type2 && <TypeBadge type={type2} />}
+      </div>
 
       {/* Info area always rendered — reserves consistent height so all cards in a row align */}
       <div style={{ minHeight: '1.1em', fontSize: '0.78rem', color: c.body, textAlign: 'center', display: 'flex', alignItems: 'center', gap: '0.2rem', justifyContent: 'center' }}>
