@@ -29,17 +29,17 @@ const TYPE_ICON_LG: Record<string, React.ReactNode> = {
 };
 
 const TYPE_BG: Record<string, string> = {
-  hogar:           '#dbeafe',
-  deberes:         '#dcfce7',
-  comportamiento:  '#fef3c7',
-  responsabilidad: '#f3e8ff',
+  hogar:           c.primarySubtle,
+  deberes:         c.successSubtle,
+  comportamiento:  c.warningSubtle,
+  responsabilidad: c.accentSubtle,
 };
 
 const TYPE_COLOR: Record<string, string> = {
-  hogar:           '#1e40af',
-  deberes:         '#059669',
-  comportamiento:  '#92400e',
-  responsabilidad: '#6d28d9',
+  hogar:           c.primary,
+  deberes:         c.success,
+  comportamiento:  c.warningDark,
+  responsabilidad: c.accent,
 };
 
 interface Props {
@@ -105,12 +105,12 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
   const typeColor  = TYPE_COLOR[task.type] ?? c.body;
 
   const statusStrip = isReview
-    ? { bg: '#fef3c7', color: '#92400e', icon: <Clock size={13} />, text: 'Esperando revisión del admin…' }
+    ? { bg: c.warningSubtle, color: c.warningDark, icon: <Clock size={13} />, text: 'Esperando revisión del admin…' }
     : isApproved
     ? { bg: c.successSubtle, color: c.successDark, icon: <CheckCircle size={13} />, text: '¡Tarea completada!' }
     : isRejected
     ? {
-        bg: '#fef2f2', color: c.dangerDark,
+        bg: c.dangerSubtle, color: c.dangerDark,
         icon: task.rejectionReason ? <Dumbbell size={13} /> : <XCircle size={13} />,
         text: task.rejectionReason ? `Casi: ${task.rejectionReason}` : 'Rechazada — inténtalo de nuevo',
       }
@@ -149,7 +149,7 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
           display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center',
           padding: '0.5rem 0.75rem', gap: 2,
         }}>
-          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#b45309', display: 'flex', alignItems: 'center', gap: 3 }}>
+          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: c.warningMid, display: 'flex', alignItems: 'center', gap: 3 }}>
             <CoinIcon size={13} /> {task.coinsReward}
           </span>
           <span style={{ fontWeight: 700, fontSize: '0.75rem', color: c.primary, display: 'flex', alignItems: 'center', gap: 3 }}>

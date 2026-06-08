@@ -5,6 +5,7 @@ import { authApi } from '../../features/auth/api';
 import { useNotifications } from '../../features/admin/hooks/useAdmin';
 import { useWindowWidth } from '../hooks/useWindowWidth';
 import BottomNav from './BottomNav';
+import { c } from '../../styles/tokens';
 
 function NavBadge({ count }: { count: number }) {
   if (!count) return null;
@@ -13,7 +14,7 @@ function NavBadge({ count }: { count: number }) {
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
       minWidth: 18, height: 18,
       padding: '0 5px',
-      background: '#ef4444', color: '#fff',
+      background: c.danger, color: c.surface,
       fontSize: '0.6rem', fontWeight: 800, lineHeight: 1,
       borderRadius: 9,
     }}>
@@ -69,9 +70,9 @@ export default function AdminLayout() {
                 <Link key={to} to={to}
                   className="no-underline flex items-center gap-[0.35rem] h-full px-4 text-[0.875rem] font-semibold transition-colors duration-100 whitespace-nowrap"
                   style={{
-                    color: isActive ? '#ffffff' : '#94a3b8',
+                    color: isActive ? c.surface : c.captionLight,
                     background: isActive ? 'rgba(59,130,246,0.18)' : 'transparent',
-                    borderBottom: isActive ? '2px solid #60a5fa' : '2px solid transparent',
+                    borderBottom: isActive ? `2px solid ${c.primaryMid}` : '2px solid transparent',
                   }}>
                   <Icon size={14} />{label}<NavBadge count={badge} />
                 </Link>

@@ -6,6 +6,7 @@ import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
 import { authApi } from '../../features/auth/api';
 import { useWindowWidth } from '../hooks/useWindowWidth';
 import BottomNav from './BottomNav';
+import { c } from '../../styles/tokens';
 
 const LINKS = [
   { to: '/child/tasks',   label: 'Tareas',    Icon: ClipboardList },
@@ -48,9 +49,9 @@ export default function ChildLayout() {
                 <Link key={to} to={to}
                   className="no-underline flex items-center gap-[0.35rem] h-full px-4 text-[0.875rem] font-semibold transition-colors duration-100 whitespace-nowrap"
                   style={{
-                    color: isActive ? '#ffffff' : '#94a3b8',
+                    color: isActive ? c.surface : c.captionLight,
                     background: isActive ? 'rgba(59,130,246,0.18)' : 'transparent',
-                    borderBottom: isActive ? '2px solid #60a5fa' : '2px solid transparent',
+                    borderBottom: isActive ? `2px solid ${c.primaryMid}` : '2px solid transparent',
                   }}>
                   <Icon size={14} />{label}
                 </Link>

@@ -39,11 +39,11 @@ export default function BottomNav({ items }: BottomNavProps) {
             justifyContent: 'center',
             gap: 2,
             textDecoration: 'none',
-            color: isActive ? '#ffffff' : 'rgba(255,255,255,0.45)',
+            color: isActive ? c.surface : 'rgba(255,255,255,0.45)',
             fontSize: '0.62rem',
             fontWeight: 700,
             position: 'relative',
-            borderTop: isActive ? '2px solid #60a5fa' : '2px solid transparent',
+            borderTop: isActive ? `2px solid ${c.primaryMid}` : '2px solid transparent',
             background: isActive ? 'rgba(59,130,246,0.12)' : 'transparent',
             paddingTop: 2,
           })}

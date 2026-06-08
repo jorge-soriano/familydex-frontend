@@ -1,4 +1,5 @@
 import { Flag, Clock, Sparkles } from 'lucide-react';
+import { c } from '../../../styles/tokens';
 import { useTasks } from '../hooks/useTasks';
 import TaskCard from './TaskCard';
 import type { Task } from '../api';
@@ -22,7 +23,7 @@ export default function TaskList() {
       <div className="flex items-center gap-3 mb-6">
         <h2 className="m-0 text-[1.5rem] font-extrabold">Misiones activas</h2>
         {activeTasks.length > 0 && (
-          <span className="text-[0.8rem] font-bold py-[3px] px-[10px] rounded-xl" style={{ background: '#dde5ee', color: '#334155' }}>
+          <span className="text-[0.8rem] font-bold py-[3px] px-[10px] rounded-xl" style={{ background: c.stroke, color: c.body }}>
             {activeTasks.length}
           </span>
         )}

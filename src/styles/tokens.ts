@@ -6,6 +6,7 @@
 export const c = {
   primary:       '#1e40af',
   primaryDark:   '#1e3a8a',
+  primaryMid:    '#60a5fa',
   primarySubtle: '#dbeafe',
   primaryLight:  '#93c5fd',
 

@@ -61,11 +61,11 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: c.shadowCard,
   },
   spriteWrap: {
-    background: 'radial-gradient(ellipse at 50% 70%, #bfdbfe 0%, #eff6ff 50%, #f1f5f9 100%)',
+    background: `radial-gradient(ellipse at 50% 70%, ${c.primarySubtle} 0%, ${c.surface} 50%, ${c.subtle} 100%)`,
     borderRadius: 16, padding: '1rem',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     minWidth: 140, minHeight: 140,
-    boxShadow: '0 0 0 2px #93c5fd, inset 0 3px 12px rgba(59,130,246,0.10)',
+    boxShadow: `0 0 0 2px ${c.primaryLight}, inset 0 3px 12px rgba(59,130,246,0.10)`,
   },
   info: { flex: 1 },
   nameRow: { display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' },

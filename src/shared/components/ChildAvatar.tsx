@@ -18,7 +18,7 @@ export default function ChildAvatar({ displayName, avatarColor, size = 28 }: Pro
       style={{
         width: size, height: size,
         borderRadius: '50%',
-        background: avatarColor ?? '#6366f1',
+        background: avatarColor ?? c.accent,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: c.surface,
         fontWeight: 700,
