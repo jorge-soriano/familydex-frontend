@@ -9,8 +9,14 @@ import BottomNav from './BottomNav';
 function NavBadge({ count }: { count: number }) {
   if (!count) return null;
   return (
-    <span className="inline-flex items-center justify-center bg-danger text-white font-extrabold rounded-[10px]"
-      style={{ fontSize: '0.62rem', padding: '1px 6px', lineHeight: 1.4, marginLeft: '0.2rem' }}>
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      minWidth: 18, height: 18,
+      padding: '0 5px',
+      background: '#ef4444', color: '#fff',
+      fontSize: '0.6rem', fontWeight: 800, lineHeight: 1,
+      borderRadius: 9,
+    }}>
       {count}
     </span>
   );
