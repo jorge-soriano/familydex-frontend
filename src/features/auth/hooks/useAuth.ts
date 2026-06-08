@@ -30,7 +30,7 @@ export function useLogin() {
 
       const { userId, role, familyId } = decodeToken(token);
       setAuth(token, userId, role, familyId);
-      navigate(role === 'admin' ? '/admin/dashboard' : '/child/tasks');
+      navigate(role === 'admin' ? '/admin/dashboard' : '/child');
     },
   });
 }
