@@ -1,5 +1,7 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/apiClient';
 import { BALANCE_KEY, TRANSACTIONS_KEY } from '../hooks/useActivity';
@@ -87,7 +89,7 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
             <option value="">— Rellenar manualmente —</option>
             {recentRecords.map((tx) => (
               <option key={tx.id} value={tx.id}>
-                {tx.description} · {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta}🪙 +{tx.xpDelta}⭐
+                {tx.description} · {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta} monedas +{tx.xpDelta} XP
               </option>
             ))}
           </FormSelect>
@@ -116,7 +118,9 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 
         {/* Coins */}
         <div>
-          <p style={{ ...lbl, marginBottom: '0.35rem' }}>Monedas 🪙</p>
+          <p style={{ ...lbl, marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            Monedas <CoinIcon size={14} />
+          </p>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <button type="button"
               style={{ padding: '0.4rem 0.75rem', borderRadius: 6, border: '2px solid', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer',
@@ -134,7 +138,9 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
 
         {/* XP */}
         <div>
-          <p style={{ ...lbl, marginBottom: '0.35rem' }}>XP ⭐ <span style={{ color: c.caption, fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span></p>
+          <p style={{ ...lbl, marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            XP <XpIcon size={14} /> <span style={{ color: c.caption, fontWeight: 400, fontSize: '0.78rem' }}>siempre positivo</span>
+          </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <input style={{ ...inp, width: 90 }} type="number" min={0} value={xp}
               onChange={(e) => setXp(Math.max(0, +e.target.value))} />
@@ -157,7 +163,9 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
           </p>
         )}
         {record.isSuccess && (
-          <p style={{ margin: 0, color: c.successDark, fontWeight: 700, fontSize: '0.85rem' }}>✓ Registro aplicado</p>
+          <p style={{ margin: 0, color: c.successDark, fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <CheckCircle size={14} /> Registro aplicado
+          </p>
         )}
 
         <Button
@@ -165,9 +173,10 @@ export default function DirectRecordsForm({ familyChildren, onClose }: Props) {
           disabled={record.isPending || !selectedChildren.length}
           style={{ padding: '0.65rem 1.25rem', fontSize: '1rem', width: '100%', justifyContent: 'center' }}
         >
-          {record.isPending ? 'Aplicando…'
-            : isNeg ? `❌ Quitar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`
-            : `✅ Dar ${coins}🪙${xp > 0 ? ` · +${xp}⭐` : ''}`}
+          {record.isPending ? 'Aplicando…' : isNeg
+            ? <><XCircle size={14} /> Quitar {coins} <CoinIcon size={13} />{xp > 0 ? <> · +{xp} <XpIcon size={13} /></> : null}</>
+            : <><CheckCircle size={14} /> Dar {coins} <CoinIcon size={13} />{xp > 0 ? <> · +{xp} <XpIcon size={13} /></> : null}</>
+          }
         </Button>
       </form>
     </div>

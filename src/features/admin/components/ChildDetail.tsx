@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { ChevronLeft, BarChart2, ClipboardList, History, Gift, Check } from 'lucide-react';
+import { CoinIcon, XpIcon, PokeballIcon } from '../../../shared/components/GameIcons';
 import { useAdminChild } from '../hooks/useAdmin';
 import { useTasks } from '../../tasks/hooks/useTasks';
 import { usePokemonCollection } from '../../pokemon/hooks/usePokemon';
@@ -28,12 +30,12 @@ export default function ChildDetail() {
   if (isLoading) return <p className="p-8">Cargando…</p>;
   if (!child) return <p className="p-8 text-danger">Hijo no encontrado.</p>;
 
-  const TABS: { key: Tab; label: string }[] = [
-    { key: 'resumen',     label: '📊 Resumen' },
-    { key: 'tareas',      label: `📋 Tareas (${tasks.length})` },
-    { key: 'historial',   label: '💰 Historial' },
-    { key: 'pokemon',     label: `🎮 Pokémon (${pokemonData?.collection.length ?? 0})` },
-    { key: 'solicitudes', label: `🎁 Solicitudes (${childRequests.length})` },
+  const TABS: { key: Tab; label: React.ReactNode }[] = [
+    { key: 'resumen',     label: <><BarChart2 size={13} /> Resumen</> },
+    { key: 'tareas',      label: <><ClipboardList size={13} /> Tareas ({tasks.length})</> },
+    { key: 'historial',   label: <><History size={13} /> Historial</> },
+    { key: 'pokemon',     label: <><PokeballIcon size={13} /> Pokémon ({pokemonData?.collection.length ?? 0})</> },
+    { key: 'solicitudes', label: <><Gift size={13} /> Solicitudes ({childRequests.length})</> },
   ];
 
   const statusVariant = (s: string): BadgeVariant =>
@@ -43,7 +45,7 @@ export default function ChildDetail() {
     <div style={styles.page}>
       {/* Header */}
       <div style={styles.header}>
-        <Link to="/admin/children" className="text-body no-underline text-[0.9rem] mr-2">← Volver</Link>
+        <Link to="/admin/children" className="text-body no-underline text-[0.9rem] mr-2" style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}><ChevronLeft size={15} /> Volver</Link>
         <div style={{ ...styles.avatar, background: child.avatarColor ?? c.accent }}>
           {child.displayName.charAt(0).toUpperCase()}
         </div>
@@ -76,8 +78,8 @@ export default function ChildDetail() {
       {/* Resumen tab */}
       {tab === 'resumen' && (
         <div role="tabpanel" id="tab-panel-resumen" aria-labelledby="tab-resumen" style={styles.summaryGrid}>
-          <div style={styles.statCard}><p style={styles.statLabel}>Monedas</p><p style={styles.statValue}>🪙 {child.coins}</p></div>
-          <div style={styles.statCard}><p style={styles.statLabel}>XP total</p><p style={styles.statValue}>⭐ {child.xp}</p></div>
+          <div style={styles.statCard}><p style={styles.statLabel}>Monedas</p><p style={{ ...styles.statValue, display: 'flex', alignItems: 'center', gap: '0.35rem' }}><CoinIcon size={20} /> {child.coins}</p></div>
+          <div style={styles.statCard}><p style={styles.statLabel}>XP total</p><p style={{ ...styles.statValue, display: 'flex', alignItems: 'center', gap: '0.35rem' }}><XpIcon size={20} /> {child.xp}</p></div>
           <div style={styles.statCard}><p style={styles.statLabel}>Pokémon</p><p style={styles.statValue}>{pokemonData?.collection.length ?? 0} / {1 + Math.floor(child.xp / 5000)}</p></div>
           <div style={styles.statCard}><p style={styles.statLabel}>En revisión</p><p style={styles.statValue}>{child.pendingReviewCount}</p></div>
 
@@ -130,7 +132,7 @@ export default function ChildDetail() {
               <img src={SPRITE_STATIC_URL(item.pokemon.pokedexNumber)} alt={item.pokemon.name} width={64} height={64} style={{  }} />
               <strong style={{ fontSize: '0.9rem' }}>{item.pokemon.name}</strong>
               <span className="text-body text-[0.8rem]">Nv. {item.level}</span>
-              {item.isActive && <span style={{ fontSize: '0.72rem', color: c.primary, fontWeight: 700 }}>Activo ✓</span>}
+              {item.isActive && <span style={{ fontSize: '0.72rem', color: c.primary, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Activo <Check size={11} /></span>}
             </div>
           ))}
         </div>
@@ -143,7 +145,7 @@ export default function ChildDetail() {
           {childRequests.map((rr) => (
             <div key={rr.id} style={{ ...styles.reqRow, borderBottom: `1px solid ${c.subtle}` }}>
               <span>{rr.reward?.name ?? `Recompensa #${rr.rewardId}`}</span>
-              <span className="font-bold">🪙 {rr.coinsReserved}</span>
+              <span className="font-bold" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={13} /> {rr.coinsReserved}</span>
               <Badge variant={statusVariant(rr.status)} subtle>
                 {rr.status === 'Pending' ? 'Pendiente' : rr.status === 'Approved' ? 'Aprobada' : 'Rechazada'}
               </Badge>
@@ -162,7 +164,7 @@ const styles: Record<string, React.CSSProperties> = {
   avatar:      { width: 52, height: 52, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.4rem', flexShrink: 0 },
   name:        { margin: 0, fontSize: '1.5rem', fontWeight: 800 },
   tabs:        { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
-  tab:         { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
+  tab:         { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px', display: 'flex', alignItems: 'center', gap: '0.35rem' },
   summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' },
   statCard:    { background: c.surface, borderRadius: 10, padding: '1rem 1.25rem', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column' },
   statLabel:   { margin: '0 0 0.25rem', fontSize: '0.78rem', color: c.body, fontWeight: 600 },

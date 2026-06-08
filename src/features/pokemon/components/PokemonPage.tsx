@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Star, Package, Book, Zap, Check } from 'lucide-react';
+import { PokeballIcon } from '../../../shared/components/GameIcons';
 import { usePokemonCollection, useSetActive } from '../hooks/usePokemon';
 import { useBalance } from '../../activity/hooks/useActivity';
 import PokemonOnboarding from './PokemonOnboarding';
@@ -49,13 +51,11 @@ export default function PokemonPage() {
 
   // Caja shows only current forms (not evolved-from entries)
   const boxItems = collection.filter((item) => !hasEvolved(item, collection));
-  const boxLabel = boxItems.length > 1 ? `📦 Caja (${boxItems.length})` : '📦 Caja';
-
-  const TABS: { key: Tab; label: string }[] = [
-    { key: 'activo',   label: '⭐ Activo' },
-    { key: 'caja',     label: boxLabel },
-    { key: 'pokedex',  label: '📖 Pokédex' },
-    { key: 'capturar', label: `🎯 Capturar${pendingCaptures > 0 ? ` (${pendingCaptures})` : ''}` },
+  const TABS: { key: Tab; label: React.ReactNode }[] = [
+    { key: 'activo',   label: <><Star size={13} /> Activo</> },
+    { key: 'caja',     label: boxItems.length > 1 ? <><Package size={13} /> Caja ({boxItems.length})</> : <><Package size={13} /> Caja</> },
+    { key: 'pokedex',  label: <><Book size={13} /> Pokédex</> },
+    { key: 'capturar', label: <><PokeballIcon size={13} /> Capturar{pendingCaptures > 0 ? ` (${pendingCaptures})` : ''}</> },
   ];
 
   return (
@@ -74,8 +74,8 @@ export default function PokemonPage() {
       {/* Evolution banner */}
       {data?.active?.readyToEvolve && (
         <div style={{ background: c.warningSubtle, border: `1px solid ${c.warning}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ color: c.warningDark, fontSize: '0.9rem' }}>
-            ⚡ <strong>{data.active.pokemon.name}</strong> puede evolucionar
+          <span style={{ color: c.warningDark, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <Zap size={15} /> <strong>{data.active.pokemon.name}</strong> puede evolucionar
           </span>
           <Button
             size="sm"
@@ -117,7 +117,7 @@ export default function PokemonPage() {
                 <span style={{ fontSize: '0.78rem', color: c.body }}>Nv. {item.level}</span>
 
                 {isActive ? (
-                  <span style={styles.activeBadge}>Activo ✓</span>
+                  <span style={{ ...styles.activeBadge, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Activo <Check size={11} /></span>
                 ) : (
                   <Button
                     variant="secondary"
@@ -153,7 +153,7 @@ export default function PokemonPage() {
 const styles: Record<string, React.CSSProperties> = {
   page: { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   tabs: { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
-  tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
+  tab: { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px', display: 'flex', alignItems: 'center', gap: '0.35rem' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem' },
   card: {
     background: c.surface, borderRadius: 10, padding: '1.25rem',

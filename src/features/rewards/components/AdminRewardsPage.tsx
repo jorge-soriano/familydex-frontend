@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Pencil, X, Store, ClipboardList, Check } from 'lucide-react';
+import { CoinIcon } from '../../../shared/components/GameIcons';
 import { useRewards, useApproveRequest, useRejectRequest, useRewardRequests } from '../hooks/useRewards';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import RewardForm from './RewardForm';
@@ -52,7 +54,10 @@ export default function AdminRewardsPage() {
             id={`tab-${t}`}
             style={{ ...styles.tab, color: tab === t ? c.primary : c.body, borderBottom: tab === t ? `2px solid ${c.primary}` : '2px solid transparent' }}
             onClick={() => setTab(t)}>
-            {t === 'requests' ? `📋 Solicitudes${pending.length ? ` (${pending.length})` : ''}` : '🏪 Recompensas'}
+            {t === 'requests'
+              ? <><ClipboardList size={14} /> Solicitudes{pending.length ? ` (${pending.length})` : ''}</>
+              : <><Store size={14} /> Recompensas</>
+            }
           </button>
         ))}
       </div>
@@ -69,21 +74,21 @@ export default function AdminRewardsPage() {
                   {childById[rr.childId] && (
                     <ChildAvatar displayName={childById[rr.childId].displayName} avatarColor={childById[rr.childId].avatarColor} size={20} />
                   )}
-                  <span>🪙 {rr.coinsReserved} monedas</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={12} /> {rr.coinsReserved} monedas</span>
                 </div>
               </div>
               <div style={styles.reqActions}>
                 {rr.status === 'Pending' ? (
                   <>
                     {isNarrow ? (
-                      <button aria-label="Aprobar solicitud" style={styles.approveBtnSm} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓</button>
+                      <button aria-label="Aprobar solicitud" style={styles.approveBtnSm} disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}><Check size={16} /></button>
                     ) : (
-                      <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}>✓ Aprobar</Button>
+                      <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(rr.id)}><Check size={14} /> Aprobar</Button>
                     )}
                     {isNarrow ? (
-                      <button aria-label="Rechazar solicitud" style={styles.rejectBtnSm} onClick={() => setRejectId(rr.id)}>✗</button>
+                      <button aria-label="Rechazar solicitud" style={styles.rejectBtnSm} onClick={() => setRejectId(rr.id)}><X size={16} /></button>
                     ) : (
-                      <Button variant="danger" size="sm" onClick={() => setRejectId(rr.id)}>✗ Rechazar</Button>
+                      <Button variant="danger" size="sm" onClick={() => setRejectId(rr.id)}><X size={14} /> Rechazar</Button>
                     )}
                   </>
                 ) : (
@@ -108,12 +113,12 @@ export default function AdminRewardsPage() {
             <div key={r.id} style={{ ...styles.rewardCard, opacity: r.isActive ? 1 : 0.55 }}>
               <div style={styles.cardHeader}>
                 <span className="font-bold">{r.name}</span>
-                <span style={{ fontWeight: 800, color: c.primaryDark }}>🪙 {r.coinCost}</span>
+                <span style={{ fontWeight: 800, color: c.primaryDark, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={14} /> {r.coinCost}</span>
               </div>
               {r.description && <p style={styles.desc}>{r.description}</p>}
               <div style={styles.cardFooter}>
                 <Button variant="secondary" size="sm"
-                  onClick={() => { setEditReward(r); setShowForm(true); }}>✎ Editar</Button>
+                  onClick={() => { setEditReward(r); setShowForm(true); }}><Pencil size={13} /> Editar</Button>
               </div>
             </div>
           ))}
@@ -140,7 +145,7 @@ const styles: Record<string, React.CSSProperties> = {
   page:          { padding: '1.5rem', maxWidth: 1200, margin: '0 auto' },
   h2:            { fontSize: '1.5rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0 0 1.25rem' },
   tabs:          { display: 'flex', flexWrap: 'wrap', borderBottom: `2px solid ${c.stroke}`, marginBottom: '1.5rem' },
-  tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px' },
+  tab:           { padding: '0.5rem 1rem', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem', background: 'transparent', marginBottom: '-2px', display: 'flex', alignItems: 'center', gap: '0.35rem' },
   reqRow:        { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 1rem' },
   reqActions:    { display: 'flex', gap: '0.5rem' },
   approveBtnSm:  { width: 34, height: 34, background: c.success, color: c.surface, border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },

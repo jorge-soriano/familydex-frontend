@@ -1,11 +1,12 @@
+import { Flag, Clock, Sparkles } from 'lucide-react';
 import { useTasks } from '../hooks/useTasks';
 import TaskCard from './TaskCard';
 import type { Task } from '../api';
 import type { TaskStatus } from '../../../shared/types';
 
-const SECTIONS: { status: TaskStatus; label: string; emoji: string }[] = [
-  { status: 'Pending',  label: 'Por hacer',          emoji: '🎯' },
-  { status: 'InReview', label: 'Esperando revisión', emoji: '⏳' },
+const SECTIONS: { status: TaskStatus; label: string; icon: React.ReactNode }[] = [
+  { status: 'Pending',  label: 'Por hacer',          icon: <Flag size={14} /> },
+  { status: 'InReview', label: 'Esperando revisión', icon: <Clock size={14} /> },
 ];
 
 export default function TaskList() {
@@ -29,19 +30,19 @@ export default function TaskList() {
 
       {activeTasks.length === 0 && (
         <div className="text-center py-12 px-4 text-caption">
-          <p className="text-[2rem] mb-2 mt-0">🌟</p>
+          <p className="flex justify-center text-[2rem] mb-2 mt-0"><Sparkles size={36} className="text-warning" /></p>
           <p className="font-bold m-0">¡Todo al día!</p>
           <p className="mt-1 mb-0 text-[0.875rem]">No tienes tareas pendientes.</p>
         </div>
       )}
 
-      {SECTIONS.map(({ status, label, emoji }) => {
+      {SECTIONS.map(({ status, label, icon }) => {
         const group = byStatus(status);
         if (!group.length) return null;
         return (
           <section key={status} className="mb-7">
             <h3 className="text-[0.82rem] font-bold text-body uppercase tracking-[0.06em] mb-3 flex items-center gap-[0.4rem]">
-              {emoji} {label} ({group.length})
+              {icon} {label} ({group.length})
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
               {group.map((t) => <TaskCard key={t.id} task={t} variant="child" />)}

@@ -1,6 +1,8 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import RejectModal from '../../../shared/components/RejectModal';
 import { useState } from 'react';
+import { Check, X, PartyPopper } from 'lucide-react';
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useTasks, useApproveTask, useRejectTask } from '../../tasks/hooks/useTasks';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import { c } from '../../../styles/tokens';
@@ -21,7 +23,7 @@ export default function InboxTab({ familyChildren }: Props) {
 
   if (!tasks.length) return (
     <div className="text-center py-12 text-caption">
-      <p className="text-[2rem] mb-2 mt-0">🎉</p>
+      <p className="flex justify-center mb-2 mt-0"><PartyPopper size={36} /></p>
       <p className="font-bold m-0">¡Todo al día! No hay tareas esperando revisión.</p>
     </div>
   );
@@ -39,19 +41,20 @@ export default function InboxTab({ familyChildren }: Props) {
               <div style={{ fontWeight: 700, color: c.heading }}>{task.title}</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: c.body, marginTop: '0.2rem' }}>
                 {childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}
-                <span>🪙 {task.coinsReward} · ⭐ {task.xpReward} XP</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={12} /> {task.coinsReward}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><XpIcon size={12} /> {task.xpReward} XP</span>
               </div>
             </div>
             <div className="flex gap-[0.4rem] shrink-0">
               {isNarrow ? (
-                <button aria-label="Aprobar tarea" style={smBtn(c.success)} disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔</button>
+                <button aria-label="Aprobar tarea" style={smBtn(c.success)} disabled={approve.isPending} onClick={() => approve.mutate(task.id)}><Check size={16} /></button>
               ) : (
-                <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(task.id)}>✔ Aprobar</Button>
+                <Button variant="success" size="sm" disabled={approve.isPending} onClick={() => approve.mutate(task.id)}><Check size={14} /> Aprobar</Button>
               )}
               {isNarrow ? (
-                <button aria-label="Rechazar tarea" style={smBtn(c.danger)} onClick={() => setRejectId(task.id)}>✖</button>
+                <button aria-label="Rechazar tarea" style={smBtn(c.danger)} onClick={() => setRejectId(task.id)}><X size={16} /></button>
               ) : (
-                <Button variant="danger" size="sm" onClick={() => setRejectId(task.id)}>✖ Rechazar</Button>
+                <Button variant="danger" size="sm" onClick={() => setRejectId(task.id)}><X size={14} /> Rechazar</Button>
               )}
             </div>
           </div>
@@ -73,6 +76,6 @@ export default function InboxTab({ familyChildren }: Props) {
 
 const smBtn = (bg: string): React.CSSProperties => ({
   width: 34, height: 34, background: bg, color: c.surface, border: 'none',
-  borderRadius: 6, cursor: 'pointer', fontWeight: 700, fontSize: '1rem',
+  borderRadius: 6, cursor: 'pointer', fontWeight: 700,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 });

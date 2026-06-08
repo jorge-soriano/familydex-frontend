@@ -1,5 +1,7 @@
 import { useAvailableToCapture, useCapture } from '../hooks/usePokemon';
 import { useBalance } from '../../activity/hooks/useActivity';
+import { Unlock } from 'lucide-react';
+import { PokeballIcon } from '../../../shared/components/GameIcons';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { c } from '../../../styles/tokens';
@@ -15,8 +17,8 @@ export default function CaptureScreen() {
   return (
     <div style={styles.page}>
       {pendingCaptures > 0 ? (
-        <div style={styles.banner}>
-          🎯 Tienes <strong>{pendingCaptures}</strong>{' '}
+        <div style={{ ...styles.banner, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <PokeballIcon size={15} /> Tienes <strong>{pendingCaptures}</strong>{' '}
           {pendingCaptures === 1 ? 'captura disponible' : 'capturas disponibles'}
         </div>
       ) : (
@@ -43,7 +45,7 @@ export default function CaptureScreen() {
                 {p.type2 && <TypeBadge type={p.type2} />}
               </div>
               {p.unlockXp > 0 && (
-                <span style={styles.xpTag}>🔓 {p.unlockXp.toLocaleString()} XP</span>
+                <span style={{ ...styles.xpTag, display: 'flex', alignItems: 'center', gap: '0.2rem' }}><Unlock size={11} /> {p.unlockXp.toLocaleString()} XP</span>
               )}
               <Button
                 size="sm"

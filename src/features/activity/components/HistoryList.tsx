@@ -1,3 +1,4 @@
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { Badge } from '../../../shared/components/Badge';
 import type { BadgeVariant } from '../../../shared/components/Badge';
@@ -67,12 +68,12 @@ export default function HistoryList({ childId, filterType, childMap }: Props) {
           {/* Bottom/Right: amounts + date */}
           <div className="flex gap-[0.65rem] items-center text-[0.875rem]">
             {tx.coinsDelta !== 0 && (
-              <span className={`font-bold ${tx.coinsDelta > 0 ? 'text-success' : 'text-danger'}`}>
-                {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta} 🪙
+              <span className={`font-bold flex items-center gap-[0.25rem] ${tx.coinsDelta > 0 ? 'text-success' : 'text-danger'}`}>
+                {tx.coinsDelta > 0 ? '+' : ''}{tx.coinsDelta} <CoinIcon size={13} />
               </span>
             )}
             {tx.xpDelta !== 0 && (
-              <span className="text-warning font-bold">+{tx.xpDelta} ⭐</span>
+              <span className="text-warning font-bold flex items-center gap-[0.25rem]">+{tx.xpDelta} <XpIcon size={13} /></span>
             )}
             <span className="text-caption text-[0.75rem]">
               {new Date(tx.createdAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}

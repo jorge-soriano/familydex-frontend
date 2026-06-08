@@ -47,6 +47,7 @@ export function Button({ variant = 'primary', size = 'md', children, style, disa
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.35rem',
+        lineHeight: 1,
         flexShrink: 0,
         ...style,
       }}

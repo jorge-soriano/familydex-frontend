@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { Check, ChevronRight } from 'lucide-react';
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useDashboard } from '../hooks/useAdmin';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
 import { c } from '../../../styles/tokens';
@@ -37,7 +39,7 @@ export default function Dashboard() {
                 Acciones requeridas
               </span>
             ) : (
-              <span>Todo en orden ✓</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>Todo en orden <Check size={14} /></span>
             )}
           </div>
 
@@ -56,7 +58,7 @@ export default function Dashboard() {
                       {child.pendingReviewCount} tarea{child.pendingReviewCount !== 1 ? 's' : ''} por revisar
                     </span>
                   </div>
-                  <span style={styles.actionCta}>Revisar →</span>
+                  <span style={{ ...styles.actionCta, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Revisar <ChevronRight size={13} /></span>
                 </Link>
               ))}
 
@@ -69,7 +71,7 @@ export default function Dashboard() {
                       {child.pendingRewardRequestCount} solicitud{child.pendingRewardRequestCount !== 1 ? 'es' : ''} de recompensa
                     </span>
                   </div>
-                  <span style={{ ...styles.actionCta, color: c.accent }}>Ver →</span>
+                  <span style={{ ...styles.actionCta, color: c.accent, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>Ver <ChevronRight size={13} /></span>
                 </Link>
               ))}
             </div>
@@ -104,8 +106,8 @@ export default function Dashboard() {
 
                   {/* Monedas + XP */}
                   <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem', color: c.body }}>
-                    <span>🪙 {child.coins}</span>
-                    <span>⭐ {child.xp} XP</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={14} /> {child.coins}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XpIcon size={14} /> {child.xp} XP</span>
                   </div>
 
                   {/* Pokémon */}

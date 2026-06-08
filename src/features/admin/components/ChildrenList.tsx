@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Pencil } from 'lucide-react';
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useAdminChildren } from '../hooks/useAdmin';
 import ChildModal from './ChildModal';
 import { SPRITE_STATIC_URL } from '../../pokemon/api';
@@ -17,7 +19,7 @@ export default function ChildrenList() {
 
   if (isLoading) return <p className="p-8">Cargando…</p>;
 
-  const TH = (label: string, align: 'left' | 'center' | 'right' = 'left', w?: string) => (
+  const TH = (label: React.ReactNode, align: 'left' | 'center' | 'right' = 'left', w?: string) => (
     <th style={{ padding: '0.65rem 0.75rem', textAlign: align, width: w, fontSize: '0.72rem', fontWeight: 700, color: c.body, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #b8cad9', background: '#dce7f2', whiteSpace: 'nowrap' }}>
       {label}
     </th>
@@ -40,8 +42,8 @@ export default function ChildrenList() {
               <tr>
                 {TH('Nombre')}
                 {TH('Usuario', 'left', '110px')}
-                {TH('🪙', 'center', '70px')}
-                {TH('⭐ XP', 'center', '80px')}
+                {TH(<CoinIcon size={13} />, 'center', '70px')}
+                {TH(<span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><XpIcon size={13} /> XP</span>, 'center', '80px')}
                 {TH('Pokémon', 'left')}
                 {TH('Estado', 'center', '90px')}
                 {TH('', 'right', '110px')}
@@ -62,8 +64,12 @@ export default function ChildrenList() {
                     </Link>
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', fontSize: '0.875rem', color: c.body }}>@{child.username}</td>
-                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>{child.coins}</td>
-                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>{child.xp}</td>
+                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><CoinIcon size={12} /> {child.coins}</span>
+                  </td>
+                  <td style={{ padding: '0.6rem 0.75rem', textAlign: 'center', fontSize: '0.875rem' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><XpIcon size={12} /> {child.xp}</span>
+                  </td>
                   <td style={{ padding: '0.6rem 0.75rem' }}>
                     <div style={styles.pokemon}>
                       {child.activePokemon ? (
@@ -80,7 +86,7 @@ export default function ChildrenList() {
                     </Badge>
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>
-                    <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}>✎ Editar</Button>
+                    <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}><Pencil size={13} /> Editar</Button>
                   </td>
                 </tr>
               ))}
@@ -103,7 +109,11 @@ export default function ChildrenList() {
                   <Link to={`/admin/children/${child.id}`} style={{ fontWeight: 700, textDecoration: 'none', color: c.heading, display: 'block' }}>
                     {child.displayName}
                   </Link>
-                  <div style={{ fontSize: '0.8rem', color: c.body }}>@{child.username} · 🪙{child.coins} · ⭐{child.xp}</div>
+                  <div style={{ fontSize: '0.8rem', color: c.body, display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                    @{child.username}
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><CoinIcon size={11} />{child.coins}</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.15rem' }}><XpIcon size={11} />{child.xp}</span>
+                  </div>
                 </div>
                 <Badge variant={child.isActive ? 'success' : 'neutral'} subtle>
                   {child.isActive ? 'Activo' : 'Inactivo'}
@@ -116,7 +126,7 @@ export default function ChildrenList() {
                 </div>
               )}
               <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}>✎ Editar</Button>
+                <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}><Pencil size={13} /> Editar</Button>
               </div>
             </div>
           ))}

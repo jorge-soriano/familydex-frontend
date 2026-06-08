@@ -1,3 +1,4 @@
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useBalance } from '../hooks/useActivity';
 import HistoryList from './HistoryList';
 import { c } from '../../../styles/tokens';
@@ -12,11 +13,15 @@ export default function ChildActivityPage() {
       <div style={styles.cards}>
         <div style={styles.card}>
           <p style={styles.cardLabel}>Monedas</p>
-          <p style={styles.cardValue}>🪙 {balance?.coins ?? '—'}</p>
+          <p style={{ ...styles.cardValue, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem' }}>
+            <CoinIcon size={22} /> {balance?.coins ?? '—'}
+          </p>
         </div>
         <div style={styles.card}>
           <p style={styles.cardLabel}>XP total</p>
-          <p style={styles.cardValue}>⭐ {balance?.xp ?? '—'}</p>
+          <p style={{ ...styles.cardValue, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem' }}>
+            <XpIcon size={22} /> {balance?.xp ?? '—'}
+          </p>
         </div>
         <div style={styles.card}>
           <p style={styles.cardLabel}>Pokémon disponibles</p>

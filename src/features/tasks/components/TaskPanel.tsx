@@ -1,5 +1,7 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { useState } from 'react';
+import { Home, BookOpen, Crown, CheckCircle, RefreshCw, Calendar, Check, X, Pencil } from 'lucide-react';
+import { CoinIcon, XpIcon } from '../../../shared/components/GameIcons';
 import { useTasks, useDirectApprove, useRejectTask } from '../hooks/useTasks';
 import TaskForm from './TaskForm';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
@@ -14,15 +16,26 @@ interface Props  { children: Child[] }
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
-function freqLabel(task: TaskWithSeries): string {
+function freqLabel(task: TaskWithSeries): React.ReactNode {
   if (!task.seriesId || !task.series) return 'Puntual';
-  if (task.series.frequency === 'Daily') return '🔄 Diaria';
+  if (task.series.frequency === 'Daily') return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+      <RefreshCw size={12} /> Diaria
+    </span>
+  );
   const days: number[] = JSON.parse(task.series.daysOfWeek || '[]');
-  return `📅 ${days.map((d) => DAY_NAMES[d]).join(', ')}`;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+      <Calendar size={12} /> {days.map((d) => DAY_NAMES[d]).join(', ')}
+    </span>
+  );
 }
 
-const TYPE_LABEL: Record<string, string> = {
-  hogar: '🏠', deberes: '📚', comportamiento: '⭐', responsabilidad: '✅',
+const TYPE_ICON: Record<string, React.ReactNode> = {
+  hogar:           <Home size={13} />,
+  deberes:         <BookOpen size={13} />,
+  comportamiento:  <Crown size={13} />,
+  responsabilidad: <CheckCircle size={13} />,
 };
 
 export default function TaskPanel({ children }: Props) {
@@ -40,9 +53,6 @@ export default function TaskPanel({ children }: Props) {
     type:       filterType  || undefined,
   });
 
-  // Active planner view: hide one-time Approved tasks (done, no need to manage them).
-  // Keep recurring Approved tasks (they'll repeat — useful to have in the planner).
-  // Disabled tasks appear at the bottom.
   const visible = (rawTasks as TaskWithSeries[]).filter(
     (t) => t.status === 'Pending' || t.status === 'InReview' ||
            (t.status === 'Approved' && t.seriesId !== null)
@@ -65,8 +75,8 @@ export default function TaskPanel({ children }: Props) {
     </th>
   );
 
-  const Btn = ({ onClick, icon, label, bg, color, border, disabled }: { onClick: () => void; icon: string; label: string; bg: string; color: string; border: string; disabled?: boolean }) => (
-    <button title={label} disabled={disabled} onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, background: bg, color, border: `1px solid ${border}`, borderRadius: 6, cursor: 'pointer', fontSize: '0.95rem', opacity: disabled ? 0.45 : 1 }}>
+  const Btn = ({ onClick, icon, label, bg, color, border, disabled }: { onClick: () => void; icon: React.ReactNode; label: string; bg: string; color: string; border: string; disabled?: boolean }) => (
+    <button title={label} disabled={disabled} onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, background: bg, color, border: `1px solid ${border}`, borderRadius: 6, cursor: 'pointer', opacity: disabled ? 0.45 : 1 }}>
       {icon}
     </button>
   );
@@ -123,8 +133,8 @@ export default function TaskPanel({ children }: Props) {
                     )}
                     <tr key={task.id} style={{ borderBottom: `1px solid ${c.subtle}`, opacity: isDisabled ? 0.45 : 1, background: isDisabled ? c.page : c.surface }}>
                       <td style={{ padding: '0.65rem 0.75rem', verticalAlign: 'middle' }}>
-                        <div style={{ fontWeight: 700, fontSize: '0.875rem', color: c.heading }}>
-                          {TYPE_LABEL[task.type]} {task.title}
+                        <div style={{ fontWeight: 700, fontSize: '0.875rem', color: c.heading, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          {TYPE_ICON[task.type]} {task.title}
                         </div>
                         {task.rejectionReason && (
                           <div style={{ fontSize: '0.75rem', color: c.dangerDark, marginTop: '0.1rem' }}>↩ {task.rejectionReason}</div>
@@ -140,19 +150,19 @@ export default function TaskPanel({ children }: Props) {
                       </td>
                       <td style={{ padding: '0.65rem 0.75rem', textAlign: 'center' }}>
                         <div style={{ fontSize: '0.8rem', color: c.body, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem' }}>
-                          <span>🪙 {task.coinsReward}</span>
-                          <span>⭐ {task.xpReward}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CoinIcon size={12} /> {task.coinsReward}</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XpIcon size={12} /> {task.xpReward}</span>
                         </div>
                       </td>
                       <td style={{ padding: '0.65rem 0.75rem', textAlign: 'right' }}>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.3rem' }}>
                           {task.status !== 'Approved' && (
-                            <Btn onClick={() => directApprove.mutate(task.id)} icon="✔" label="Aprobar" bg={c.success} color={c.surface} border={c.successDark} disabled={directApprove.isPending} />
+                            <Btn onClick={() => directApprove.mutate(task.id)} icon={<Check size={14} />} label="Aprobar" bg={c.success} color={c.surface} border={c.successDark} disabled={directApprove.isPending} />
                           )}
                           {task.status === 'InReview' && (
-                            <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon="✖" label="Rechazar" bg={c.danger} color={c.surface} border={c.dangerDark} />
+                            <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon={<X size={14} />} label="Rechazar" bg={c.danger} color={c.surface} border={c.dangerDark} />
                           )}
-                          <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg={c.subtle} color={c.body} border={c.subtle} />
+                          <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon={<Pencil size={14} />} label="Editar" bg={c.subtle} color={c.body} border={c.subtle} />
                         </div>
                       </td>
                     </tr>
@@ -182,14 +192,19 @@ export default function TaskPanel({ children }: Props) {
                   </div>
                 )}
                 <div key={task.id} style={{ background: isDisabled ? c.page : c.surface, borderRadius: 8, padding: '0.75rem', boxShadow: c.shadowSm, opacity: isDisabled ? 0.5 : 1 }}>
-                  <div style={{ fontWeight: 700, marginBottom: '0.25rem' }}>{TYPE_LABEL[task.type]} {task.title}</div>
+                  <div style={{ fontWeight: 700, marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>{TYPE_ICON[task.type]} {task.title}</div>
                   <div style={{ fontSize: '0.8rem', color: c.body, marginBottom: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>{childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}{freqLabel(task)} · 🪙{task.coinsReward} ⭐{task.xpReward}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      {childById[task.assignedTo] && <ChildAvatar displayName={childById[task.assignedTo].displayName} avatarColor={childById[task.assignedTo].avatarColor} size={22} />}
+                      {freqLabel(task)}
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><CoinIcon size={11}/>{task.coinsReward}</span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}><XpIcon size={11}/>{task.xpReward}</span>
+                    </div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.3rem' }}>
-                    {task.status !== 'Approved' && <Btn onClick={() => directApprove.mutate(task.id)} icon="✔" label="Aprobar" bg={c.success} color={c.surface} border={c.successDark} />}
-                    {task.status === 'InReview' && <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon="✖" label="Rechazar" bg={c.danger} color={c.surface} border={c.dangerDark} />}
-                    <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon="✎" label="Editar" bg={c.subtle} color={c.body} border={c.subtle} />
+                    {task.status !== 'Approved' && <Btn onClick={() => directApprove.mutate(task.id)} icon={<Check size={14} />} label="Aprobar" bg={c.success} color={c.surface} border={c.successDark} />}
+                    {task.status === 'InReview' && <Btn onClick={() => { setRejectId(task.id); setRejectReason(''); }} icon={<X size={14} />} label="Rechazar" bg={c.danger} color={c.surface} border={c.dangerDark} />}
+                    <Btn onClick={() => { setEditTask(task); setShowForm(true); }} icon={<Pencil size={14} />} label="Editar" bg={c.subtle} color={c.body} border={c.subtle} />
                   </div>
                 </div>
               </>
@@ -216,7 +231,7 @@ export default function TaskPanel({ children }: Props) {
               <Button variant="secondary" onClick={() => setRejectId(null)}>Cancelar</Button>
               <Button variant="danger" disabled={reject.isPending}
                 onClick={() => reject.mutate({ id: rejectId!, reason: rejectReason || undefined }, { onSuccess: () => setRejectId(null) })}>
-                ✖ Rechazar
+                <X size={14} /> Rechazar
               </Button>
             </div>
           </div>

@@ -1,5 +1,7 @@
 import { useRewards, useRequestReward, useRewardRequests } from '../hooks/useRewards';
 import { useBalance } from '../../activity/hooks/useActivity';
+import { Gift, Clock } from 'lucide-react';
+import { CoinIcon } from '../../../shared/components/GameIcons';
 import type { Reward } from '../api';
 import { c } from '../../../styles/tokens';
 import { Badge } from '../../../shared/components/Badge';
@@ -30,8 +32,9 @@ export default function RewardShop() {
           background: c.warningSubtle, color: c.warningDark,
           fontWeight: 800, fontSize: '1rem',
           padding: '0.25rem 0.9rem', borderRadius: 20,
+          display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
         }}>
-          🪙 {coins}
+          <CoinIcon size={16} /> {coins}
         </span>
       </div>
 
@@ -40,7 +43,7 @@ export default function RewardShop() {
       {/* Estado vacío */}
       {!isLoading && rewards.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem 1rem', color: c.caption }}>
-          <p style={{ fontSize: '2.5rem', margin: '0 0 0.75rem' }}>🎁</p>
+          <p style={{ margin: '0 0 0.75rem', display: 'flex', justifyContent: 'center' }}><Gift size={40} /></p>
           <p style={{ fontWeight: 700, margin: 0, color: c.body }}>Aún no hay premios</p>
           <p style={{ fontSize: '0.875rem', margin: '0.4rem 0 0' }}>
             Pide a tu padre que añada premios
@@ -68,8 +71,9 @@ export default function RewardShop() {
                 background: c.warningSubtle, color: c.warningDark,
                 fontWeight: 800, fontSize: '0.875rem',
                 padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap',
+                display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
               }}>
-                🪙 {r.coinCost}
+                <CoinIcon size={13} /> {r.coinCost}
               </span>
 
               {isPending(r) ? (
@@ -77,8 +81,9 @@ export default function RewardShop() {
                   background: c.warningSubtle, color: c.warningMid,
                   fontWeight: 700, fontSize: '0.78rem',
                   padding: '3px 10px', borderRadius: 20, whiteSpace: 'nowrap',
+                  display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
                 }}>
-                  ⏳ Pedido enviado
+                  <Clock size={12} /> Pedido enviado
                 </span>
               ) : canAfford(r) ? (
                 <Button
@@ -96,7 +101,7 @@ export default function RewardShop() {
                     padding: '0.4rem 0.75rem', borderRadius: 6,
                     cursor: 'not-allowed', border: 'none', whiteSpace: 'nowrap',
                   }}>
-                  Me faltan {r.coinCost - coins} 🪙
+                  Me faltan {r.coinCost - coins} <CoinIcon size={12}/>
                 </button>
               )}
             </div>

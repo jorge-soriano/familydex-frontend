@@ -1,4 +1,5 @@
 import type { ActivePokemonResult } from '../api';
+import { Sparkles } from 'lucide-react';
 import PokemonSprite from './PokemonSprite';
 import TypeBadge from './TypeBadge';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
@@ -41,7 +42,7 @@ export default function PokemonDisplay({ data }: Props) {
         </div>
 
         {isFinalForm ? (
-          <p style={styles.finalForm}>✨ Forma final</p>
+          <p style={{ ...styles.finalForm, display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Sparkles size={13} /> Forma final</p>
         ) : (
           <p style={styles.evoHint}>
             Evoluciona en nivel {evolveLevel}
