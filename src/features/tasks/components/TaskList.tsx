@@ -43,7 +43,7 @@ export default function TaskList() {
             <h3 className="text-[0.82rem] font-bold text-body uppercase tracking-[0.06em] mb-3 flex items-center gap-[0.4rem]">
               {emoji} {label} ({group.length})
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
               {group.map((t) => <TaskCard key={t.id} task={t} variant="child" />)}
             </div>
           </section>

@@ -89,85 +89,106 @@ export default function TaskCard({ task, variant = 'admin' }: Props) {
   }
 
   // ── Child variant — horizontal card ───────────────────────────────────────
-  const stripColor = isPending ? c.primary : isReview ? c.warning : isApproved ? c.success : c.danger;
-  const typeEmoji  = TYPE_EMOJI[task.type] ?? '📋';
-  const typeBg     = TYPE_BG[task.type]    ?? c.subtle;
-  const typeColor  = TYPE_COLOR[task.type] ?? c.body;
+  const typeEmoji = TYPE_EMOJI[task.type] ?? '📋';
+  const typeBg    = TYPE_BG[task.type]    ?? c.subtle;
+  const typeColor = TYPE_COLOR[task.type] ?? c.body;
+
+  const statusStrip = isReview
+    ? { bg: '#fef3c7', color: '#92400e', text: '⏳ Esperando revisión del admin…' }
+    : isApproved
+    ? { bg: c.successSubtle, color: c.successDark, text: '✅ ¡Tarea completada!' }
+    : isRejected
+    ? { bg: '#fef2f2', color: c.dangerDark, text: task.rejectionReason ? `💪 Casi: ${task.rejectionReason}` : '❌ Rechazada — inténtalo de nuevo' }
+    : null;
 
   return (
-    <div style={{ background: c.surface, borderRadius: 10, overflow: 'hidden', boxShadow: c.shadowMd }}>
+    <div style={{ background: c.surface, borderRadius: 10, overflow: 'hidden', boxShadow: c.shadowMd, display: 'flex', flexDirection: 'column' }}>
 
       {/* Main row */}
-      <div style={{ display: 'flex', gap: '0.75rem', padding: '0.75rem' }}>
+      <div style={{ display: 'flex', alignItems: 'stretch', minHeight: 64 }}>
 
-        {/* Left: tipo emoji */}
+        {/* Left: bloque de tipo flush a la esquina */}
         <div style={{
-          width: 52, height: 52, borderRadius: 8, flexShrink: 0,
+          width: 56, flexShrink: 0,
           background: typeBg, color: typeColor,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.6rem',
+          fontSize: '1.4rem',
         }}>
           {typeEmoji}
         </div>
 
         {/* Center: título + descripción */}
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.2rem', justifyContent: 'center' }}>
-          <span style={{ fontWeight: 700, fontSize: '0.95rem', color: c.heading }}>{task.title}</span>
+        <div style={{ flex: 1, padding: '0.6rem 0.75rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0 }}>
+          <span style={{ fontWeight: 700, fontSize: '0.95rem', color: c.heading, lineHeight: 1.3 }}>
+            {task.title}
+          </span>
           {task.description && (
-            <p style={{ margin: 0, fontSize: '0.8rem', color: c.body }}>{task.description}</p>
-          )}
-          {isReview && (
-            <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 600, color: c.warningMid }}>
-              ⏳ Esperando revisión…
-            </p>
-          )}
-          {isApproved && (
-            <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 700, color: c.successDark }}>
-              ✅ ¡Completada!
-            </p>
+            <span style={{ fontSize: '0.78rem', color: c.body, marginTop: 2, lineHeight: 1.4 }}>
+              {task.description}
+            </span>
           )}
         </div>
 
         {/* Right: recompensas */}
-        <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '0.25rem', justifyContent: 'center' }}>
-          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: c.warningDark }}>🪙 {task.coinsReward}</span>
-          <span style={{ fontWeight: 700, fontSize: '0.8rem', color: c.accent }}>⭐ {task.xpReward}</span>
+        <div style={{
+          width: 72, flexShrink: 0,
+          display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center',
+          padding: '0.5rem 0.75rem', gap: 2,
+        }}>
+          <span style={{ fontWeight: 800, fontSize: '0.85rem', color: '#b45309' }}>🪙 {task.coinsReward}</span>
+          <span style={{ fontWeight: 700, fontSize: '0.75rem', color: c.primary }}>⭐ {task.xpReward}</span>
         </div>
       </div>
 
       {/* Franja de estado */}
-      <div style={{ height: 3, background: stripColor }} />
+      {statusStrip && (
+        <div style={{
+          background: statusStrip.bg, color: statusStrip.color,
+          fontSize: '0.78rem', fontWeight: 600,
+          padding: '0.3rem 0.75rem',
+          borderTop: '1px solid rgba(0,0,0,0.05)',
+        }}>
+          {statusStrip.text}
+        </div>
+      )}
 
-      {/* Feedback de rechazo */}
+      {/* Botón — flush al fondo, sin wrapper */}
+      {(isPending || (isRejected && !task.rejectionReason)) && (
+        <Button
+          disabled={complete.isPending}
+          onClick={() => complete.mutate(task.id)}
+          style={{
+            borderRadius: 0,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            justifyContent: 'center',
+            width: '100%',
+            padding: '0.6rem',
+            fontSize: '0.85rem',
+            borderTop: `1px solid ${c.stroke}`,
+            marginTop: 'auto',
+          }}>
+          {complete.isPending ? 'Enviando…' : isPending ? '🙋 ¡He terminado!' : '🔄 Intentarlo de nuevo'}
+        </Button>
+      )}
+
       {isRejected && task.rejectionReason && (
-        <div style={{ margin: '0.5rem 0.75rem', borderRadius: 6, padding: '0.4rem 0.6rem', background: c.warningPale }}>
-          <p style={{ margin: 0, fontSize: '0.8rem', color: c.warningDark, fontWeight: 600 }}>
-            💪 Casi, falta esto: {task.rejectionReason}
-          </p>
-        </div>
-      )}
-
-      {/* Botón */}
-      {isPending && (
-        <div style={{ padding: '0.5rem 0.75rem 0.75rem' }}>
-          <Button
-            disabled={complete.isPending}
-            onClick={() => complete.mutate(task.id)}
-            style={{ width: '100%', justifyContent: 'center' }}>
-            {complete.isPending ? 'Enviando…' : '🙋 ¡He terminado!'}
-          </Button>
-        </div>
-      )}
-
-      {isRejected && !task.rejectionReason && (
-        <div style={{ padding: '0.5rem 0.75rem 0.75rem' }}>
-          <Button
-            disabled={complete.isPending}
-            onClick={() => complete.mutate(task.id)}
-            style={{ width: '100%', justifyContent: 'center' }}>
-            🔄 Intentarlo de nuevo
-          </Button>
-        </div>
+        <Button
+          disabled={complete.isPending}
+          onClick={() => complete.mutate(task.id)}
+          style={{
+            borderRadius: 0,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            justifyContent: 'center',
+            width: '100%',
+            padding: '0.6rem',
+            fontSize: '0.85rem',
+            borderTop: `1px solid ${c.stroke}`,
+            marginTop: 'auto',
+          }}>
+          {complete.isPending ? 'Enviando…' : '🔄 Intentarlo de nuevo'}
+        </Button>
       )}
     </div>
   );
