@@ -45,7 +45,7 @@ export default function ChildrenList() {
                 {TH('⭐ XP', 'center', '80px')}
                 {TH('Pokémon', 'left')}
                 {TH('Estado', 'center', '90px')}
-                {TH('', 'right', '90px')}
+                {TH('', 'right', '110px')}
               </tr>
             </thead>
             <tbody>
@@ -81,7 +81,7 @@ export default function ChildrenList() {
                     </Badge>
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>
-                    <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✎ Editar</Button>
+                    <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}>✎ Editar</Button>
                   </td>
                 </tr>
               ))}
@@ -117,7 +117,7 @@ export default function ChildrenList() {
                 </div>
               )}
               <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✎ Editar</Button>
+                <Button variant="secondary" size="sm" style={{ whiteSpace: 'nowrap' }} onClick={() => setEditing(child)}>✎ Editar</Button>
               </div>
             </div>
           ))}
