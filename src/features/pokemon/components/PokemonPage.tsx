@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Star, Package, Book, Zap, Check } from 'lucide-react';
 import { PokeballIcon } from '../../../shared/components/GameIcons';
@@ -37,15 +37,6 @@ export default function PokemonPage() {
     VALID_TABS.includes(paramTab) ? paramTab : 'activo'
   );
   const [showEvo, setShowEvo] = useState(false);
-  const autoTabApplied = useRef(false);
-
-  useEffect(() => {
-    if (autoTabApplied.current || paramTab) return;
-    if (balance?.pendingCaptures && balance.pendingCaptures > 0) {
-      setTab('capturar');
-      autoTabApplied.current = true;
-    }
-  }, [balance?.pendingCaptures, paramTab]);
 
   if (isLoading) return <p style={{ padding: '2rem', color: c.caption }}>Cargando…</p>;
 
