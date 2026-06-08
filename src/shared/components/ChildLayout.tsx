@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { ClipboardList, Sword, ShoppingBag, BarChart2, LogOut } from 'lucide-react';
 import BalanceBar from '../../features/activity/components/BalanceBar';
 import { useAuthStore } from '../../features/auth/hooks/useAuthStore';
@@ -23,6 +23,7 @@ const BOTTOM_NAV = [
 export default function ChildLayout() {
   const { clearAuth } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const isNarrow = useWindowWidth() < 640;
 
   const handleLogout = () => {
@@ -39,13 +40,21 @@ export default function ChildLayout() {
         <span className="font-extrabold text-[1.05rem] shrink-0">FamilyDex</span>
 
         {!isNarrow && (
-          <div className="flex gap-1 flex-1">
-            {LINKS.map(({ to, label, Icon }) => (
-              <Link key={to} to={to}
-                className="text-slate-300 no-underline px-3 py-[0.3rem] rounded-md text-[0.9rem] flex items-center gap-[0.3rem]">
-                <Icon size={14} />{label}
-              </Link>
-            ))}
+          <div className="flex h-full flex-1">
+            {LINKS.map(({ to, label, Icon }) => {
+              const isActive = location.pathname.startsWith(to);
+              return (
+                <Link key={to} to={to}
+                  className="no-underline flex items-center gap-[0.35rem] h-full px-4 text-[0.875rem] font-semibold transition-colors duration-100 whitespace-nowrap"
+                  style={{
+                    color: isActive ? '#ffffff' : '#94a3b8',
+                    background: isActive ? 'rgba(59,130,246,0.18)' : 'transparent',
+                    borderBottom: isActive ? '2px solid #60a5fa' : '2px solid transparent',
+                  }}>
+                  <Icon size={14} />{label}
+                </Link>
+              );
+            })}
           </div>
         )}
 
