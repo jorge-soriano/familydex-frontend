@@ -81,7 +81,7 @@ export default function ChildrenList() {
                     </Badge>
                   </td>
                   <td style={{ padding: '0.6rem 0.75rem', textAlign: 'right' }}>
-                    <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✏️ Editar</Button>
+                    <button title="Editar" style={styles.editBtn} onClick={() => setEditing(child)}>✎</button>
                   </td>
                 </tr>
               ))}
@@ -117,7 +117,7 @@ export default function ChildrenList() {
                 </div>
               )}
               <div style={{ display: 'flex', gap: '0.4rem' }}>
-                <Button variant="secondary" size="sm" onClick={() => setEditing(child)}>✏️ Editar</Button>
+                <button title="Editar" style={styles.editBtn} onClick={() => setEditing(child)}>✎</button>
               </div>
             </div>
           ))}
@@ -136,4 +136,5 @@ const styles: Record<string, React.CSSProperties> = {
   nameCell: { display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' },
   avatar:   { width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 700, fontSize: '0.9rem', flexShrink: 0 },
   pokemon:  { display: 'flex', alignItems: 'center', gap: '0.4rem' },
+  editBtn:  { width: 32, height: 32, background: c.subtle, color: c.body, border: `1px solid ${c.subtle}`, borderRadius: 6, cursor: 'pointer', fontSize: '0.95rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' },
 };

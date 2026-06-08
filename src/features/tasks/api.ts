@@ -36,6 +36,8 @@ export interface EditTaskDto {
   coinsReward?: number;
   xpReward?: number;
   dueDate?: string | null;
+  frequency?: string;
+  daysOfWeek?: string; // JSON string for backend series update
 }
 
 export interface GetTasksParams {

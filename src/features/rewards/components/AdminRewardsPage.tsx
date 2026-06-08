@@ -115,7 +115,7 @@ export default function AdminRewardsPage() {
               {r.description && <p style={styles.desc}>{r.description}</p>}
               <div style={styles.cardFooter}>
                 <button aria-label="Editar recompensa" style={styles.editBtnSm}
-                  onClick={() => { setEditReward(r); setShowForm(true); }}>✏️</button>
+                  onClick={() => { setEditReward(r); setShowForm(true); }}>✎</button>
               </div>
             </div>
           ))}
@@ -163,6 +163,6 @@ const styles: Record<string, React.CSSProperties> = {
   cardHeader:    { display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' },
   desc:          { fontSize: '0.85rem', color: c.body, margin: '0 0 0.75rem' },
   cardFooter:    { display: 'flex', gap: '0.5rem' },
-  editBtnSm:     { width: 34, height: 34, background: c.subtle, color: c.body, border: `1px solid ${c.stroke}`, borderRadius: 6, cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' },
+  editBtnSm:     { width: 32, height: 32, background: c.subtle, color: c.body, border: `1px solid ${c.subtle}`, borderRadius: 6, cursor: 'pointer', fontSize: '0.95rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' },
   rejectActions: { display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' },
 };

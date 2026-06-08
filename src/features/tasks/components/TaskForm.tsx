@@ -20,7 +20,6 @@ interface Props {
 
 const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
-const FREQ_LABELS: Record<string, string> = { OneTime: 'Puntual', Daily: 'Diaria', Weekly: 'Semanal' };
 
 export default function TaskForm({ task, children, onClose }: Props) {
   const createTask   = useCreateTask();
@@ -49,43 +48,47 @@ export default function TaskForm({ task, children, onClose }: Props) {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
 
-  const editFreq = task?.series?.frequency ?? 'OneTime';
+  const initialEditFreq = task?.series?.frequency ?? 'OneTime';
 
   const [form, setForm] = useState({
-    assignedTo:  task?.assignedTo ?? (children[0]?.id ?? 0),
-    title:       task?.title ?? '',
-    description: task?.description ?? '',
-    type:        task?.type ?? 'hogar',
-    coinsReward: task?.coinsReward ?? 5,
-    xpReward:    task?.xpReward ?? 25,
-    frequency:   'OneTime' as 'OneTime' | 'Daily' | 'Weekly',
-    daysOfWeek:  [] as number[],
-    isEnabled:   task?.isEnabled !== false,
+    assignedTo:     task?.assignedTo ?? (children[0]?.id ?? 0),
+    title:          task?.title ?? '',
+    description:    task?.description ?? '',
+    type:           task?.type ?? 'hogar',
+    coinsReward:    task?.coinsReward ?? 5,
+    xpReward:       task?.xpReward ?? 25,
+    frequency:      'OneTime' as 'OneTime' | 'Daily' | 'Weekly',
+    daysOfWeek:     [] as number[],
+    editFrequency:  initialEditFreq as 'OneTime' | 'Daily' | 'Weekly',
+    editDaysOfWeek: task?.series?.daysOfWeek ? (JSON.parse(task.series.daysOfWeek) as number[]) : [] as number[],
+    isEnabled:      task?.isEnabled !== false,
   });
 
   const set = (key: string, value: unknown) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  const toggleDay = (d: number) =>
-    setForm((prev) => ({
-      ...prev,
-      daysOfWeek: prev.daysOfWeek.includes(d)
-        ? prev.daysOfWeek.filter((x) => x !== d)
-        : [...prev.daysOfWeek, d],
-    }));
+  const toggleDay = (d: number, edit = false) =>
+    setForm((prev) => {
+      const key = edit ? 'editDaysOfWeek' : 'daysOfWeek';
+      const cur = prev[key];
+      return { ...prev, [key]: cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d] };
+    });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isEditing && task) {
+      const hasSeries = Boolean(task.seriesId);
       const dto: EditTaskDto = {
         title:       form.title,
         description: form.description || undefined,
         type:        form.type as any,
         coinsReward: form.coinsReward,
         xpReward:    form.xpReward,
+        ...(hasSeries && { frequency: form.editFrequency }),
+        ...(hasSeries && form.editFrequency === 'Weekly' && { daysOfWeek: JSON.stringify(form.editDaysOfWeek) }),
       };
-      await editTask.mutateAsync({ id: task.id, data: dto });
+      await editTask.mutateAsync({ id: task.id, data: dto, applyToSeries: hasSeries });
       const originalEnabled = task?.isEnabled !== false;
       if (form.isEnabled !== originalEnabled) await toggleEnable.mutateAsync(task.id);
       onClose();
@@ -169,11 +172,18 @@ export default function TaskForm({ task, children, onClose }: Props) {
                 <option value="Weekly">Semanal</option>
               </FormSelect>
             </div>
+          ) : task?.seriesId ? (
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <FormSelect label="Frecuencia" value={form.editFrequency} onChange={(e) => set('editFrequency', e.target.value)}>
+                <option value="Daily">Diaria</option>
+                <option value="Weekly">Semanal</option>
+              </FormSelect>
+            </div>
           ) : (
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading }}>Frecuencia</p>
               <div style={{ padding: '0.55rem 0.75rem', background: c.subtle, borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '0.95rem', color: c.body }}>
-                {FREQ_LABELS[editFreq] ?? editFreq}
+                Puntual
               </div>
             </div>
           )}
@@ -196,6 +206,21 @@ export default function TaskForm({ task, children, onClose }: Props) {
                 <button key={i} type="button"
                   style={{ border: 'none', borderRadius: 6, padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', background: form.daysOfWeek.includes(i) ? c.primary : c.stroke, color: form.daysOfWeek.includes(i) ? c.surface : c.heading }}
                   onClick={() => toggleDay(i)}>
+                  {d}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {isEditing && task?.seriesId && form.editFrequency === 'Weekly' && (
+          <div>
+            <p style={{ fontSize: '0.85rem', fontWeight: 600, margin: '0 0 0.4rem' }}>Días de la semana</p>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+              {DAYS.map((d, i) => (
+                <button key={i} type="button"
+                  style={{ border: 'none', borderRadius: 6, padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', background: form.editDaysOfWeek.includes(i) ? c.primary : c.stroke, color: form.editDaysOfWeek.includes(i) ? c.surface : c.heading }}
+                  onClick={() => toggleDay(i, true)}>
                   {d}
                 </button>
               ))}
