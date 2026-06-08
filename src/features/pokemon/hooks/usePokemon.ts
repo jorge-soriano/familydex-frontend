@@ -26,7 +26,10 @@ export function useChooseInitial() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (pokemonId: number) => pokemonApi.chooseInitial(pokemonId),
-    onSuccess: () => qc.invalidateQueries({ queryKey: [POKEMON_KEY] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
+      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
+    },
   });
 }
 
