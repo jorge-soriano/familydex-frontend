@@ -1,6 +1,8 @@
 import ChildAvatar from '../../../shared/components/ChildAvatar';
 import { Button } from '../../../shared/components/Button';
 import { FormInput, FormSelect, FormTextarea } from '../../../shared/components/FormInput';
+import Modal from '../../../shared/components/Modal';
+import ToggleSwitch from '../../../shared/components/ToggleSwitch';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useCreateTask, useEditTask, useDeleteTask, useToggleEnabled, TASKS_KEY } from '../hooks/useTasks';
@@ -18,6 +20,8 @@ interface Props {
 
 const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
+const FREQ_LABELS: Record<string, string> = { OneTime: 'Puntual', Daily: 'Diaria', Weekly: 'Semanal' };
+
 export default function TaskForm({ task, children, onClose }: Props) {
   const createTask   = useCreateTask();
   const editTask     = useEditTask();
@@ -25,7 +29,6 @@ export default function TaskForm({ task, children, onClose }: Props) {
   const toggleEnable = useToggleEnabled();
   const isEditing    = Boolean(task);
   const [confirmDel, setConfirmDel] = useState(false);
-  const [localEnabled, setLocalEnabled] = useState(task?.isEnabled !== false);
 
   const [selectedChildren, setSelectedChildren] = useState<number[]>(
     task ? [task.assignedTo] : children.length === 1 ? [children[0].id] : []
@@ -46,15 +49,18 @@ export default function TaskForm({ task, children, onClose }: Props) {
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
 
+  const editFreq = task?.series?.frequency ?? 'OneTime';
+
   const [form, setForm] = useState({
-    assignedTo: task?.assignedTo ?? (children[0]?.id ?? 0),
-    title: task?.title ?? '',
+    assignedTo:  task?.assignedTo ?? (children[0]?.id ?? 0),
+    title:       task?.title ?? '',
     description: task?.description ?? '',
-    type: task?.type ?? 'hogar',
+    type:        task?.type ?? 'hogar',
     coinsReward: task?.coinsReward ?? 5,
-    xpReward: task?.xpReward ?? 25,
-    frequency: 'OneTime' as 'OneTime' | 'Daily' | 'Weekly',
-    daysOfWeek: [] as number[],
+    xpReward:    task?.xpReward ?? 25,
+    frequency:   'OneTime' as 'OneTime' | 'Daily' | 'Weekly',
+    daysOfWeek:  [] as number[],
+    isEnabled:   task?.isEnabled !== false,
   });
 
   const set = (key: string, value: unknown) =>
@@ -68,44 +74,44 @@ export default function TaskForm({ task, children, onClose }: Props) {
         : [...prev.daysOfWeek, d],
     }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (isEditing && task) {
       const dto: EditTaskDto = {
-        title: form.title, description: form.description || undefined,
-        type: form.type as any, coinsReward: form.coinsReward,
-        xpReward: form.xpReward,
+        title:       form.title,
+        description: form.description || undefined,
+        type:        form.type as any,
+        coinsReward: form.coinsReward,
+        xpReward:    form.xpReward,
       };
-      editTask.mutate({ id: task.id, data: dto }, {
-        onSuccess: async () => {
-          const originalEnabled = task?.isEnabled !== false;
-          if (localEnabled !== originalEnabled) await toggleEnable.mutateAsync(task.id);
-          onClose();
-        },
-      });
+      await editTask.mutateAsync({ id: task.id, data: dto });
+      const originalEnabled = task?.isEnabled !== false;
+      if (form.isEnabled !== originalEnabled) await toggleEnable.mutateAsync(task.id);
+      onClose();
     } else {
       const dto: CreateTaskDto = {
-        assignedTo: selectedChildren.length === 1 ? selectedChildren[0] : (selectedChildren[0] ?? form.assignedTo),
-        title: form.title,
+        assignedTo:  selectedChildren.length >= 1 ? selectedChildren[0] : form.assignedTo,
+        title:       form.title,
         description: form.description || undefined,
-        type: form.type as any, coinsReward: form.coinsReward, xpReward: form.xpReward,
-        frequency: form.frequency,
-        daysOfWeek: form.frequency === 'Weekly' ? form.daysOfWeek : undefined,
+        type:        form.type as any,
+        coinsReward: form.coinsReward,
+        xpReward:    form.xpReward,
+        frequency:   form.frequency,
+        daysOfWeek:  form.frequency === 'Weekly' ? form.daysOfWeek : undefined,
       };
-      createTask.mutate(dto, { onSuccess: onClose });
+      const created = await createTask.mutateAsync(dto);
+      if (!form.isEnabled) await toggleEnable.mutateAsync(created.id);
+      onClose();
     }
   };
 
   const error = (createTask.error || editTask.error) as any;
-  const isPending = createTask.isPending || editTask.isPending;
+  const isPending = createTask.isPending || editTask.isPending || toggleEnable.isPending;
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={styles.title}>{isEditing ? 'Editar tarea' : 'Nueva tarea'}</h2>
-          <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+    <Modal title={isEditing ? 'Editar tarea' : 'Nueva tarea'} onClose={onClose} maxWidth={520}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
 
         {!isEditing && suggestions.length > 0 && (
           <FormSelect
@@ -146,34 +152,41 @@ export default function TaskForm({ task, children, onClose }: Props) {
 
         <FormTextarea label="Descripción" value={form.description} onChange={(e) => set('description', e.target.value)} style={{ minHeight: 60 }} />
 
-        <div style={styles.row}>
+        <div style={{ display: 'flex', gap: '1rem' }}>
           <FormSelect label="Tipo" value={form.type} onChange={(e) => set('type', e.target.value)} style={{ flex: 1 }}>
             {['hogar','deberes','comportamiento','responsabilidad'].map((t) => (
               <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
             ))}
           </FormSelect>
 
-          {!isEditing && (
+          {!isEditing ? (
             <FormSelect label="Frecuencia" value={form.frequency} onChange={(e) => set('frequency', e.target.value)} style={{ flex: 1 }}>
               <option value="OneTime">Puntual</option>
               <option value="Daily">Diaria</option>
               <option value="Weekly">Semanal</option>
             </FormSelect>
+          ) : (
+            <div style={{ flex: 1 }}>
+              <p style={{ margin: '0 0 0.35rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading }}>Frecuencia</p>
+              <div style={{ padding: '0.5rem 0.75rem', background: c.subtle, borderRadius: 8, border: `1px solid ${c.stroke}`, fontSize: '0.9rem', color: c.body }}>
+                {FREQ_LABELS[editFreq] ?? editFreq}
+              </div>
+            </div>
           )}
         </div>
 
-        <div style={styles.row}>
+        <div style={{ display: 'flex', gap: '1rem' }}>
           <FormInput label="Monedas 🪙" type="number" min={0} value={form.coinsReward} onChange={(e) => set('coinsReward', Number(e.target.value))} style={{ flex: 1 }} />
           <FormInput label="XP ⭐" type="number" min={0} value={form.xpReward} onChange={(e) => set('xpReward', Number(e.target.value))} style={{ flex: 1 }} />
         </div>
 
         {!isEditing && form.frequency === 'Weekly' && (
           <div>
-            <p style={styles.daysLabel}>Días de la semana</p>
-            <div style={styles.days}>
+            <p style={{ fontSize: '0.85rem', fontWeight: 600, margin: '0 0 0.4rem' }}>Días de la semana</p>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {DAYS.map((d, i) => (
                 <button key={i} type="button"
-                  style={{ ...styles.dayBtn, background: form.daysOfWeek.includes(i) ? c.primary : c.stroke, color: form.daysOfWeek.includes(i) ? c.surface : c.heading }}
+                  style={{ border: 'none', borderRadius: 6, padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem', background: form.daysOfWeek.includes(i) ? c.primary : c.stroke, color: form.daysOfWeek.includes(i) ? c.surface : c.heading }}
                   onClick={() => toggleDay(i)}>
                   {d}
                 </button>
@@ -182,30 +195,22 @@ export default function TaskForm({ task, children, onClose }: Props) {
           </div>
         )}
 
-        {isEditing && task && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Estado</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
-              onClick={() => setLocalEnabled(!localEnabled)}>
-              <div style={{ width: 40, height: 22, borderRadius: 11, background: localEnabled ? c.success : c.captionLight, position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
-                <div style={{ position: 'absolute', top: 2, left: localEnabled ? 20 : 2, width: 18, height: 18, borderRadius: '50%', background: c.surface, boxShadow: c.shadowSm, transition: 'left 0.2s' }} />
-              </div>
-              <span style={{ fontSize: '0.85rem', color: c.body, userSelect: 'none' }}>
-                {localEnabled ? 'Activa' : 'Desactivada'}
-              </span>
-            </div>
-          </div>
-        )}
+        <ToggleSwitch
+          label="Visible para el niño"
+          helper="Las tareas desactivadas no aparecen en la lista del niño"
+          value={form.isEnabled}
+          onChange={(v) => set('isEnabled', v)}
+        />
 
-        {error && <p style={styles.error}>{error?.response?.data?.message ?? 'Error'}</p>}
+        {error && <p style={{ color: c.danger, fontSize: '0.85rem', margin: 0 }}>{error?.response?.data?.message ?? 'Error'}</p>}
 
         <div style={{ borderTop: `1px solid ${c.subtle}`, paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
 
           {isEditing && task ? (
             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
               {!confirmDel ? (
-                <Button type="button" size="sm"
-                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}` }}
+                <Button type="button" size="sm" variant="ghost"
+                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}`, boxShadow: 'none' }}
                   onClick={() => setConfirmDel(true)}>
                   🗑 Eliminar
                 </Button>
@@ -233,18 +238,6 @@ export default function TaskForm({ task, children, onClose }: Props) {
           </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  overlay:   { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal:     { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' },
-  title:     { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
-  closeBtn:  { background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  row:       { display: 'flex', gap: '1rem' },
-  daysLabel: { fontSize: '0.85rem', fontWeight: 600, margin: '0 0 0.4rem' },
-  days:      { display: 'flex', gap: '0.4rem', flexWrap: 'wrap' },
-  dayBtn:    { border: 'none', borderRadius: 6, padding: '0.3rem 0.6rem', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' },
-  error:     { color: c.danger, fontSize: '0.85rem' },
-};

@@ -46,6 +46,9 @@ export const rewardsApi = {
   edit: (id: number, data: EditRewardDto) =>
     apiClient.put<Reward>(`/rewards/${id}`, data).then((r) => r.data),
 
+  delete: (id: number) =>
+    apiClient.delete(`/rewards/${id}`),
+
   toggleActive: (id: number, isActive: boolean) =>
     apiClient.patch<Reward>(`/rewards/${id}/status`, { isActive }).then((r) => r.data),
 

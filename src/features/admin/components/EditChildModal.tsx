@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import { useUpdateChild } from '../hooks/useAdmin';
+import { useUpdateChild, useToggleChildStatus } from '../hooks/useAdmin';
 import type { ChildSummary } from '../api';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
+import Modal from '../../../shared/components/Modal';
+import ToggleSwitch from '../../../shared/components/ToggleSwitch';
+
+const COLORS = ['#6366f1','#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6'];
 
 interface Props {
   child: ChildSummary;
@@ -11,35 +15,43 @@ interface Props {
 }
 
 export default function EditChildModal({ child, onClose }: Props) {
-  const [displayName, setDisplayName] = useState(child.displayName);
-  const [password, setPassword] = useState('');
-  const update = useUpdateChild();
+  const [displayName,  setDisplayName]  = useState(child.displayName);
+  const [password,     setPassword]     = useState('');
+  const [avatarColor,  setAvatarColor]  = useState(child.avatarColor ?? COLORS[0]);
+  const [isActive,     setIsActive]     = useState(child.isActive);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const update = useUpdateChild();
+  const toggle = useToggleChildStatus();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const dto: { displayName?: string; password?: string } = {};
+    const dto: { displayName?: string; password?: string; avatarColor?: string } = {};
     if (displayName !== child.displayName) dto.displayName = displayName;
     if (password) dto.password = password;
-    if (!Object.keys(dto).length) { onClose(); return; }
-    update.mutate({ id: child.id, dto }, { onSuccess: onClose });
+    if (avatarColor !== (child.avatarColor ?? COLORS[0])) dto.avatarColor = avatarColor;
+
+    const statusChanged = isActive !== child.isActive;
+    const dataChanged   = Object.keys(dto).length > 0;
+
+    if (!dataChanged && !statusChanged) { onClose(); return; }
+
+    if (dataChanged) await update.mutateAsync({ id: child.id, dto });
+    if (statusChanged) await toggle.mutateAsync({ id: child.id, isActive });
+    onClose();
   };
 
   const error = (update.error as any)?.response?.data?.message;
+  const isPending = update.isPending || toggle.isPending;
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={styles.title}>Editar — {child.username}</h2>
-          <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+    <Modal title={`Editar — ${child.username}`} onClose={onClose} maxWidth={420}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
 
         <FormInput
           label="Nombre visible"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          required
-          minLength={2}
+          required minLength={2}
         />
 
         <FormInput
@@ -51,23 +63,36 @@ export default function EditChildModal({ child, onClose }: Props) {
           placeholder="Nueva contraseña"
         />
 
+        <div>
+          <p style={{ margin: '0 0 0.4rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading }}>
+            Color del avatar
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {COLORS.map((col) => (
+              <button key={col} type="button"
+                style={{ width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer', background: col, flexShrink: 0, outline: avatarColor === col ? `3px solid ${c.navy}` : 'none', outlineOffset: 2 }}
+                onClick={() => setAvatarColor(col)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <ToggleSwitch
+          label="Cuenta activa"
+          helper="Un hijo inactivo no puede iniciar sesión ni recibir tareas"
+          value={isActive}
+          onChange={setIsActive}
+        />
+
         {error && <p className="text-danger text-[0.85rem] m-0">{error}</p>}
 
-        <div style={styles.actions}>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
           <Button variant="secondary" type="button" onClick={onClose}>Cancelar</Button>
-          <Button type="submit" disabled={update.isPending}>
-            {update.isPending ? 'Guardando…' : 'Guardar'}
+          <Button type="submit" disabled={isPending}>
+            {isPending ? 'Guardando…' : 'Guardar'}
           </Button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  overlay: { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal:   { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 400, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
-  title:   { margin: 0, fontSize: '1.1rem', fontWeight: 800 },
-  closeBtn:{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  actions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' },
-};

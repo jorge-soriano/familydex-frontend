@@ -32,6 +32,14 @@ export function useEditReward() {
   });
 }
 
+export function useDeleteReward() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => rewardsApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [REWARDS_KEY] }),
+  });
+}
+
 export function useToggleReward() {
   const qc = useQueryClient();
   return useMutation({

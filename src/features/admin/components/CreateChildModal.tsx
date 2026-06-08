@@ -3,6 +3,7 @@ import { useCreateChild } from '../hooks/useAdmin';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
+import Modal from '../../../shared/components/Modal';
 
 const COLORS = ['#6366f1','#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6'];
 
@@ -27,19 +28,14 @@ export default function CreateChildModal({ onClose }: Props) {
   const error = (create.error as any)?.response?.data?.message;
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={styles.title}>Nuevo hijo</h2>
-          <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+    <Modal title="Nuevo hijo" onClose={onClose} maxWidth={420}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
 
         <FormInput
           label="Nombre visible *"
           helper="El nombre que verá en la app"
           value={form.displayName}
-          required
-          minLength={2}
+          required minLength={2}
           onChange={(e) => set('displayName', e.target.value)}
           placeholder="Ej: Lucas"
         />
@@ -63,41 +59,28 @@ export default function CreateChildModal({ onClose }: Props) {
         />
 
         <div>
-          <p style={styles.colorLabel}>Color del avatar</p>
-          <div style={styles.colorRow}>
+          <p style={{ margin: '0 0 0.4rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading }}>
+            Color del avatar
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {COLORS.map((col) => (
               <button key={col} type="button"
-                style={{ ...styles.colorBtn, background: col, outline: form.avatarColor === col ? `3px solid ${c.navy}` : 'none', outlineOffset: 2 }}
+                style={{ width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer', background: col, flexShrink: 0, outline: form.avatarColor === col ? `3px solid ${c.navy}` : 'none', outlineOffset: 2 }}
                 onClick={() => set('avatarColor', col)}
               />
             ))}
-          </div>
-          <div style={{ ...styles.avatarPreview, background: form.avatarColor }}>
-            {form.displayName.charAt(0).toUpperCase() || '?'}
           </div>
         </div>
 
         {error && <p className="text-danger text-[0.85rem] m-0">{error}</p>}
 
-        <div style={styles.actions}>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
           <Button variant="secondary" type="button" onClick={onClose}>Cancelar</Button>
           <Button type="submit" disabled={create.isPending}>
             {create.isPending ? 'Creando…' : 'Crear hijo'}
           </Button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  overlay:      { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal:        { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: '0.85rem' },
-  title:        { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
-  closeBtn:     { background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  colorLabel:   { margin: '0 0 0.4rem', fontSize: '0.85rem', fontWeight: 600, color: c.heading },
-  colorRow:     { display: 'flex', gap: '0.5rem', flexWrap: 'wrap' },
-  colorBtn:     { width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer', flexShrink: 0 },
-  avatarPreview:{ width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: c.surface, fontWeight: 800, fontSize: '1.25rem', marginTop: '0.5rem' },
-  actions:      { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.25rem' },
-};

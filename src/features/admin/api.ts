@@ -43,7 +43,7 @@ export const adminApi = {
   getChild: (id: number) =>
     apiClient.get<ChildSummary>(`/admin/children/${id}`).then((r) => r.data),
 
-  updateChild: (id: number, dto: { displayName?: string; password?: string }) =>
+  updateChild: (id: number, dto: { displayName?: string; password?: string; avatarColor?: string }) =>
     apiClient.put(`/admin/children/${id}`, dto).then((r) => r.data),
 
   toggleChildStatus: (id: number, isActive: boolean) =>

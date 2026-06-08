@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useCreateReward, useEditReward } from '../hooks/useRewards';
+import { useCreateReward, useEditReward, useDeleteReward } from '../hooks/useRewards';
 import type { Reward } from '../api';
-import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
 import { FormInput, FormTextarea } from '../../../shared/components/FormInput';
+import Modal from '../../../shared/components/Modal';
+import ToggleSwitch from '../../../shared/components/ToggleSwitch';
+import { c } from '../../../styles/tokens';
 
 interface Props {
   reward?: Reward;
@@ -12,13 +14,16 @@ interface Props {
 
 export default function RewardForm({ reward, onClose }: Props) {
   const [form, setForm] = useState({
-    name: reward?.name ?? '',
+    name:        reward?.name ?? '',
     description: reward?.description ?? '',
-    coinCost: reward?.coinCost ?? '',
-    isActive: reward?.isActive ?? true,
+    coinCost:    reward?.coinCost ?? '',
+    isActive:    reward?.isActive ?? true,
   });
-  const create = useCreateReward();
-  const edit   = useEditReward();
+  const [confirmDel, setConfirmDel] = useState(false);
+
+  const create    = useCreateReward();
+  const edit      = useEditReward();
+  const del       = useDeleteReward();
   const isEditing = Boolean(reward);
 
   const set = (k: string, v: unknown) => setForm((p) => ({ ...p, [k]: v }));
@@ -26,10 +31,10 @@ export default function RewardForm({ reward, onClose }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const dto = {
-      name: form.name,
+      name:        form.name,
       description: form.description || undefined,
-      coinCost: Number(form.coinCost),
-      isActive: form.isActive,
+      coinCost:    Number(form.coinCost),
+      isActive:    form.isActive,
     };
     if (isEditing && reward) {
       edit.mutate({ id: reward.id, data: dto }, { onSuccess: onClose });
@@ -41,12 +46,8 @@ export default function RewardForm({ reward, onClose }: Props) {
   const error = ((create.error || edit.error) as any)?.response?.data?.message;
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <form style={styles.modal} onClick={(e) => e.stopPropagation()} onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={styles.title}>{isEditing ? 'Editar recompensa' : 'Nueva recompensa'}</h2>
-          <button type="button" style={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+    <Modal title={isEditing ? 'Editar recompensa' : 'Nueva recompensa'} onClose={onClose} maxWidth={440}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
 
         <FormInput
           label="Nombre *"
@@ -64,36 +65,55 @@ export default function RewardForm({ reward, onClose }: Props) {
 
         <FormInput
           label="Coste en monedas 🪙 *"
-          type="number"
-          min={1}
+          type="number" min={1}
           value={form.coinCost}
           required
           onChange={(e) => set('coinCost', e.target.value)}
         />
 
-        <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: 600 }}>
-          <input type="checkbox" checked={form.isActive} onChange={(e) => set('isActive', e.target.checked)} />
-          Activa en la tienda
-        </label>
+        <ToggleSwitch
+          label="Activa en la tienda"
+          helper="Los hijos solo pueden solicitar recompensas activas"
+          value={form.isActive}
+          onChange={(v) => set('isActive', v)}
+        />
 
-        {error && <p style={styles.error}>{error}</p>}
+        {error && <p style={{ color: c.danger, fontSize: '0.85rem', margin: 0 }}>{error}</p>}
 
-        <div style={styles.actions}>
-          <Button type="button" variant="secondary" onClick={onClose}>Cancelar</Button>
-          <Button type="submit" disabled={create.isPending || edit.isPending}>
-            {create.isPending || edit.isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear'}
-          </Button>
+        <div style={{ borderTop: `1px solid ${c.subtle}`, paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+
+          {isEditing && reward ? (
+            <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+              {!confirmDel ? (
+                <Button type="button" size="sm" variant="ghost"
+                  style={{ color: c.dangerDark, background: c.dangerSubtle, border: `1px solid ${c.stroke}`, boxShadow: 'none' }}
+                  onClick={() => setConfirmDel(true)}>
+                  🗑 Eliminar
+                </Button>
+              ) : (
+                <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.78rem', color: c.dangerDark, fontWeight: 600 }}>¿Seguro?</span>
+                  <Button type="button" variant="danger" size="sm" disabled={del.isPending}
+                    onClick={() => del.mutate(reward.id, { onSuccess: onClose })}>
+                    Sí
+                  </Button>
+                  <Button type="button" variant="secondary" size="sm"
+                    onClick={() => setConfirmDel(false)}>
+                    No
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : <span />}
+
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Button type="button" variant="secondary" onClick={onClose}>Cancelar</Button>
+            <Button type="submit" disabled={create.isPending || edit.isPending}>
+              {create.isPending || edit.isPending ? 'Guardando…' : isEditing ? 'Guardar' : 'Crear'}
+            </Button>
+          </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  overlay: { position: 'fixed', inset: 0, background: c.overlay, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 },
-  modal:   { background: c.surface, borderRadius: 12, padding: '2rem', width: 'calc(100% - 2rem)', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '0.75rem' },
-  title:   { margin: 0, fontSize: '1.25rem', fontWeight: 800 },
-  closeBtn:{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', color: c.caption, lineHeight: 1, padding: '0.2rem' },
-  error:   { color: c.danger, fontSize: '0.85rem' },
-  actions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' },
-};
