@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { pokemonApi } from '../api';
+import { BALANCE_KEY } from '../../activity/hooks/useActivity';
 
 export const POKEMON_KEY    = 'pokemon';
 export const STARTERS_KEY   = 'starters';
@@ -40,6 +41,7 @@ export function useCapture() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [POKEMON_KEY] });
       qc.invalidateQueries({ queryKey: [AVAILABLE_KEY] });
+      qc.invalidateQueries({ queryKey: [BALANCE_KEY] });
     },
   });
 }

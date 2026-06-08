@@ -1,4 +1,3 @@
-import { Lock } from 'lucide-react';
 import { usePokemonCatalog, usePokemonCollection } from '../hooks/usePokemon';
 import PokemonCard from './PokemonCard';
 import { c } from '../../../styles/tokens';
@@ -32,11 +31,6 @@ export default function PokedexTab() {
               spriteFilter={owned ? undefined : 'grayscale(1) brightness(0.3)'}
               dimmed={!owned}
               topBadge={`#${String(p.pokedexNumber).padStart(3, '0')}`}
-              infoSlot={!owned ? (
-                <span style={styles.locked}>
-                  <Lock size={10} />{p.unlockXp > 0 ? ` ${p.unlockXp.toLocaleString()} XP` : ''}
-                </span>
-              ) : undefined}
             />
           );
         })}
@@ -53,5 +47,4 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
     gap: '0.75rem',
   },
-  locked: { fontSize: '0.7rem', color: c.caption, display: 'flex', alignItems: 'center', gap: '0.15rem' },
 };

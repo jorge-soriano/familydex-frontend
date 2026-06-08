@@ -1,6 +1,5 @@
 import { useAvailableToCapture, useCapture } from '../hooks/usePokemon';
 import { useBalance } from '../../activity/hooks/useActivity';
-import { Unlock } from 'lucide-react';
 import { PokeballIcon } from '../../../shared/components/GameIcons';
 import PokemonCard from './PokemonCard';
 import { c } from '../../../styles/tokens';
@@ -42,7 +41,6 @@ export default function CaptureScreen() {
               name={p.name}
               type1={p.type1}
               type2={p.type2}
-              infoSlot={p.unlockXp > 0 ? <span style={{ color: c.success, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}><Unlock size={11} />{p.unlockXp.toLocaleString()} XP</span> : undefined}
               actionSlot={
                 <Button
                   size="sm"
