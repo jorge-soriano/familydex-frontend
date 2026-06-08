@@ -1,6 +1,6 @@
 import { c } from '../../../styles/tokens';
 
-const TYPE_COLORS: Record<string, string> = {
+export const TYPE_COLORS: Record<string, string> = {
   Fuego: '#ff6b35', Agua: '#4ea8de', Planta: '#56ab2f', Eléctrico: '#f7d716',
   Psíquico: '#d64de1', Hielo: '#74d7ec', Dragón: '#6e5fa6', Veneno: '#9b59b6',
   Normal: '#a8a878', Volador: '#87ceeb', Hada: '#ffb6c1', Lucha: '#c03028',

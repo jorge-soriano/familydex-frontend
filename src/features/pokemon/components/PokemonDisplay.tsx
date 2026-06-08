@@ -1,20 +1,36 @@
 import type { ActivePokemonResult } from '../api';
 import { Sparkles } from 'lucide-react';
 import PokemonSprite from './PokemonSprite';
-import TypeBadge from './TypeBadge';
+import TypeBadge, { TYPE_COLORS } from './TypeBadge';
 import { useWindowWidth } from '../../../shared/hooks/useWindowWidth';
 import { c } from '../../../styles/tokens';
+
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
 
 interface Props { data: ActivePokemonResult }
 
 export default function PokemonDisplay({ data }: Props) {
   const { pokemon: p, level, pokemonXp, xpForNextLevel, progressPercent, isFinalForm, evolveLevel } = data;
   const xpToNextLevel = xpForNextLevel - pokemonXp;
+  const typeColor = TYPE_COLORS[p.type1] ?? c.primary;
   const isNarrow = useWindowWidth() < 480;
 
   return (
-    <div style={{ ...styles.card, flexDirection: isNarrow ? 'column' : 'row', alignItems: isNarrow ? 'center' : 'center' }}>
-      <div style={{ ...styles.spriteWrap, minWidth: isNarrow ? 'auto' : 140, minHeight: isNarrow ? 'auto' : 140 }}>
+    <div style={{ ...styles.card,
+      flexDirection: isNarrow ? 'column' : 'row', alignItems: 'center',
+      background: `linear-gradient(160deg, ${hexToRgba(typeColor, 0.12)} 0%, ${c.surface} 55%)`,
+      borderColor: hexToRgba(typeColor, 0.35),
+    }}>
+      <div style={{ ...styles.spriteWrap,
+        minWidth: isNarrow ? 'auto' : 140, minHeight: isNarrow ? 'auto' : 140,
+        background: `radial-gradient(ellipse at 50% 60%, ${hexToRgba(typeColor, 0.28)} 0%, ${hexToRgba(typeColor, 0.07)} 100%)`,
+        boxShadow: `0 0 0 2px ${hexToRgba(typeColor, 0.45)}, inset 0 3px 12px ${hexToRgba(typeColor, 0.12)}`,
+      }}>
         <PokemonSprite pokedexNumber={p.pokedexNumber} size={120} alt={p.name} />
       </div>
 
@@ -60,13 +76,12 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex', gap: '1.5rem', alignItems: 'center',
     background: c.surface, borderRadius: 10, padding: '1.5rem',
     boxShadow: c.shadowCard,
+    border: '2px solid transparent',
   },
   spriteWrap: {
-    background: `radial-gradient(ellipse at 50% 70%, ${c.primarySubtle} 0%, ${c.surface} 50%, ${c.subtle} 100%)`,
     borderRadius: 16, padding: '1rem',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     minWidth: 140, minHeight: 140,
-    boxShadow: `0 0 0 2px ${c.primaryLight}, inset 0 3px 12px rgba(59,130,246,0.10)`,
   },
   info: { flex: 1 },
   nameRow: { display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.5rem' },
