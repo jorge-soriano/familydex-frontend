@@ -65,10 +65,12 @@ export default function PokemonCard({
         {type2 && <TypeBadge type={type2} />}
       </div>
 
-      {/* Info area always rendered — reserves consistent height so all cards in a row align */}
-      <div style={{ minHeight: '1.1em', fontSize: '0.78rem', color: c.body, textAlign: 'center', display: 'flex', alignItems: 'center', gap: '0.2rem', justifyContent: 'center' }}>
-        {infoSlot}
-      </div>
+      {/* Info area: always reserve height when there's an actionSlot to keep buttons aligned across cards; otherwise skip if empty */}
+      {(infoSlot != null || actionSlot) && (
+        <div style={{ minHeight: actionSlot ? '1.1em' : undefined, fontSize: '0.78rem', color: c.body, textAlign: 'center', display: 'flex', alignItems: 'center', gap: '0.2rem', justifyContent: 'center' }}>
+          {infoSlot}
+        </div>
+      )}
 
       {actionSlot && (
         <div style={{ marginTop: 'auto', paddingTop: '0.35rem', display: 'flex', justifyContent: 'center' }}>
