@@ -4,6 +4,7 @@ import AdminLayout from './shared/components/AdminLayout';
 import ChildLayout from './shared/components/ChildLayout';
 
 import ChildIndexRedirect from './shared/components/ChildIndexRedirect';
+import LandingPage from './features/auth/components/LandingPage';
 import LoginPage from './features/auth/components/LoginPage';
 import RegisterPage from './features/auth/components/RegisterPage';
 
@@ -60,5 +61,5 @@ export const router = createBrowserRouter([
     ],
   },
 
-  { path: '/', element: <Navigate to="/login" replace /> },
+  { path: '/', element: <LandingPage /> },
 ]);

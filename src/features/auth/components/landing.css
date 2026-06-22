@@ -1,0 +1,129 @@
+/* ── Hero grid ── */
+.landing-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.hero-sprites {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  justify-items: center;
+}
+
+/* ── Content grids ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* ── Sprite card ── */
+.sprite-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 1rem 0.75rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sprite-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  filter: blur(24px);
+  border-radius: 50%;
+  transform: scale(0.6) translateY(30%);
+  pointer-events: none;
+}
+
+.sprite-img {
+  height: 72px;
+  width: auto;
+  image-rendering: pixelated;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Float animations ── */
+@keyframes poke-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.poke-float-1 { animation: poke-float 3.6s ease-in-out infinite; }
+.poke-float-2 { animation: poke-float 4.3s ease-in-out 0.6s infinite; }
+.poke-float-3 { animation: poke-float 3.9s ease-in-out 1.1s infinite; }
+.poke-float-4 { animation: poke-float 4.6s ease-in-out 0.3s infinite; }
+
+/* ── Hero entrance ── */
+@keyframes enter-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-enter {
+  opacity: 0;
+  animation: enter-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-delay-1 { animation-delay: 0.06s; }
+.hero-delay-2 { animation-delay: 0.18s; }
+.hero-delay-3 { animation-delay: 0.30s; }
+.hero-delay-4 { animation-delay: 0.42s; }
+
+/* ── Feature card ── */
+.feature-card {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.feature-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* ── Demo account button ── */
+.demo-acct-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, opacity 0.15s;
+}
+.demo-acct-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .landing-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .hero-sprites {
+    order: -1;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poke-float-1, .poke-float-2, .poke-float-3, .poke-float-4 { animation: none; }
+  .hero-enter  { animation: none; opacity: 1; }
+  .feature-card, .demo-acct-btn { transition: none; }
+}
