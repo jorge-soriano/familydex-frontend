@@ -4,6 +4,7 @@ import { useRegister } from '../hooks/useAuth';
 import { c } from '../../../styles/tokens';
 import { Button } from '../../../shared/components/Button';
 import { FormInput } from '../../../shared/components/FormInput';
+import AuthNav from './AuthNav';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -26,78 +27,87 @@ export default function RegisterPage() {
     (register.error as any)?.response?.data?.message ?? 'Error al registrarse';
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>FamilyDex</h1>
-        <h2 style={styles.subtitle}>Crear cuenta de administrador</h2>
+    <div className="min-h-screen flex flex-col bg-night">
+      <AuthNav variant="register" />
 
-        <form onSubmit={handleSubmit} style={styles.form}>
-          {([
-            { name: 'email',           label: 'Email',              type: 'email',    placeholder: 'tu@email.com' },
-            { name: 'username',        label: 'Nombre de usuario',  type: 'text',     placeholder: 'admin' },
-            { name: 'password',        label: 'Contraseña',         type: 'password', placeholder: 'Mín. 8 chars, 1 mayúscula, 1 número' },
-            { name: 'confirmPassword', label: 'Confirmar contraseña', type: 'password', placeholder: '' },
-          ] as const).map(({ name, label, type, placeholder }) => (
+      <div className="flex flex-col items-center p-4 pt-16 pb-16">
+
+        {/* Card */}
+        <div className="bg-surface rounded-xl p-8 w-full max-w-[400px]"
+          style={{ boxShadow: c.shadowFloat }}>
+
+          <h2 className="m-0 mb-6 text-[1.35rem] font-extrabold text-heading">
+            Crear cuenta
+          </h2>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <FormInput
-              key={name}
-              label={label}
-              type={type}
-              name={name}
-              value={form[name]}
+              label="Email"
+              type="email"
+              name="email"
+              value={form.email}
               onChange={handleChange}
-              placeholder={placeholder}
+              placeholder="tu@email.com"
+              autoComplete="email"
               required
             />
-          ))}
 
-          {register.isError && <p style={styles.error}>{errorMessage}</p>}
+            <FormInput
+              label="Nombre de usuario"
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              placeholder="admin"
+              autoComplete="username"
+              spellCheck={false}
+              required
+            />
 
-          <Button type="submit" disabled={register.isPending} style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.5rem' }}>
-            {register.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
-          </Button>
-        </form>
+            <FormInput
+              label="Contraseña"
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Mín. 8 caracteres, 1 mayúscula, 1 número"
+              autoComplete="new-password"
+              required
+            />
 
-        <p style={styles.loginLink}>
-          ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
-        </p>
+            <FormInput
+              label="Confirmar contraseña"
+              type="password"
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              placeholder=""
+              autoComplete="new-password"
+              required
+            />
+
+            {register.isError && (
+              <p aria-live="polite" role="alert" className="text-danger text-[0.85rem] m-0">
+                {errorMessage}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              disabled={register.isPending}
+              style={{ width: '100%', justifyContent: 'center', padding: '0.75rem', fontSize: '1rem', borderRadius: 6, marginTop: '0.25rem' }}>
+              {register.isPending ? 'Creando cuenta…' : 'Crear cuenta'}
+            </Button>
+          </form>
+
+          <p className="text-center mt-4 mb-0 text-[0.85rem] text-body">
+            ¿Ya tienes cuenta?{' '}
+            <Link to="/login" style={{ color: c.primary, fontWeight: 600 }}>
+              Iniciar sesión
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: c.night,
-    padding: '1rem',
-  },
-  card: {
-    background: c.surface,
-    borderRadius: 12,
-    padding: '2.5rem',
-    width: '100%',
-    maxWidth: 420,
-    boxShadow: c.shadowLg,
-  },
-  title: { margin: 0, fontSize: '1.75rem', fontWeight: 800, color: c.night, textAlign: 'center' },
-  subtitle: { margin: '0.25rem 0 1.5rem', color: c.body, textAlign: 'center', fontSize: '1rem', fontWeight: 600 },
-  form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-  label: { display: 'flex', flexDirection: 'column', gap: '0.4rem', fontWeight: 600, fontSize: '0.85rem' },
-  input: { padding: '0.6rem 0.8rem', borderRadius: 6, border: `2px solid ${c.stroke}`, fontSize: '1rem' },
-  button: {
-    padding: '0.75rem',
-    background: c.primary,
-    color: c.surface,
-    border: 'none',
-    borderRadius: 6,
-    fontSize: '1rem',
-    fontWeight: 700,
-    cursor: 'pointer',
-    marginTop: '0.5rem',
-  },
-  error: { color: c.danger, fontSize: '0.85rem', margin: 0 },
-  loginLink: { textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: c.body },
-};

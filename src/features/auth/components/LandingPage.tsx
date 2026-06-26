@@ -91,11 +91,13 @@ export default function LandingPage() {
           FamilyDex
         </span>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <Link
-            to="/login"
-            style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.875rem', fontWeight: 600 }}
-          >
-            Entrar
+          <Link to="/login">
+            <Button
+              variant="ghost"
+              style={{ padding: '0.42rem 1rem', fontSize: '0.82rem', borderRadius: 8, color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.18)' }}
+            >
+              Entrar
+            </Button>
           </Link>
           <Link to="/register">
             <Button style={{ padding: '0.42rem 1rem', fontSize: '0.82rem', borderRadius: 8 }}>
