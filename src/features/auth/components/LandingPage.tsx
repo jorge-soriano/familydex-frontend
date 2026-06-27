@@ -34,7 +34,7 @@ const STEPS = [
 
 const FEATURES = [
   {
-    emoji: '🪙',
+    emoji: '💰',
     title: 'Recompensas reales',
     desc:  'Las monedas se canjean en la tienda que crea el padre: tiempo de pantalla, salidas, caprichos. Nada virtual.',
   },
